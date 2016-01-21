@@ -3,27 +3,61 @@ const { Link } = require('react-router');
 const { connect } = require('react-redux');
 const { routeActions } = require('redux-simple-router');
 
-function App({ push, children }) {
+function App({ push, goForward, goBack, children }) {
   return (
-    <div>
-      <header>
-        Links:
-        {' '}
-        <Link to="/">Home</Link>
-        {' '}
-        <Link to="/foo">Foo</Link>
-        {' '}
-        <Link to="/bar">Bar</Link>
+    <div className="window">
+      <header className="toolbar toolbar-header">
+        <div className="toolbar-actions">
+          <div className="btn-group">
+            <div className="btn btn-default">
+              <span className="icon icon-left"
+                onClick={() => goBack()}
+              ></span>
+            </div>
+            <div className="btn btn-default">
+              <span className="icon icon-right"
+                onClick={() => goForward()}
+              ></span>
+            </div>
+          </div>
+
+          <div className="btn-group">
+            <div className="btn btn-default">
+              <span className="icon icon-home"
+                onClick={() => push('/')}
+              ></span>
+            </div>
+          </div>
+
+          <div className="btn-group">
+            <div className="btn btn-default">
+              <span className="icon icon-home"
+                onClick={() => push('/foo')}
+              ></span>
+            </div>
+            <div className="btn btn-default">
+              <span className="icon icon-home"
+                onClick={() => push('/bar')}
+              ></span>
+            </div>
+          </div>
+
+        </div>
       </header>
-      <div>
-        <button onClick={() => push('/foo')}>Go to /foo</button>
+      <div className="window-content">
+        <div className="pane padded">
+          {children}
+        </div>
       </div>
-      <div style={{marginTop: '1.5em'}}>{children}</div>
     </div>
-  );
+  )
 };
 
 module.exports = connect(
   null,
-  { push: routeActions.push }
+  {
+    push: routeActions.push,
+    goForward: routeActions.goForward,
+    goBack: routeActions.goBack
+  }
 )(App);
