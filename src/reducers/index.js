@@ -1,9 +1,9 @@
-// import { combineReducers } from 'redux';
-// import defaultReducer from './defaultReducer'
+import { combineReducers } from 'redux'
+
+export studentList from './studentList'
+
 // export default combineReducers({
-//   defaultReducer
+//   students
 // })
 
-const count = require('./count')
-
-module.exports = { count }
+// export { reducers }

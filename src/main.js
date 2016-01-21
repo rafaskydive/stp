@@ -9,17 +9,18 @@ import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import { syncHistory, routeReducer } from 'redux-simple-router'
-import reducers from './reducers'
-import { App, Home, Foo, Bar } from './components'
+import * as reducers from './reducers'
+import { App, StudentList, Foo, Bar } from './components'
 
 const middleware = syncHistory(hashHistory);
+
 const reducer = combineReducers(Object.assign({}, reducers, {
   routing: routeReducer
 }));
 
 const DevTools = createDevTools(
-  <DockMonitor toggleVisibilityKey='ctrl-h'
-               changePositionKey='ctrl-q'>
+  <DockMonitor toggleVisibilityKey='H'
+               changePositionKey='Q'>
     <LogMonitor theme='tomorrow' />
   </DockMonitor>
 );
@@ -29,6 +30,7 @@ const finalCreateStore = compose(
   DevTools.instrument()
 )(createStore);
 const store = finalCreateStore(reducer);
+
 middleware.listenForReplays(store);
 
 ReactDOM.render(
@@ -36,7 +38,7 @@ ReactDOM.render(
     <div>
       <Router history={hashHistory}>
         <Route path="/" component={App}>
-          <IndexRoute component={Home}/>
+          <IndexRoute component={StudentList}/>
           <Route path="foo" component={Foo}/>
           <Route path="bar" component={Bar}/>
         </Route>

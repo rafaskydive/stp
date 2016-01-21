@@ -35,19 +35,6 @@ class App extends Component {
               </div>
             </div>
 
-            <div className="btn-group">
-              <div className="btn btn-default">
-                <span className="icon icon-home"
-                  onClick={() => this.props.dispatch(routeActions.push('/foo'))}
-                ></span>
-              </div>
-              <div className="btn btn-default">
-                <span className="icon icon-home"
-                  onClick={() => this.props.dispatch(routeActions.push('/bar'))}
-                ></span>
-              </div>
-            </div>
-
           </div>
         </header>
         <div className="window-content">
@@ -61,7 +48,7 @@ class App extends Component {
 };
 
 function select(state) {
-  return state
+  return {state: state}
 }
 
 export default connect(select)(App)
