@@ -4,4 +4,6 @@
 //   defaultReducer
 // })
 
-export const count = require('./count')
+const count = require('./count')
+
+module.exports = { count }
