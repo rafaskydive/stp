@@ -3,15 +3,14 @@ import { createDevTools } from 'redux-devtools';
 import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 
-const React = require('react');
-const ReactDOM = require('react-dom');
-const { applyMiddleware, compose, createStore, combineReducers } = require('redux');
-const { Provider } = require('react-redux');
-const { Router, Route, IndexRoute, hashHistory } = require('react-router');
-const { syncHistory, routeReducer } = require('redux-simple-router');
-
-const reducers = require('./reducers');
-const { App, Home, Foo, Bar } = require('./components');
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
+import { Provider } from 'react-redux'
+import { Router, Route, IndexRoute, hashHistory } from 'react-router'
+import { syncHistory, routeReducer } from 'redux-simple-router'
+import reducers from './reducers'
+import { App, Home, Foo, Bar } from './components'
 
 const middleware = syncHistory(hashHistory);
 const reducer = combineReducers(Object.assign({}, reducers, {

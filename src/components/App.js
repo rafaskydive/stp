@@ -1,8 +1,8 @@
 // const React = require('react');
 import React, { Component } from 'react'
-const { Link } = require('react-router');
-const { connect } = require('react-redux');
-const { routeActions } = require('redux-simple-router');
+import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import { routeActions } from 'redux-simple-router'
 
 class App extends Component {
   constructor (props) {
