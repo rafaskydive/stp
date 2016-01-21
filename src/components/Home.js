@@ -1,6 +1,6 @@
-const React = require('react');
-const { connect } = require('react-redux');
-const { increase, decrease } = require('../actions/count');
+import React from 'react'
+import { connect } from 'react-redux'
+import { increase, decrease } from '../actions/count'
 
 function Home({ number, increase, decrease }) {
   return (
