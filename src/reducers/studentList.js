@@ -1,16 +1,7 @@
 import * as types from '../constants'
 
 const initialState = {
-  students: [
-    {
-      "_id": 1,
-      "name": "David Rose"
-    },
-    {
-      "_id": 2,
-      "name": "Jokey McBokey"
-    }
-  ]
+  students: []
 }
 
 export default function studentList (state=initialState, action) {

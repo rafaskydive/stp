@@ -3,25 +3,25 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
-
+import Classnames from 'classnames'
 class App extends Component {
+  handleNowStudentButtonClick(isNewStudent) {
+    return (
+      isNewStudent ?
+      {} :
+      this.props.dispatch(routeActions.push('/new_student'))
+    )
+  }
   render () {
+    const isNewStudent = this.props.location.pathname === '/new_student'
+    const newStudentButtonClass = Classnames({
+      'btn btn-default': true,
+      'active': isNewStudent
+    })
     return (
       <div className="window">
         <header className="toolbar toolbar-header">
           <div className="toolbar-actions">
-            <div className="btn-group">
-              <div className="btn btn-default">
-                <span className="icon icon-left"
-                  onClick={() => this.props.dispatch(routeActions.goBack())}
-                ></span>
-              </div>
-              <div className="btn btn-default">
-                <span className="icon icon-right"
-                  onClick={() => this.props.dispatch(routeActions.goForward())}
-                ></span>
-              </div>
-            </div>
 
             <div className="btn-group">
               <div className="btn btn-default">
@@ -32,10 +32,10 @@ class App extends Component {
             </div>
 
             <div className="btn-group">
-              <div className="btn btn-default">
-                <span className="icon icon-user icon-text"
-                  onClick={() => {fuck}}
-                ></span> New Student
+              <div className={newStudentButtonClass}
+                onClick={() => this.handleNowStudentButtonClick(isNewStudent)}>
+                <span className="icon icon-user icon-text"></span>
+                New Student
               </div>
             </div>
 
