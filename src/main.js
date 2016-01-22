@@ -6,6 +6,7 @@ import DockMonitor from 'redux-devtools-dock-monitor';
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import { syncHistory, routeReducer } from 'redux-simple-router'
@@ -26,7 +27,7 @@ const DevTools = createDevTools(
 );
 
 const finalCreateStore = compose(
-  applyMiddleware(middleware),
+  applyMiddleware(middleware, thunk),
   DevTools.instrument()
 )(createStore);
 const store = finalCreateStore(reducer);

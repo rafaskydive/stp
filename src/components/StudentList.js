@@ -7,12 +7,11 @@ import * as actionCreators from '../actions'
 // import { selectStudent } from '../actions'
 
 class StudentList extends Component {
-  constructor (props) {
-    super(props)
+  componentDidMount() {
+    this.props.fetchStudents()
   }
 
   render () {
-    console.log('StudentList props:', this.props)
     let { studentList, selectStudent, push } = {...this.props}
     return (
       <div>
