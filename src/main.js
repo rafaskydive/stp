@@ -40,7 +40,7 @@ ReactDOM.render(
       <Router history={hashHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={StudentList}/>
-          <Route path="edit_student" component={EditStudent}/>
+          <Route path="student/:id/edit" component={EditStudent}/>
           <Route path="student/:id" component={Student}/>
         </Route>
       </Router>

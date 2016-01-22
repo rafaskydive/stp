@@ -11,7 +11,7 @@ class App extends Component {
   handleNewStudentButtonClick(isNewStudent) {
     if (isNewStudent) { return {} }
     this.props.newStudent()
-    window.location.hash='#/edit_student'
+    window.location.hash='#/student/new/edit'
   }
 
   render () {

@@ -37,7 +37,7 @@ class EditStudent extends Component {
         </div>
         <button className="btn btn-form"
           onClick={(e) => this.handleSubmit(e)}>
-          Create New Student
+          Save
         </button>
       </form>
     )
