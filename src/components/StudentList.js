@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { Link } from 'react-router'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
-// import { selectStudent } from '../actions'
 
 class StudentList extends Component {
   componentDidMount() {
@@ -12,7 +11,7 @@ class StudentList extends Component {
   }
 
   render () {
-    let { studentList, selectStudent, push } = {...this.props}
+    let { studentList, push } = {...this.props}
     return (
       <div>
         <table className="table-striped">
@@ -25,7 +24,7 @@ class StudentList extends Component {
           <tbody>
             {studentList.students.map(student => {
               return (
-                <tr key={student._id} onClick={e => selectStudent(student._id)}>
+                <tr key={student._id} onClick={e => push(`/student/${student._id}`)}>
                   <th>{student._id}</th>
                   <th>{student.name}</th>
                 </tr>
