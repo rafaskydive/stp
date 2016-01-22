@@ -8,6 +8,8 @@ export default function student (state={}, action) {
       return {...action.payload}
     case types.EDIT_STUDENT_FIELD:
       return Object.assign({}, state, action.payload)
+    case types.NULL_STUDENT:
+      return {}
     default:
       return state
   }

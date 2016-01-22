@@ -9,6 +9,11 @@ class EditStudent extends Component {
     this.props.fetchStudent(this.props.params.id)
   }
 
+  componentWillUnmount () {
+    console.log("EditStudent componentWillUnmount")
+    this.props.nullStudent()
+  }
+
   handleSubmit(e) {
     e.preventDefault()
     if (!this.props.student.modified) {
@@ -30,6 +35,7 @@ class EditStudent extends Component {
   }
 
   render () {
+    console.log("EditStudent props:", this.props)
     let { student } = {...this.props}
     return (
       <form>

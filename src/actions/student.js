@@ -1,12 +1,22 @@
 import * as types from '../constants'
 import database from '../database'
+import { routeActions } from 'redux-simple-router'
 
 export function newStudent() {
+  console.log('newStudent()')
   return {
     type: types.NEW_STUDENT,
     payload: { new: true }
   }
 }
+
+export function nullStudent() {
+  return {
+    type: types.NULL_STUDENT,
+    payload: {}
+  }
+}
+
 export function requestStudent() {
   return {
     type: types.REQUEST_STUDENT,
@@ -37,9 +47,11 @@ export function saveStudent(student) {
       student._id = student.name.replace(/ /, '-').toLowerCase()
     }
     delete(student.modified)
+    delete(student.new)
     return database.put(student)
       .then(response => {
         dispatch(fetchStudent(response.id))
+        dispatch(routeActions.push(`/student/${response.id}`))
       })
   }
 }
