@@ -1,22 +1,32 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import * as types from '../constants'
 import * as actionCreators from '../actions'
 
 class EditStudent extends Component {
+
+  componentDidMount () {
+    this.props.fetchStudent(this.props.params.id)
+  }
+
   handleSubmit(e) {
     e.preventDefault()
-    const student = {
+    if (!this.props.student.modified) {
+      return {}
+    }
+    const _student = Object.assign({}, this.props.student, {
       name: this.refs.name.value,
       email: this.refs.email.value,
       phone: this.refs.phone.value
-    }
-    console.log(student);
+    })
+    this.props.saveStudent(_student)
   }
 
   handleFormChange(e) {
-    let foo = {}
-    foo[`${e.target.name}`] = e.target.value
-    console.log(foo)
+    let field = {}
+    field['modified'] = true
+    field[`${e.target.name}`] = e.target.value
+    this.props.editStudentField(field)
   }
 
   render () {
@@ -35,10 +45,16 @@ class EditStudent extends Component {
           <label>Phone</label>
           <input value={student.phone} onChange={(e) => this.handleFormChange(e)} className="form-control" type="phone" name="phone" ref="phone" placeholder="123-456-7890"/>
         </div>
-        <button className="btn btn-form"
-          onClick={(e) => this.handleSubmit(e)}>
-          Save
-        </button>
+        {(() => {
+          if(this.props.student.modified) {
+            return (
+              <button className="btn btn-form"
+                onClick={(e) => this.handleSubmit(e)}>
+                Save
+              </button>
+            )
+          }
+        })()}
       </form>
     )
   }

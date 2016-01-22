@@ -17,16 +17,18 @@ class StudentList extends Component {
         <table className="table-striped">
           <thead>
             <tr>
-              <th>_id</th>
               <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
             </tr>
           </thead>
           <tbody>
             {studentList.students.map(student => {
               return (
                 <tr key={student._id} onClick={e => push(`/student/${student._id}`)}>
-                  <th>{student._id}</th>
                   <th>{student.name}</th>
+                  <th>{student.email}</th>
+                  <th>{student.phone}</th>
                 </tr>
               )
             })}

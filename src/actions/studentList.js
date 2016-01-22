@@ -1,4 +1,5 @@
 import * as types from '../constants'
+import database from '../database'
 
 export function requestStudents() {
   return {
@@ -7,20 +8,35 @@ export function requestStudents() {
   }
 }
 
-export function receiveStudents(json) {
+export function receiveStudents(response) {
   return {
     type: types.RECIEVE_STUDENTS,
-    payload: json.rows.map(row => row.doc)
+    payload: response.rows.map(row => row.doc)
   }
 }
 
 export function fetchStudents() {
   return dispatch => {
     dispatch(requestStudents())
-    return fetch('http://localhost:5984/my-pouch-db/_all_docs?include_docs=true')
-      .then(response => response.json())
-      .then(json =>
-        dispatch(receiveStudents(json))
-      )
+    return database.allDocs({ include_docs: true })
+      .then(response => {
+        dispatch(receiveStudents(response))
+      })
+  }
+}
+
+export function requestPutStudent() {
+  return {
+    type: REQUEST_PUT_STUDENT
+  }
+}
+
+export function saveStudent(student) {
+  return dispatch => {
+    dispatch(requestPutStudent())
+    return database.put(student)
+      .then(response => {
+        dispatch({type: types.SAVE_STUDENT})
+      })
   }
 }
