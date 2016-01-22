@@ -1,3 +1,3 @@
 export { fetchStudents } from './studentList'
 
-export { fetchStudent } from './student'
+export { newStudent, fetchStudent } from './student'

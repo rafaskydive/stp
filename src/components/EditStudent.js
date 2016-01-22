@@ -18,8 +18,8 @@ class EditStudent extends Component {
     foo[`${e.target.name}`] = e.target.value
     console.log(foo)
   }
+
   render () {
-    console.log('EditStudent props:', this.props)
     let { student } = {...this.props}
     return (
       <form>

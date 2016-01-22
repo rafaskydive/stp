@@ -3,20 +3,19 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
+import * as actionCreators from '../actions'
 import Classnames from 'classnames'
 
 class App extends Component {
 
   handleNewStudentButtonClick(isNewStudent) {
-    return (
-      isNewStudent ?
-      {} :
-      this.props.dispatch(routeActions.push('/edit_student?new=true'))
-    )
+    if (isNewStudent) { return {} }
+    this.props.newStudent()
+    window.location.hash='#/edit_student'
   }
 
   render () {
-    const isNewStudent = this.props.location.query.new
+    const isNewStudent = this.props.student.new
     const newStudentButtonClass = Classnames({
       'btn btn-default': true,
       'active': isNewStudent
@@ -29,7 +28,7 @@ class App extends Component {
             <div className="btn-group">
               <div className="btn btn-default">
                 <span className="icon icon-home"
-                  onClick={() => this.props.dispatch(routeActions.push('/'))}
+                  onClick={() => this.props.push('/')}
                 ></span>
               </div>
             </div>
@@ -54,8 +53,12 @@ class App extends Component {
   }
 };
 
-function select(state) {
-  return {state: state}
+function mapStateToProps(state) {
+  return { student: state.student }
 }
 
-export default connect(select)(App)
+const mapDispatchToProps = Object.assign({}, actionCreators, {
+  push: routeActions.push
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

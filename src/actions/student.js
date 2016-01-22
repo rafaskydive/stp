@@ -1,5 +1,11 @@
 import * as types from '../constants'
 
+export function newStudent() {
+  return {
+    type: types.NEW_STUDENT,
+    payload: { new: true }
+  }
+}
 export function requestStudent() {
   return {
     type: types.REQUEST_STUDENT,
