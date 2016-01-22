@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../actions'
 
-class NewStudent extends Component {
+class EditStudent extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const student = {
@@ -19,7 +19,7 @@ class NewStudent extends Component {
     console.log(foo)
   }
   render () {
-    console.log('NewStudent props:', this.props)
+    console.log('EditStudent props:', this.props)
     let { student } = {...this.props}
     return (
       <form>
@@ -50,4 +50,4 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {})
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewStudent)
+export default connect(mapStateToProps, mapDispatchToProps)(EditStudent)
