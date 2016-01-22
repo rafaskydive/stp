@@ -10,7 +10,6 @@ class EditStudent extends Component {
   }
 
   componentWillUnmount () {
-    console.log("EditStudent componentWillUnmount")
     this.props.nullStudent()
   }
 
@@ -35,7 +34,6 @@ class EditStudent extends Component {
   }
 
   render () {
-    console.log("EditStudent props:", this.props)
     let { student } = {...this.props}
     return (
       <form>

@@ -15,10 +15,14 @@ class App extends Component {
   }
 
   render () {
-    const isNewStudent = this.props.student.new
+    const isNewStudent = this.props.location.pathname === '/student/new/edit'
     const newStudentButtonClass = Classnames({
       'btn btn-default': true,
       'active': isNewStudent
+    })
+    const homeButtonClass = Classnames({
+      'btn btn-default': true,
+      'active': this.props.location.pathname === '/'
     })
     return (
       <div className="window">
@@ -26,7 +30,7 @@ class App extends Component {
           <div className="toolbar-actions">
 
             <div className="btn-group">
-              <div className="btn btn-default">
+              <div className={homeButtonClass}>
                 <span className="icon icon-home"
                   onClick={() => this.props.push('/')}
                 ></span>
