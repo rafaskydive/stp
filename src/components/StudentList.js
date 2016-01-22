@@ -32,20 +32,6 @@ class StudentList extends Component {
             })}
           </tbody>
         </table>
-        <p><strong>Student: </strong>
-          {studentList.selectedStudent !== null ? studentList.selectedStudent.name : 'null'}
-        </p>
-        <div>
-          <button className="btn btn-default">
-            <Link to="/foo/123">/foo</Link>
-          </button>
-          <button
-            className="btn btn-default"
-            onClick={() => push("/bar")}
-            >
-            /bar
-          </button>
-        </div>
       </div>
     )
   }
