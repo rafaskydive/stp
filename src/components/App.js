@@ -5,10 +5,6 @@ import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 
 class App extends Component {
-  constructor (props) {
-    super(props)
-  }
-
   render () {
     return (
       <div className="window">

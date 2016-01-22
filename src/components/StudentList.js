@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { selectStudent } from '../actions'
+import { bindActionCreators } from 'redux'
+import { Link } from 'react-router'
+import { routeActions } from 'redux-simple-router'
+import * as actionCreators from '../actions'
+// import { selectStudent } from '../actions'
 
 class StudentList extends Component {
   constructor (props) {
@@ -8,7 +12,8 @@ class StudentList extends Component {
   }
 
   render () {
-    let studentList = this.props.state.studentList
+    console.log('StudentList props:', this.props)
+    let { studentList, actions, push } = {...this.props}
     return (
       <div>
         <table className="table-striped">
@@ -21,7 +26,7 @@ class StudentList extends Component {
           <tbody>
             {studentList.students.map(student => {
               return (
-                <tr key={student._id} onClick={e => this.props.dispatch(selectStudent(student._id))}>
+                <tr key={student._id} onClick={e => actions.selectStudent(student._id)}>
                   <th>{student._id}</th>
                   <th>{student.name}</th>
                 </tr>
@@ -32,19 +37,33 @@ class StudentList extends Component {
         <p><strong>Student: </strong>
           {studentList.selectedStudent !== null ? studentList.selectedStudent.name : 'null'}
         </p>
+        <div>
+          <button className="btn btn-default">
+            <Link to="/foo/123">/foo</Link>
+          </button>
+          <button
+            className="btn btn-default"
+            onClick={() => push("/bar")}
+            >
+            /bar
+          </button>
+        </div>
       </div>
     )
   }
 }
 
-function select(state) {
-  // return {
-  //   students: state.studentList.students,
-  //   selectedStudent: state.studentList.selectedStudent,
-  //   selectStudent: selectStudent
-  // }
+function mapStateToProps(state) {
+  return { studentList: state.studentList }
+}
+
+function mapDispatchToProps(dispatch) {
   return {
-    state: state
+    actions: bindActionCreators(actionCreators, dispatch)
   }
 }
-export default connect(select)(StudentList)
+
+const mapDispatchToProps2 = Object.assign({}, actionCreators, {
+  push: routeActions.push
+})
+export default connect(mapStateToProps, mapDispatchToProps2)(StudentList)
