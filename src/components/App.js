@@ -48,7 +48,7 @@ class App extends Component {
           </div>
         </header>
         <div className="window-content">
-          <div className="pane padded">
+          <div className="pane">
             {this.props.children}
           </div>
         </div>

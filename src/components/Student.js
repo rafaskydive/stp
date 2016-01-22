@@ -15,17 +15,24 @@ class Student extends Component {
     let { student } = {...this.props}
     return (
       <div>
-        <h1>{student.name}</h1>
-        <p>{student.email}</p>
-        <p>{student.phone}</p>
-        <div className="btn-group">
-          <div className="btn btn-form"
-            onClick={() => this.handleEditStudentButtonClick(student._id)}>
-            <span className="icon icon-user icon-text"></span>
-            Edit
+        <div className="student-header padded" onClick={() => this.handleEditStudentButtonClick(student._id)}>
+          <div className="pane-group">
+            <div className="pane-one-fourth">
+              Name: <strong>{student.name}</strong>
+            </div>
+            <div className="pane-one-fourth">
+              Email: <strong>{student.email}</strong>
+            </div>
+            <div className="pane-one-fourth">
+              Phone: <strong>{student.phone}</strong>
+            </div>
+            <div className="pane-one-fourth">
+            </div>
           </div>
         </div>
-
+        <div>
+          <h1>World</h1>
+        </div>
       </div>
     )
   }
