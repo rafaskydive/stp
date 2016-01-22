@@ -6,11 +6,18 @@ class NewStudent extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const student = {
-      name: this.refs.name.value
+      name: this.refs.name.value,
+      email: this.refs.email.value,
+      phone: this.refs.phone.value
     }
     console.log(student);
   }
 
+  handleFormChange(e) {
+    let foo = {}
+    foo[`${e.target.name}`] = e.target.value
+    console.log(foo)
+  }
   render () {
     console.log('NewStudent props:', this.props)
     let { student } = {...this.props}
@@ -18,15 +25,15 @@ class NewStudent extends Component {
       <form>
         <div className="form-group">
           <label>Name</label>
-          <input className="form-control" type="text" ref="name" placeholder="Firstname Lastname"/>
+          <input value={student.name} onChange={(e) => this.handleFormChange(e)} className="form-control" type="text" name="name" ref="name" placeholder="Firstname Lastname"/>
         </div>
         <div className="form-group">
           <label>Email</label>
-          <input className="form-control" type="email" ref="email" placeholder="email@example.com"/>
+          <input value={student.email} onChange={(e) => this.handleFormChange(e)} className="form-control" type="email" name="email" ref="email" placeholder="email@example.com"/>
         </div>
         <div className="form-group">
           <label>Phone</label>
-          <input className="form-control" type="phone" ref="phone" placeholder="123-456-7890"/>
+          <input value={student.phone} onChange={(e) => this.handleFormChange(e)} className="form-control" type="phone" name="phone" ref="phone" placeholder="123-456-7890"/>
         </div>
         <button className="btn btn-form"
           onClick={(e) => this.handleSubmit(e)}>
