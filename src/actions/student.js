@@ -3,7 +3,6 @@ import database from '../database'
 import { routeActions } from 'redux-simple-router'
 
 export function newStudent() {
-  console.log('newStudent()')
   return {
     type: types.NEW_STUDENT,
     payload: { new: true }
@@ -17,14 +16,13 @@ export function nullStudent() {
   }
 }
 
-export function requestStudent() {
+function requestStudent() {
   return {
     type: types.REQUEST_STUDENT,
-    payload: null
   }
 }
 
-export function receiveStudent(json) {
+function receiveStudent(json) {
   return {
     type: types.RECIEVE_STUDENT,
     payload: json

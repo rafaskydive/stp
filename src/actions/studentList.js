@@ -1,14 +1,13 @@
 import * as types from '../constants'
 import database from '../database'
 
-export function requestStudents() {
+function requestStudents() {
   return {
     type: types.REQUEST_STUDENTS,
-    payload: null
   }
 }
 
-export function receiveStudents(response) {
+function receiveStudents(response) {
   return {
     type: types.RECIEVE_STUDENTS,
     payload: response.rows.map(row => row.doc)
@@ -25,7 +24,7 @@ export function fetchStudents() {
   }
 }
 
-export function requestPutStudent() {
+function requestPutStudent() {
   return {
     type: REQUEST_PUT_STUDENT
   }
