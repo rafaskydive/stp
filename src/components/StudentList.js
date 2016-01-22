@@ -13,7 +13,7 @@ class StudentList extends Component {
 
   render () {
     console.log('StudentList props:', this.props)
-    let { studentList, actions, push } = {...this.props}
+    let { studentList, selectStudent, push } = {...this.props}
     return (
       <div>
         <table className="table-striped">
@@ -26,7 +26,7 @@ class StudentList extends Component {
           <tbody>
             {studentList.students.map(student => {
               return (
-                <tr key={student._id} onClick={e => actions.selectStudent(student._id)}>
+                <tr key={student._id} onClick={e => selectStudent(student._id)}>
                   <th>{student._id}</th>
                   <th>{student.name}</th>
                 </tr>
