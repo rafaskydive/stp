@@ -16,7 +16,13 @@ const initialState = {
 
 export default function studentList (state=initialState, action) {
   switch (action.type) {
-
+    case types.SELECT_STUDENT:
+      let selectedStudent = state.students.find(o =>
+        { return o._id === action.payload }
+      )
+      return Object.assign({}, state, {
+        selectedStudent: selectedStudent
+      })
     default:
       return state
   }

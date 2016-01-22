@@ -1,3 +1,1 @@
-export default {
-  SELECT_STUDENT: 'SELECT_STUDENT'
-}
+export const SELECT_STUDENT = 'SELECT_STUDENT'
