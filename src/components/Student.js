@@ -1,36 +1,35 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 
 class Student extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchStudent(this.props.params.id)
   }
 
-  handleEditStudentButtonClick (_id) {
-    window.location.hash = `#/student/${_id}/edit`
+  handleEditStudent(_id) {
+    console.log(`editStudent(${_id})`)
+    // window.location.hash = `#/student/${_id}/edit`
+    this.props.push(`/student/${_id}/edit`)
   }
 
   render() {
+    console.log('Student props:', this.props)
     let { student } = {...this.props}
     return (
-      <div>
-        <div className="student-header padded">
-          <div className="pane-group">
-            <div className="pane-one-fourth">
-              Name: <strong onClick={() => this.handleEditStudentButtonClick(student._id)}>{student.name}</strong>
+      <div className="pane-group">
+        <div className="pane">
+          <header className="sub-header">
+            <div className="toolbar-actions">
+              <div className="btn-group pull-right">
+                <button className="btn btn-default" onClick={() => this.handleEditStudent(student._id)}>
+                  <span className="icon icon-pencil icon-text"></span>
+                  Edit Student
+                </button>
+              </div>
             </div>
-            <div className="pane-one-fourth">
-              Email: <strong>{student.email}</strong>
-            </div>
-            <div className="pane-one-fourth">
-              Phone: <strong>{student.phone}</strong>
-            </div>
-            <div className="pane-one-fourth">
-            </div>
-          </div>
-        </div>
-        <div>
+          </header>
           <ul className="list-group">
             { student.jumps.map((jump, i) => {
               return (
@@ -54,6 +53,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {
-
+  push: routeActions.push
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Student)

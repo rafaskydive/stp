@@ -7,20 +7,8 @@ import * as actionCreators from '../actions'
 import Classnames from 'classnames'
 
 class App extends Component {
-
-  handleNewStudentButtonClick(isNewStudent) {
-    if (isNewStudent) { return {} }
-    this.props.newStudent()
-    window.location.hash='#/student/new/edit'
-  }
-
   render () {
     console.log('App props:', this.props)
-    const isNewStudent = this.props.location.pathname === '/student/new/edit'
-    const newStudentButtonClass = Classnames({
-      'btn btn-default': true,
-      'active': isNewStudent
-    })
     const homeButtonClass = Classnames({
       'btn btn-default': true,
       'active': this.props.location.pathname === '/'
@@ -38,20 +26,10 @@ class App extends Component {
               </div>
             </div>
 
-            <div className="btn-group">
-              <div className={newStudentButtonClass}
-                onClick={() => this.handleNewStudentButtonClick(isNewStudent)}>
-                <span className="icon icon-user icon-text"></span>
-                New Student
-              </div>
-            </div>
-
           </div>
         </header>
         <div className="window-content">
-          <div className="pane">
-            {this.props.children}
-          </div>
+          {this.props.children}
         </div>
       </div>
     )
@@ -59,12 +37,11 @@ class App extends Component {
 };
 
 function mapStateToProps(state) {
-  return {}
+  return { student: state.student }
 }
 
 const mapDispatchToProps = {
-  push: routeActions.push,
-  newStudent: actionCreators.newStudent
+  push: routeActions.push
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
