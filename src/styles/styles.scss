@@ -1,39 +1,41 @@
 
 @import "photon/photon.scss";
 
-.student-header {
-  height: 1em;
+.sub-header {
   background-color: $border-color;
   border-bottom: 1px solid $dark-border-color;
-  .pane-one-fourth {
-    padding-left: $padding-less;
-  }
 }
 
+// photon overrides
+
+.toolbar-actions {
+  margin-top: 0;
+  padding-top: 4px;
+}
 // input:required:invalid {
 //   border: 1px solid red;
 // }
 
-.form-control {
-  display: inline-block;
-  width: 100%;
-  min-height: 25px;
-  padding: $padding-less $padding;
-  font-size: $font-size-default;
-  line-height: $line-height-default;
-  background-color: $chrome-color;
-  border: 1px solid $border-color;
-  border-radius: $default-border-radius;
-  outline: none;
-
-  &:focus {
-    border-color: $focus-input-color;
-    box-shadow: 3px 3px 0 $focus-input-color,
-                -3px -3px 0 $focus-input-color,
-                -3px 3px 0 $focus-input-color,
-                3px -3px 0 $focus-input-color;
-  }
-}
+// .form-control {
+//   display: inline-block;
+//   width: 100%;
+//   min-height: 25px;
+//   padding: $padding-less $padding;
+//   font-size: $font-size-default;
+//   line-height: $line-height-default;
+//   background-color: $chrome-color;
+//   border: 1px solid $border-color;
+//   border-radius: $default-border-radius;
+//   outline: none;
+//
+//   &:focus {
+//     border-color: $focus-input-color;
+//     box-shadow: 3px 3px 0 $focus-input-color,
+//                 -3px -3px 0 $focus-input-color,
+//                 -3px 3px 0 $focus-input-color,
+//                 3px -3px 0 $focus-input-color;
+//   }
+// }
 
 .form-control:required:invalid {
   border-color: $warning-color;
