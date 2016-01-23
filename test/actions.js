@@ -4,6 +4,7 @@ import nock from 'nock'
 import expect from 'expect'
 import * as actions from '../src/actions'
 import * as types from '../src/constants'
+import moment from 'moment'
 
 describe('sync actions', () => {
 
@@ -11,7 +12,7 @@ describe('sync actions', () => {
     const jumpsTemplate = [
       {
         dive_flow: 1,
-        date: null,
+        date: moment().format(),
         instructor: "",
         notes: ""
       }

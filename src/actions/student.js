@@ -3,15 +3,16 @@ import database from '../database'
 import { routeActions } from 'redux-simple-router'
 import moment from 'moment'
 
+const jumpsTemplate = [
+  {
+    dive_flow: 1,
+    date: moment().format(),
+    instructor: "",
+    notes: ""
+  }
+]
+
 export function newStudent() {
-  const jumpsTemplate = [
-    {
-      dive_flow: 1,
-      date: moment().format(),
-      instructor: "",
-      notes: ""
-    }
-  ]
   return {
     type: types.NEW_STUDENT,
     payload: { new: true, type: 'student', jumps: jumpsTemplate }
