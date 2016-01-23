@@ -70,3 +70,10 @@ export function editStudent(student) {
     payload: student
   }
 }
+
+export function editJump(student, jump) {
+  return {
+    type: types.EDIT_JUMP,
+    payload: jump
+  }
+}

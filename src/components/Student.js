@@ -16,6 +16,11 @@ class Student extends Component {
     this.props.push(`/student/${student._id}/edit`)
   }
 
+  editJump(student, jump) {
+    this.props.editJump(student, jump)
+    this.props.push(`/jump/${student._id}/${jump.date}`)
+  }
+
   render() {
     let { student } = {...this.props}
     return (
@@ -38,7 +43,7 @@ class Student extends Component {
           <ul className="list-group">
             { student.jumps.map((jump, i) => {
               return (
-                <li className="list-group-item" key={i}>
+                <li className="list-group-item" key={i} onClick={e => this.editJump(student, jump)}>
                   <div className="media-body">
                     <strong>Dive Flow {jump.dive_flow}</strong>
                     <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>

@@ -19,6 +19,8 @@ export default function student (state=initialState, action) {
       return {...action.payload}
     case types.EDIT_STUDENT_FIELD:
       return Object.assign({}, state, action.payload)
+    case types.EDIT_JUMP:
+      return Object.assign({}, state, {editJump: action.payload})
     default:
       return state
   }
