@@ -25,9 +25,10 @@ class StudentList extends Component {
               <div className="btn-group pull-right">
                 <button className="btn btn-default" onClick={() => this.addStudent()}>
                   <span className="icon icon-user-add icon-text"></span>
-                  Add Student
+                  Add
                 </button>
               </div>
+              <span className="page-title">Student List</span>              
             </div>
           </header>
           <table className="table-striped">

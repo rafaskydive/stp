@@ -22,9 +22,13 @@ class Student extends Component {
               <div className="btn-group pull-right">
                 <button className="btn btn-default" onClick={() => this.handleEditStudent(student._id)}>
                   <span className="icon icon-pencil icon-text"></span>
-                  Edit Student
+                  Edit
                 </button>
               </div>
+              <span className="page-title">Student Jumps</span>
+              <span>{student.name}</span>
+              <span>{student.phone}</span>
+              <span>{student.email}</span>
             </div>
           </header>
           <ul className="list-group">
