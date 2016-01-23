@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
+import moment from 'moment'
 
 class Student extends Component {
   componentDidMount() {
@@ -37,7 +38,7 @@ class Student extends Component {
                 <li className="list-group-item" key={i}>
                   <div className="media-body">
                     <strong>Dive Flow {jump.dive_flow}</strong>
-                    <p>Date: </p>
+                    <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>
                   </div>
                 </li>
               )

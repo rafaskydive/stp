@@ -4,15 +4,22 @@ import nock from 'nock'
 import expect from 'expect'
 import * as actions from '../src/actions'
 import * as types from '../src/constants'
-import { jumpsTemplate } from '../src/database'
 
 describe('sync actions', () => {
 
   it('newStudent should return an object with new:true', () => {
+    const jumpsTemplate = [
+      {
+        dive_flow: 1,
+        date: null,
+        instructor: "",
+        notes: ""
+      }
+    ]
     const payload = {
       new: true,
       type: 'student',
-      jumps: jumpsTemplate()
+      jumps: jumpsTemplate
     }
     const expected = {
       type: types.NEW_STUDENT,
