@@ -9,13 +9,10 @@ class Student extends Component {
   }
 
   handleEditStudent(_id) {
-    console.log(`editStudent(${_id})`)
-    // window.location.hash = `#/student/${_id}/edit`
     this.props.push(`/student/${_id}/edit`)
   }
 
   render() {
-    console.log('Student props:', this.props)
     let { student } = {...this.props}
     return (
       <div className="pane-group">

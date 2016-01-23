@@ -7,13 +7,6 @@ import * as types from '../src/constants'
 import { jumpsTemplate } from '../src/database'
 
 describe('sync actions', () => {
-  it('nullStudent should return an empty object', () => {
-    const expected = {
-      type: types.NULL_STUDENT,
-      payload: { type: 'student' }
-    }
-    expect(actions.nullStudent()).toEqual(expected)
-  })
 
   it('newStudent should return an object with new:true', () => {
     const payload = {

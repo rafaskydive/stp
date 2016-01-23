@@ -8,7 +8,6 @@ import Classnames from 'classnames'
 
 class App extends Component {
   render () {
-    console.log('App props:', this.props)
     const homeButtonClass = Classnames({
       'btn btn-default': true,
       'active': this.props.location.pathname === '/'

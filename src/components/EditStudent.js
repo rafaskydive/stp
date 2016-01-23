@@ -9,10 +9,6 @@ class EditStudent extends Component {
     this.props.fetchStudent(this.props.params.id)
   }
 
-  componentWillUnmount () {
-    this.props.nullStudent()
-  }
-
   handleSubmit(e) {
     e.preventDefault()
     if (!this.props.student.modified) {
@@ -72,7 +68,7 @@ class EditStudent extends Component {
               name="phone"
               ref="phone"
               placeholder="123-456-7890"
-              value={student.phone} 
+              value={student.phone}
               onChange={(e) => this.handleFormChange(e)}
             />
           </div>

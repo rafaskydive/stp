@@ -9,13 +9,6 @@ export function newStudent() {
   }
 }
 
-export function nullStudent() {
-  return {
-    type: types.NULL_STUDENT,
-    payload: { type: 'student' }
-  }
-}
-
 function requestStudent() {
   return {
     type: types.REQUEST_STUDENT,

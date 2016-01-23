@@ -60,13 +60,8 @@ function mapStateToProps(state) {
   return { studentList: state.studentList }
 }
 
-// const mapDispatchToProps = {
-//   push: routeActions.push,
-//   fetchStudents: actionCreators.fetchStudents,
-//   newStudent: actionCreators.newStudent
-// }
-
 const mapDispatchToProps = Object.assign({}, actionCreators, {
   push: routeActions.push
 })
+
 export default connect(mapStateToProps, mapDispatchToProps)(StudentList)
