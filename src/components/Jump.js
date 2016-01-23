@@ -8,7 +8,6 @@ class Jump extends Component {
   componentDidMount () {
     if (this.props.student._id === null) {
       this.props.fetchStudent(this.props.params.id)
-      console.log(this.props.params.id)
     }
   }
 
@@ -20,7 +19,6 @@ class Jump extends Component {
     let { student } = {...this.props}
     if (this.props.student._id === null) { return <div></div> }
     let jump = student.jumps.find(j => { return j.date === this.props.params.jump_date})
-    console.log('jump', jump)
     return (
       <div className="pane-group">
         <div className="pane">
