@@ -7,7 +7,9 @@ import * as actionCreators from '../actions'
 class EditStudent extends Component {
 
   componentDidMount () {
-    this.props.fetchStudent(this.props.params.id)
+    if (this.props.student._id === null) {
+      // this.props.fetchStudent(this.props.params.id)
+    }
   }
 
   handleCancel() {

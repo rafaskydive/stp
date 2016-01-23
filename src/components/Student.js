@@ -6,11 +6,14 @@ import moment from 'moment'
 
 class Student extends Component {
   componentDidMount() {
-    this.props.fetchStudent(this.props.params.id)
+    if (this.props.student._id === null) {
+      this.props.fetchStudent(this.props.params.id)
+    }
   }
 
-  handleEditStudent(_id) {
-    this.props.push(`/student/${_id}/edit`)
+  editStudent(student) {
+    this.props.editStudent(student)
+    this.props.push(`/student/${student._id}/edit`)
   }
 
   render() {
@@ -21,7 +24,7 @@ class Student extends Component {
           <header className="sub-header">
             <div className="toolbar-actions">
               <div className="btn-group pull-right">
-                <button className="btn btn-default" onClick={() => this.handleEditStudent(student._id)}>
+                <button className="btn btn-default" onClick={() => this.editStudent(student)}>
                   <span className="icon icon-pencil icon-text"></span>
                   Edit
                 </button>

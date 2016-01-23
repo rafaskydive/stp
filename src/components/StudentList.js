@@ -15,6 +15,11 @@ class StudentList extends Component {
     window.location.hash='#/student/new/edit'
   }
 
+  showStudent(student) {
+    this.props.showStudent(student)
+    this.props.push(`/student/${student._id}`)
+  }
+
   render () {
     let { studentList, push } = {...this.props}
     return (
@@ -28,7 +33,7 @@ class StudentList extends Component {
                   Add
                 </button>
               </div>
-              <span className="page-title">Student List</span>              
+              <span className="page-title">Student List</span>
             </div>
           </header>
           <table className="table-striped">
@@ -42,7 +47,7 @@ class StudentList extends Component {
             <tbody>
               {studentList.students.map(student => {
                 return (
-                  <tr key={student._id} onClick={e => push(`/student/${student._id}`)}>
+                  <tr key={student._id} onClick={e => this.showStudent(student)}>
                     <td>{student.name}</td>
                     <td>{student.email}</td>
                     <td>{student.phone}</td>
@@ -58,7 +63,7 @@ class StudentList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { studentList: state.studentList }
+  return { studentList: state.studentList, student: state.student }
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {

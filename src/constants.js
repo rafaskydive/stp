@@ -12,3 +12,5 @@ export const REQUEST_PUT_STUDENT = 'REQUEST_PUT_STUDENT'
 export const SAVE_STUDENT = 'SAVE_STUDENT'
 
 export const NEW_STUDENT = 'NEW_STUDENT'
+
+export const SHOW_STUDENT = 'SHOW_STUDENT'

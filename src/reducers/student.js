@@ -1,7 +1,7 @@
 import * as types from '../constants'
 
 const initialState = {
-  _id: "",
+  _id: null,
   _rev: "",
   name: "",
   email: "",
@@ -15,6 +15,7 @@ export default function student (state=initialState, action) {
     case types.NEW_STUDENT:
     case types.RECIEVE_STUDENT:
     case types.SAVE_STUDENT:
+    case types.SHOW_STUDENT:
       return {...action.payload}
     case types.EDIT_STUDENT_FIELD:
       return Object.assign({}, state, action.payload)

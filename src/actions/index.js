@@ -1,3 +1,3 @@
-export { fetchStudents } from './studentList'
+export * from './studentList'
 
-export { newStudent, fetchStudent, saveStudent, editStudentField } from './student'
+export * from './student'

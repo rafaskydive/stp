@@ -63,3 +63,10 @@ export function editStudentField(field) {
     payload: field
   }
 }
+
+export function editStudent(student) {
+  return {
+    type: types.EDIT_STUDENT,
+    payload: student
+  }
+}

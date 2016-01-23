@@ -36,7 +36,7 @@ class App extends Component {
 };
 
 function mapStateToProps(state) {
-  return { student: state.student }
+  return { student: state.student, studentList: state.studentList }
 }
 
 const mapDispatchToProps = {
