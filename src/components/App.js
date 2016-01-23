@@ -15,6 +15,7 @@ class App extends Component {
   }
 
   render () {
+    console.log('App props:', this.props)
     const isNewStudent = this.props.location.pathname === '/student/new/edit'
     const newStudentButtonClass = Classnames({
       'btn btn-default': true,
@@ -58,11 +59,12 @@ class App extends Component {
 };
 
 function mapStateToProps(state) {
-  return { student: state.student }
+  return {}
 }
 
-const mapDispatchToProps = Object.assign({}, actionCreators, {
-  push: routeActions.push
-})
+const mapDispatchToProps = {
+  push: routeActions.push,
+  newStudent: actionCreators.newStudent
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

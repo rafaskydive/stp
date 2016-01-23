@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import * as actionCreators from '../actions'
 
 class Student extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchStudent(this.props.params.id)
   }
 
@@ -32,20 +32,16 @@ class Student extends Component {
         </div>
         <div>
           <ul className="list-group">
-            {(() => {
-              if(student.jumps) {
-                return student.jumps.map((jump, index) => {
-                  return (
-                    <li className="list-group-item" key={index}>
-                      <div className="media-body">
-                        <strong>Dive Flow {jump.dive_flow}</strong>
-                        <p>Date: </p>
-                      </div>
-                    </li>
-                  )
-                })
-              }
-            })()}
+            { student.jumps.map((jump, i) => {
+              return (
+                <li className="list-group-item" key={i}>
+                  <div className="media-body">
+                    <strong>Dive Flow {jump.dive_flow}</strong>
+                    <p>Date: </p>
+                  </div>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </div>

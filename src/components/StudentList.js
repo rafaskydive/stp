@@ -6,7 +6,7 @@ import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 
 class StudentList extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchStudents()
   }
 
@@ -26,9 +26,9 @@ class StudentList extends Component {
             {studentList.students.map(student => {
               return (
                 <tr key={student._id} onClick={e => push(`/student/${student._id}`)}>
-                  <th>{student.name}</th>
-                  <th>{student.email}</th>
-                  <th>{student.phone}</th>
+                  <td>{student.name}</td>
+                  <td>{student.email}</td>
+                  <td>{student.phone}</td>
                 </tr>
               )
             })}
@@ -43,13 +43,9 @@ function mapStateToProps(state) {
   return { studentList: state.studentList }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actionCreators, dispatch)
-  }
+const mapDispatchToProps = {
+  push: routeActions.push,
+  fetchStudents: actionCreators.fetchStudents
 }
 
-const mapDispatchToProps2 = Object.assign({}, actionCreators, {
-  push: routeActions.push
-})
-export default connect(mapStateToProps, mapDispatchToProps2)(StudentList)
+export default connect(mapStateToProps, mapDispatchToProps)(StudentList)
