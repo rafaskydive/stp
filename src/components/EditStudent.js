@@ -37,24 +37,49 @@ class EditStudent extends Component {
     let { student } = {...this.props}
     return (
       <div className="pane padded">
-        <form>
+        <form onSubmit={(e) => this.handleSubmit(e)}>
           <div className="form-group">
             <label>Name</label>
-            <input required value={student.name} onChange={(e) => this.handleFormChange(e)} className="form-control" type="text" name="name" ref="name" placeholder="Firstname Lastname"/>
+            <input required
+              className="form-control"
+              type="text"
+              name="name"
+              ref="name"
+              placeholder="Firstname Lastname"
+              value={student.name}
+              onChange={(e) => this.handleFormChange(e)}
+            />
           </div>
           <div className="form-group">
             <label>Email</label>
-            <input required value={student.email} onChange={(e) => this.handleFormChange(e)} className="form-control" type="email" name="email" ref="email" placeholder="email@example.com"/>
+            <input required
+              className="form-control"
+              type="email"
+              name="email"
+              ref="email"
+              placeholder="email@example.com"
+              value={student.email}
+              onChange={(e) => this.handleFormChange(e)}
+            />
           </div>
           <div className="form-group">
             <label>Phone</label>
-            <input required value={student.phone} onChange={(e) => this.handleFormChange(e)} className="form-control" type="tel" name="phone" ref="phone" placeholder="123-456-7890"/>
+            <input required
+              pattern="(\d{3})-(\d{3})-(\d{4})"
+              title="Must be in format '123-456-7890'"
+              className="form-control"
+              type="tel"
+              name="phone"
+              ref="phone"
+              placeholder="123-456-7890"
+              value={student.phone} 
+              onChange={(e) => this.handleFormChange(e)}
+            />
           </div>
           {(() => {
             if(this.props.student.modified) {
               return (
-                <button className="btn btn-form"
-                  onClick={(e) => this.handleSubmit(e)}>
+                <button type="submit" className="btn btn-form">
                   Save
                 </button>
               )
