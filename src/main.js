@@ -21,8 +21,9 @@ const reducer = combineReducers(Object.assign({}, reducers, {
 
 const DevTools = createDevTools(
   <DockMonitor toggleVisibilityKey='H'
-               changePositionKey='Q'>
-    <LogMonitor theme='tomorrow' />
+               changePositionKey='Q'
+               defaultIsVisible={false}>
+    <LogMonitor theme='solarized' />
   </DockMonitor>
 );
 
