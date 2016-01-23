@@ -1,18 +1,20 @@
 import * as types from '../constants'
-import database from '../database'
+import database, { jumpsTemplate } from '../database'
 import { routeActions } from 'redux-simple-router'
+
+console.log('jumpsTemplate', jumpsTemplate())
 
 export function newStudent() {
   return {
     type: types.NEW_STUDENT,
-    payload: { new: true }
+    payload: { new: true, type: 'student', jumps: jumpsTemplate() }
   }
 }
 
 export function nullStudent() {
   return {
     type: types.NULL_STUDENT,
-    payload: {}
+    payload: { type: 'student' }
   }
 }
 

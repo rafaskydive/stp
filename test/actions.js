@@ -9,7 +9,7 @@ describe('sync actions', () => {
   it('nullStudent should return an empty object', () => {
     const expected = {
       type: types.NULL_STUDENT,
-      payload: {}
+      payload: { type: 'student' }
     }
     expect(actions.nullStudent()).toEqual(expected)
   })
@@ -17,7 +17,7 @@ describe('sync actions', () => {
   it('newStudent should return an object with new:true', () => {
     const expected = {
       type: types.NEW_STUDENT,
-      payload: { new: true }
+      payload: { new: true, type: 'student' }
     }
     expect(actions.newStudent()).toEqual(expected)
   })

@@ -17,7 +17,7 @@ function receiveStudents(response) {
 export function fetchStudents() {
   return dispatch => {
     dispatch(requestStudents())
-    return database.allDocs({ include_docs: true })
+    return database.query("app/by_name", { include_docs: true })
       .then(response => {
         dispatch(receiveStudents(response))
       })
@@ -27,15 +27,5 @@ export function fetchStudents() {
 function requestPutStudent() {
   return {
     type: REQUEST_PUT_STUDENT
-  }
-}
-
-export function saveStudent(student) {
-  return dispatch => {
-    dispatch(requestPutStudent())
-    return database.put(student)
-      .then(response => {
-        dispatch({type: types.SAVE_STUDENT})
-      })
   }
 }
