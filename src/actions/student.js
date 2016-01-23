@@ -2,8 +2,6 @@ import * as types from '../constants'
 import database, { jumpsTemplate } from '../database'
 import { routeActions } from 'redux-simple-router'
 
-console.log('jumpsTemplate', jumpsTemplate())
-
 export function newStudent() {
   return {
     type: types.NEW_STUDENT,

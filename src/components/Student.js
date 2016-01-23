@@ -15,10 +15,10 @@ class Student extends Component {
     let { student } = {...this.props}
     return (
       <div>
-        <div className="student-header padded" onClick={() => this.handleEditStudentButtonClick(student._id)}>
+        <div className="student-header padded">
           <div className="pane-group">
             <div className="pane-one-fourth">
-              Name: <strong>{student.name}</strong>
+              Name: <strong onClick={() => this.handleEditStudentButtonClick(student._id)}>{student.name}</strong>
             </div>
             <div className="pane-one-fourth">
               Email: <strong>{student.email}</strong>
@@ -31,7 +31,22 @@ class Student extends Component {
           </div>
         </div>
         <div>
-          <h1>World</h1>
+          <ul className="list-group">
+            {(() => {
+              if(student.jumps) {
+                return student.jumps.map((jump, index) => {
+                  return (
+                    <li className="list-group-item" key={index}>
+                      <div className="media-body">
+                        <strong>Dive Flow {jump.dive_flow}</strong>
+                        <p>Date: </p>
+                      </div>
+                    </li>
+                  )
+                })
+              }
+            })()}
+          </ul>
         </div>
       </div>
     )

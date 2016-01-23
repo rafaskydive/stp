@@ -18,22 +18,21 @@ const ddoc = {
 export function saveDdoc() {
   database.put(ddoc)
     .catch(err => {
-      console.log("err:", err)
     })
 }
 
 export function jumpsTemplate() {
-  const jump = {
-    dive_flow: "DF 0",
-    date: null,
-    instructor: "",
-    repeat: false,
-    notes: ""
-  }
   const jumps = []
   for ( let x = 1; x <= 18; x++ ) {
-    jump.dive_flow = `DF ${x}`
-    jumps.push(jump)
+    jumps.push(
+      {
+        dive_flow: `DF ${x}`,
+        date: null,
+        instructor: "",
+        repeat: false,
+        notes: ""
+      }
+    )
   }
   return jumps
 }
