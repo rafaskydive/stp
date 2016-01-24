@@ -4,13 +4,18 @@ import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 import moment from 'moment'
+const path = require('path')
 
 const VideoDropzone = React.createClass({
   getInitialState: function() {
     return {files: []}
   },
   onDrop: function(files) {
-    console.log('Recieved files:', files)
+    let file = files[0].path
+    let dirname = path.dirname(file)
+    let extname = path.extname(file)
+    let outfile = path.join(dirname, `outfile${extname}`)
+    fs.createReadStream(file).pipe(fs.createWriteStream(outfile))
     this.setState({files: files})
   },
   render: function () {
