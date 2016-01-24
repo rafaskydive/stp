@@ -14,7 +14,7 @@ const VideoDropzone = React.createClass({
     let file = files[0].path
     let dirname = path.dirname(file)
     let extname = path.extname(file)
-    let outfile = path.join(dirname, `outfile${extname}`)
+    let outfile = path.join('.', 'videos', `outfile${extname}`)
     fs.createReadStream(file).pipe(fs.createWriteStream(outfile))
     this.setState({files: files})
   },
