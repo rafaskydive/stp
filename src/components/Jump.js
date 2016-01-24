@@ -1,8 +1,40 @@
 import React, { Component } from 'react'
+import Dropzone from 'react-dropzone'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 import moment from 'moment'
+
+const VideoDropzone = React.createClass({
+  getInitialState: function() {
+    return {files: []}
+  },
+  onDrop: function(files) {
+    console.log('Recieved files:', files)
+    this.setState({files: files})
+  },
+  render: function () {
+    return (
+      <div>
+        <Dropzone onDrop={this.onDrop}>
+          <div className="drop-zone-text">
+            Drop video file here, or click to select file to upload.
+          </div>
+          {(() => { if (this.state.files.length > 0) {
+            <div><img src={this.state.files[0].preview} /></div>
+          }})()}
+        </Dropzone>
+        <div>files: {this.state.files.length}</div>
+        { this.state.files.length > 0 ?
+          <div>
+            <div>{this.state.files.map((file) => <img key={file.name} src={file.preview} style={{height: '200px'}} />)}</div>
+          </div>
+          : <div>WEE</div>
+        }
+      </div>
+    )
+  }
+})
 
 class Jump extends Component {
   componentDidMount () {
@@ -35,6 +67,7 @@ class Jump extends Component {
               <span>{moment(jump.date).format('MMMM Do YYYY')}</span>
             </div>
           </header>
+          <VideoDropzone />
         </div>
       </div>
     )
