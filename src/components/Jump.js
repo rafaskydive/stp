@@ -14,11 +14,15 @@ const VideoDropzone = React.createClass({
     let file = files[0].path
     let dirname = path.dirname(file)
     let extname = path.extname(file)
-    let outfile = path.join('.', 'videos', `outfile${extname}`)
+    let outfilename = `DF ${this.props.jump.dive_flow} ${moment(this.props.jump.date).format('YYYY-MM-DD')}${extname}`
+    let outfile = path.join('.', 'videos', outfilename)
     fs.createReadStream(file).pipe(fs.createWriteStream(outfile))
     this.setState({files: files})
   },
   render: function () {
+    console.log('student', this.props.student)
+    console.log('jump', this.props.jump)
+    console.log(moment(this.props.jump.date).format('YYYY-MM-DD'))
     return (
       <div>
         <Dropzone onDrop={this.onDrop}>
@@ -72,7 +76,7 @@ class Jump extends Component {
               <span>{moment(jump.date).format('MMMM Do YYYY')}</span>
             </div>
           </header>
-          <VideoDropzone />
+          <VideoDropzone student={student} jump={jump}/>
         </div>
       </div>
     )
