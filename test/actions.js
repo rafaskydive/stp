@@ -5,6 +5,9 @@ import expect from 'expect'
 import * as actions from '../src/actions'
 import * as types from '../src/constants'
 import moment from 'moment'
+import fs from 'fs'
+import fse from 'fs-extra'
+import path from 'path'
 
 describe('sync actions', () => {
 
@@ -45,6 +48,29 @@ const mockStore = configureMockStore(middlewares)
 describe('async actions', () => {
   afterEach(() => {
     nock.cleanAll()
+  })
+
+  it('copyVideoFile dispatches COPY_IN_PROGRESS and COPY_COMPLETE', (done) => {
+    const expectedActions = [
+      { type: types.COPY_IN_PROGRESS },
+      { type: types.COPY_COMPLETE }
+    ]
+    const store = mockStore({path:'./hello.testfile'}, expectedActions, done())
+    let shouldExist = './videos/test-case/DF 1 - 2016-01-23.test'
+    fs.rmdir(path.dirname(shouldExist), () => {
+      store.dispatch(actions.copyVideoFile(
+        {_id: 'test-case'},
+        {dive_flow: 1, date: '2016-01-23T16:19:12-05:00'},
+        {path: './test/test-file.test'},
+        fse
+      ))
+      // expect(fs.statSync(shouldExist).size).toEqual(32)
+      fs.stat(shouldExist, (err, stats) => {
+        if(err){console.log(err)}
+        expect(stats.size).toEqual(44)
+      })
+
+    })
   })
 
   it('fetchStudent creates RECIEVE_STUDENT after fetching students', (done) => {

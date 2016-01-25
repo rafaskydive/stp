@@ -14,3 +14,6 @@ export const SAVE_STUDENT = 'SAVE_STUDENT'
 export const NEW_STUDENT = 'NEW_STUDENT'
 
 export const SHOW_STUDENT = 'SHOW_STUDENT'
+
+export const COPY_IN_PROGRESS = 'COPY_IN_PROGRESS'
+export const COPY_COMPLETE = 'COPY_COMPLETE'

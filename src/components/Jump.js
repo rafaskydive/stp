@@ -1,49 +1,12 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
+import VideoDropzone from './VideoDropzone'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 import moment from 'moment'
 const path = require('path')
 
-const VideoDropzone = React.createClass({
-  getInitialState: function() {
-    return {files: []}
-  },
-  onDrop: function(files) {
-    let file = files[0].path
-    let dirname = path.dirname(file)
-    let extname = path.extname(file)
-    let outfilename = `DF ${this.props.jump.dive_flow} ${moment(this.props.jump.date).format('YYYY-MM-DD')}${extname}`
-    let outfile = path.join('.', 'videos', outfilename)
-    fs.createReadStream(file).pipe(fs.createWriteStream(outfile))
-    this.setState({files: files})
-  },
-  render: function () {
-    console.log('student', this.props.student)
-    console.log('jump', this.props.jump)
-    console.log(moment(this.props.jump.date).format('YYYY-MM-DD'))
-    return (
-      <div>
-        <Dropzone onDrop={this.onDrop}>
-          <div className="drop-zone-text">
-            Drop video file here, or click to select file to upload.
-          </div>
-          {(() => { if (this.state.files.length > 0) {
-            <div><img src={this.state.files[0].preview} /></div>
-          }})()}
-        </Dropzone>
-        <div>files: {this.state.files.length}</div>
-        { this.state.files.length > 0 ?
-          <div>
-            <div>{this.state.files.map((file) => <img key={file.name} src={file.preview} style={{height: '200px'}} />)}</div>
-          </div>
-          : <div>WEE</div>
-        }
-      </div>
-    )
-  }
-})
 
 class Jump extends Component {
   componentDidMount () {
@@ -76,7 +39,7 @@ class Jump extends Component {
               <span>{moment(jump.date).format('MMMM Do YYYY')}</span>
             </div>
           </header>
-          <VideoDropzone student={student} jump={jump}/>
+          <VideoDropzone student={student} jump={jump} copyVideoFile={this.props.copyVideoFile}/>
         </div>
       </div>
     )
