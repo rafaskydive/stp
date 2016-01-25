@@ -2,7 +2,6 @@ import * as types from '../constants'
 import database from '../database'
 import { routeActions } from 'redux-simple-router'
 import moment from 'moment'
-
 const now = moment().format()
 
 const jumpsTemplate = [
@@ -39,8 +38,9 @@ export function fetchStudent(_id) {
   if(_id === 'new') { return {} }
   return dispatch => {
     dispatch(requestStudent())
-    return database.get(_id)
-    .then(doc => {dispatch(receiveStudent(doc))})
+    database.get(_id, (err, doc) => {
+      return dispatch(receiveStudent(doc))
+    })
   }
 }
 
@@ -52,11 +52,11 @@ export function saveStudent(student) {
     }
     delete(student.modified)
     delete(student.new)
-    return database.put(student)
-      .then(response => {
-        dispatch(fetchStudent(response.id))
-        dispatch(routeActions.push(`/student/${response.id}`))
-      })
+    database.put(student, (err, response) => {
+      if (err) { console.log(err) }
+      dispatch(fetchStudent(response.id))
+      return dispatch(routeActions.push(`/student/${response.id}`))
+    })
   }
 }
 

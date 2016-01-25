@@ -17,10 +17,10 @@ function receiveStudents(response) {
 export function fetchStudents() {
   return dispatch => {
     dispatch(requestStudents())
-    return database.query("app/by_name", { include_docs: true })
-      .then(response => {
-        dispatch(receiveStudents(response))
-      })
+    database.query('app/by_name', { include_docs: true }, (err, response) => {
+      if (err) { console.log(err) }
+      return dispatch(receiveStudents(response))
+    })
   }
 }
 
