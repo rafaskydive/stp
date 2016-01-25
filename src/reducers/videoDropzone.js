@@ -2,7 +2,8 @@ import * as types from '../constants'
 
 const initialState = {
   files: [],
-  copy_in_progress: false
+  copy_in_progress: false,
+  video_file: null
 }
 
 export default function videoDropzone (state=initialState, action) {
@@ -10,7 +11,10 @@ export default function videoDropzone (state=initialState, action) {
     case types.COPY_IN_PROGRESS:
       return Object.assign({}, state, { copy_in_progress: true })
     case types.COPY_COMPLETE:
-      return Object.assign({}, state, { copy_in_progress: false })
+      return Object.assign({}, state, {
+        copy_in_progress: false,
+        video_file: action.payload
+      })
     default:
       return state
   }

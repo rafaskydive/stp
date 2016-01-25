@@ -51,12 +51,13 @@ describe('async actions', () => {
   })
 
   it('copyVideoFile dispatches COPY_IN_PROGRESS and COPY_COMPLETE', (done) => {
+    let shouldExist = path.join('.', 'public', 'videos', 'test-case', 'DF 1 - 2016-01-23.test')
     const expectedActions = [
       { type: types.COPY_IN_PROGRESS },
-      { type: types.COPY_COMPLETE }
+      { type: types.COPY_COMPLETE, payload: shouldExist}
     ]
     const store = mockStore({path:'./hello.testfile'}, expectedActions, done())
-    let shouldExist = './videos/test-case/DF 1 - 2016-01-23.test'
+
     fs.rmdir(path.dirname(shouldExist), () => {
       store.dispatch(actions.copyVideoFile(
         {_id: 'test-case'},
