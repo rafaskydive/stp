@@ -13,11 +13,13 @@ describe('sync actions', () => {
 
   it('newStudent should return an object with new:true', () => {
     const jumpsTemplate = [
-      {
-        dive_flow: 1,
-        date: moment().format(),
-        instructor: "",
-        notes: ""
+      { 'DF1':
+        {
+          dive_flow: 1,
+          date: moment().format(),
+          instructor: "",
+          notes: ""
+        }
       }
     ]
     const payload = {
