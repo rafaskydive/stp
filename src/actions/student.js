@@ -45,7 +45,7 @@ export function saveStudent(student) {
   return dispatch => {
     dispatch({ type: types.REQUEST_PUT_STUDENT})
     if(! student._id) {
-      student._id = student.name.replace(/ /, '-').toLowerCase()
+      student._id = student.name.replace(/ /g, '-').toLowerCase()
     }
     delete(student.modified)
     delete(student.new)
