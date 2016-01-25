@@ -12,15 +12,15 @@ import path from 'path'
 describe('sync actions', () => {
 
   it('newStudent should return an object with new:true', () => {
+    const now = moment().format()
     const jumpsTemplate = [
-      { 'DF1':
         {
+          _id: `1-${now}`,
           dive_flow: 1,
-          date: moment().format(),
+          date: now,
           instructor: "",
           notes: ""
         }
-      }
     ]
     const payload = {
       new: true,

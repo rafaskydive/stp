@@ -3,14 +3,15 @@ import database from '../database'
 import { routeActions } from 'redux-simple-router'
 import moment from 'moment'
 
+const now = moment().format()
+
 const jumpsTemplate = [
-  { 'DF1':
-    {
-      dive_flow: 1,
-      date: moment().format(),
-      instructor: "",
-      notes: ""
-    }
+  {
+    _id: `1-${now}`,
+    dive_flow: 1,
+    date: now,
+    instructor: "",
+    notes: ""
   }
 ]
 
