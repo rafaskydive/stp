@@ -19,12 +19,11 @@ function complete(dest) {
 function progress(percent) {
   return {
     type: types.COPY_PROGRESS,
-    payload: { percent: percent}
+    payload: { percent: percent }
   }
 }
-// TODO: look in to https://www.npmjs.com/package/progress-stream
 
-export function copyVideoFile(student, jump, file, _fs=fs, _mkdirp=mkdirp, cb) {
+export function copyVideoFile(student, jump, file, callback, _fs=fs, _mkdirp=mkdirp) {
   return dispatch => {
     let start = moment().unix()
 
@@ -59,6 +58,7 @@ export function copyVideoFile(student, jump, file, _fs=fs, _mkdirp=mkdirp, cb) {
         let duration = end - start
         console.log('duration:', start, end, duration)
         dispatch(complete(dest))
+        callback(dest)
       })
 
       rd.pipe(wr)

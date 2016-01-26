@@ -45,7 +45,7 @@ class Jump extends Component {
               <p>Hello</p>
             </div>
             <div className="pane padded">
-              <VideoDropzone student={student} jump={jump} copyVideoFile={this.props.copyVideoFile}/>
+              <VideoDropzone student={student} jump={jump} copyVideoFile={this.props.copyVideoFile} saveStudent={this.props.saveStudent}/>
             </div>
           </div>
         </div>

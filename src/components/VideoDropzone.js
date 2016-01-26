@@ -9,14 +9,19 @@ class VideoDropzone extends Component {
 
   onDrop (files) {
     let file = files[0]
-    this.props.copyVideoFile(this.props.student, this.props.jump, file)
+    let student = {...this.props.student}
+    let jump = {...this.props.jump}
+    this.props.copyVideoFile(student, jump, file, (dest) => {
+      student.jumps[jump._id].video_file = dest
+      this.props.saveStudent(student)
+    })
   }
 
   render  () {
     let { videoDropzone } = {...this.props}
-    // console.log('videoDropzone', videoDropzone)
-    if (this.props.videoDropzone.video_file) {
-      let src = this.props.videoDropzone.video_file.replace(/public\//,'')
+    let video_file = this.props.videoDropzone.video_file || this.props.jump.video_file
+    if (video_file) {
+      let src = video_file.replace(/public\//,'')
       return (
         <div className="dropzone">
           <video width="720px" controls>
