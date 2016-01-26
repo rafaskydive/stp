@@ -43,7 +43,7 @@ ReactDOM.render(
           <IndexRoute component={StudentList}/>
           <Route path="student/:id/edit" component={EditStudent}/>
           <Route path="student/:id" component={Student}/>
-          <Route path="jump/:id/:jump_date" component={Jump}/>
+          <Route path="jump/:id/:jump_id" component={Jump}/>
         </Route>
       </Router>
       <DevTools />

@@ -18,7 +18,7 @@ class Student extends Component {
 
   editJump(student, jump) {
     this.props.editJump(student, jump)
-    this.props.push(`/jump/${student._id}/${jump.date}`)
+    this.props.push(`/jump/${student._id}/${jump._id}`)
   }
 
   render() {
@@ -34,7 +34,7 @@ class Student extends Component {
                   Edit
                 </button>
               </div>
-              <span className="page-title">Student Jumps</span>
+              <span className="page-title">Student</span>
               <span>{student.name}</span>
               <span>{student.phone}</span>
               <span>{student.email}</span>

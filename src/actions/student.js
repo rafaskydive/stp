@@ -39,7 +39,9 @@ export function fetchStudent(_id) {
   return dispatch => {
     dispatch(requestStudent())
     database.get(_id, (err, doc) => {
-      return dispatch(receiveStudent(doc))
+      dispatch(receiveStudent(doc))
+      dispatch(routeActions.push(`/student/${doc._id}`))
+      return {}
     })
   }
 }
@@ -54,8 +56,7 @@ export function saveStudent(student) {
     delete(student.new)
     database.put(student, (err, response) => {
       if (err) { console.log(err) }
-      dispatch(fetchStudent(response.id))
-      return dispatch(routeActions.push(`/student/${response.id}`))
+      return dispatch(fetchStudent(response.id))
     })
   }
 }

@@ -20,9 +20,10 @@ class Jump extends Component {
   }
 
   render () {
+    console.log('Jump props:', this.props)
     let { student } = {...this.props}
     if (this.props.student._id === null) { return <div></div> }
-    let jump = student.jumps.find(j => { return j.date === this.props.params.jump_date})
+    let jump = student.jumps.find(j => { return j._id === this.props.params.jump_id})
     return (
       <div className="pane-group">
         <div className="pane">
