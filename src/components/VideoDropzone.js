@@ -19,29 +19,20 @@ class VideoDropzone extends Component {
     if (this.props.videoDropzone.video_file) {
       let src = this.props.videoDropzone.video_file.replace(/public\//,'')
       return (
-        <div>
-          <div>{this.props.videoDropzone.video_file}</div>
-          <div><img src={src}/></div>
+        <div className="dropzone">
+          <video width="720px" controls>
+            <source src={src} type="video/mp4"/>
+          </video>
         </div>
       )
     }
     return (
       <div>
-        <Dropzone onDrop={(files) => this.onDrop(files)}>
-          <div className="drop-zone-text">
+        <Dropzone className='dropzone' onDrop={(files) => this.onDrop(files)} style={{width: '100%', border: '1px solid black', height: '480px'}}>
+          <div className="drop-zone-text text-center">
             Drop video file here, or click to select file to upload.
           </div>
-          {(() => { if (this.props.videoDropzone.files.length > 0) {
-            <div><img src={this.props.videoDropzone.files[0].preview} /></div>
-          }})()}
         </Dropzone>
-        <div>files: {this.props.videoDropzone.files.length}</div>
-        { this.props.videoDropzone.files.length > 0 ?
-          <div>
-            <div>{this.props.videoDropzone.files.map((file) => <img key={file.name} src={file.preview} style={{height: '200px'}} />)}</div>
-          </div>
-          : <div>WEE</div>
-        }
       </div>
     )
   }

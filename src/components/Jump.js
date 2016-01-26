@@ -40,7 +40,14 @@ class Jump extends Component {
               <span>{moment(jump.date).format('MMMM Do YYYY')}</span>
             </div>
           </header>
-          <VideoDropzone student={student} jump={jump} copyVideoFile={this.props.copyVideoFile}/>
+          <div className="sub-pane-group">
+            <div className="pane pane-sm sidebar padded">
+              <p>Hello</p>
+            </div>
+            <div className="pane padded">
+              <VideoDropzone student={student} jump={jump} copyVideoFile={this.props.copyVideoFile}/>
+            </div>
+          </div>
         </div>
       </div>
     )

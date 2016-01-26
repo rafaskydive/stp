@@ -13,6 +13,9 @@
   }
 }
 
+.dropzone {
+  width: 720px;
+}
 // photon overrides
 
 .toolbar-actions {
@@ -22,4 +25,20 @@
 
 .form-control:required:invalid {
   border-color: $warning-color;
+}
+
+.pane-group, .pane {
+  height: 100%;
+}
+.sub-pane-group {
+  height: 100%;
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  .pane {
+    // height: 100%;
+  }
 }
