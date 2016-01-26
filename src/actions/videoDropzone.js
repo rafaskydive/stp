@@ -1,11 +1,11 @@
 import * as types from '../constants'
 import moment from 'moment'
-import progress from 'progress-stream'
 const path = require('path')
 
 function copying() {
   return {
-    type: types.COPY_IN_PROGRESS
+    type: types.COPY_PROGRESS,
+    payload: { percent: 0 }
   }
 }
 
@@ -16,6 +16,12 @@ function complete(dest) {
   }
 }
 
+function progress(percent) {
+  return {
+    type: types.COPY_PROGRESS,
+    payload: { percent: percent}
+  }
+}
 // TODO: look in to https://www.npmjs.com/package/progress-stream
 
 export function copyVideoFile(student, jump, file, _fs=fs, cb) {
@@ -27,28 +33,27 @@ export function copyVideoFile(student, jump, file, _fs=fs, cb) {
     let dest = path.join(outdir, outfile)
     let stat = _fs.statSync(file.path)
 
-    console.log('stat', stat)
-
-    const str = progress({
-      length: stat.size,
-      time: 100
-    })
-    str.on('progress', (progress) => {
-      console.log(progress)
-    })
     const rd = _fs.createReadStream(file.path)
     const wr = _fs.createWriteStream(dest);
 
+    let count = 0
     _fs.mkdir(outdir, (err) => {
       if (err) { console.log('mkdir err:', err) }
-      // rd.pipe(str).pipe(wr)
+
+      rd.on('data', (data) => {
+        count += data.length
+        let percent = Math.round(count/stat.size*100)
+        if ( percent % 5 === 0 ) {
+          dispatch(progress(percent))
+        }
+      })
+
+      rd.on('close', () => {
+        dispatch(complete(dest))
+      })
+
       rd.pipe(wr)
     })
-
-    // _fs.copy(file.path, dest, (err) => {
-    //   if (err) return console.log(err)
-    //   dispatch(complete(dest))
-    // })
 
   }
 }

@@ -9,13 +9,12 @@ class VideoDropzone extends Component {
 
   onDrop (files) {
     let file = files[0]
-    console.log(file)
     this.props.copyVideoFile(this.props.student, this.props.jump, file)
   }
 
   render  () {
     let { videoDropzone } = {...this.props}
-    console.log(videoDropzone)
+    console.log('videoDropzone', videoDropzone)
     if (this.props.videoDropzone.video_file) {
       let src = this.props.videoDropzone.video_file.replace(/public\//,'')
       return (
@@ -23,6 +22,14 @@ class VideoDropzone extends Component {
           <video width="720px" controls>
             <source src={src} type="video/mp4"/>
           </video>
+        </div>
+      )
+    }
+    if (this.props.videoDropzone.percent > 0) {
+      return (
+        <div className="dropzone">
+          <strong>Copying: {this.props.videoDropzone.percent} %</strong>
+          <progress value={this.props.videoDropzone.percent} max={100}></progress>
         </div>
       )
     }
