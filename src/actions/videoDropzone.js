@@ -26,6 +26,8 @@ function progress(percent) {
 
 export function copyVideoFile(student, jump, file, _fs=fs, cb) {
   return dispatch => {
+    let start = moment().unix()
+
     dispatch(copying())
     let ext = path.extname(file.path)
     let outfile = `DF ${jump.dive_flow} - ${moment(jump.date).format('YYYY-MM-DD')}${ext}`
@@ -33,8 +35,9 @@ export function copyVideoFile(student, jump, file, _fs=fs, cb) {
     let dest = path.join(outdir, outfile)
     let stat = _fs.statSync(file.path)
 
-    const rd = _fs.createReadStream(file.path)
-    const wr = _fs.createWriteStream(dest);
+    const streamOpts = {highWaterMark: Math.pow(2,24)}
+    const rd = _fs.createReadStream(file.path, streamOpts)
+    const wr = _fs.createWriteStream(dest, streamOpts);
 
     let count = 0
     _fs.mkdir(outdir, (err) => {
@@ -49,6 +52,9 @@ export function copyVideoFile(student, jump, file, _fs=fs, cb) {
       })
 
       rd.on('close', () => {
+        let end = moment().unix()
+        let duration = end - start
+        console.log('duration:', start, end, duration)
         dispatch(complete(dest))
       })
 

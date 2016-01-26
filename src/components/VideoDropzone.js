@@ -14,7 +14,7 @@ class VideoDropzone extends Component {
 
   render  () {
     let { videoDropzone } = {...this.props}
-    console.log('videoDropzone', videoDropzone)
+    // console.log('videoDropzone', videoDropzone)
     if (this.props.videoDropzone.video_file) {
       let src = this.props.videoDropzone.video_file.replace(/public\//,'')
       return (
