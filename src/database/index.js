@@ -1,5 +1,5 @@
-import PouchDB from 'pouchdb'
+var PouchDB = require('pouchdb')
 
-const database = new PouchDB('http://localhost:5984/my-pouch-db')
+var database = new PouchDB('http://localhost:5984/my-pouch-db')
 
-export default database
+module.exports = database
