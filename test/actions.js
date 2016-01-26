@@ -7,6 +7,7 @@ import * as types from '../src/constants'
 import moment from 'moment'
 import fs from 'fs'
 import fse from 'fs-extra'
+import mkdirp from 'mkdirp'
 import path from 'path'
 
 const now = moment().format()
@@ -56,7 +57,7 @@ describe('async actions', () => {
   it('copyVideoFile dispatches COPY_IN_PROGRESS and COPY_COMPLETE', (done) => {
     let shouldExist = path.join('.', 'public', 'videos', 'test-case', 'DF 1 - 2016-01-23.test')
     const expectedActions = [
-      { type: types.COPY_IN_PROGRESS },
+      { type: types.COPY_PROGRESS, payload: { percent: 0 } },
       { type: types.COPY_COMPLETE, payload: shouldExist}
     ]
     const store = mockStore({path:'./hello.testfile'}, expectedActions, done())

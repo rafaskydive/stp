@@ -24,7 +24,7 @@ function progress(percent) {
 }
 // TODO: look in to https://www.npmjs.com/package/progress-stream
 
-export function copyVideoFile(student, jump, file, _fs=fs, cb) {
+export function copyVideoFile(student, jump, file, _fs=fs) {
   return dispatch => {
     let start = moment().unix()
 
@@ -32,16 +32,19 @@ export function copyVideoFile(student, jump, file, _fs=fs, cb) {
     let ext = path.extname(file.path)
     let outfile = `DF ${jump.dive_flow} - ${moment(jump.date).format('YYYY-MM-DD')}${ext}`
     let outdir = path.join('.', 'public', 'videos', student._id)
-    let dest = path.join(outdir, outfile)
-    let stat = _fs.statSync(file.path)
 
-    const streamOpts = {highWaterMark: Math.pow(2,24)}
-    const rd = _fs.createReadStream(file.path, streamOpts)
-    const wr = _fs.createWriteStream(dest, streamOpts);
+    mkdirp(outdir, (err) => {
+      if (err) {
+        console.log('mkdirp err:', err)
+      }
+      let dest = path.join(outdir, outfile)
+      let stat = _fs.statSync(file.path)
+      console.log('size:', stat.size)
+      const streamOpts = {highWaterMark: Math.pow(2,24)}
+      const rd = _fs.createReadStream(file.path, streamOpts)
+      const wr = _fs.createWriteStream(dest, streamOpts);
 
-    let count = 0
-    _fs.mkdir(outdir, (err) => {
-      if (err) { console.log('mkdir err:', err) }
+      let count = 0
 
       rd.on('data', (data) => {
         count += data.length
@@ -51,7 +54,7 @@ export function copyVideoFile(student, jump, file, _fs=fs, cb) {
         }
       })
 
-      rd.on('close', () => {
+      rd.on('end', () => {
         let end = moment().unix()
         let duration = end - start
         console.log('duration:', start, end, duration)
