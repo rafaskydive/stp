@@ -1,18 +1,9 @@
 import * as types from '../constants'
 import database from '../database'
 import { routeActions } from 'redux-simple-router'
+import { jumpsTemplate } from '../utils'
 import moment from 'moment'
 const now = moment().format()
-
-const jumpsTemplate = [
-  {
-    _id: `1-${now}`,
-    dive_flow: 1,
-    date: now,
-    instructor: "",
-    notes: ""
-  }
-]
 
 export function newStudent() {
   return {

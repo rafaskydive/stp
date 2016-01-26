@@ -9,21 +9,13 @@ import fs from 'fs'
 import fse from 'fs-extra'
 import mkdirp from 'mkdirp'
 import path from 'path'
+import { jumpsTemplate } from '../src/utils'
 
 const now = moment().format()
 
 describe('sync actions', () => {
 
   it('newStudent should return an object with new:true', () => {
-    const jumpsTemplate = [
-        {
-          _id: `1-${now}`,
-          dive_flow: 1,
-          date: now,
-          instructor: "",
-          notes: ""
-        }
-    ]
     const payload = {
       new: true,
       type: 'student',

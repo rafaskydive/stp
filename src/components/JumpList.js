@@ -41,16 +41,17 @@ class Student extends Component {
             </div>
           </header>
           <ul className="list-group">
-            { student.jumps.map((jump, i) => {
+            {(() => { for ( let key of Object.keys(student.jumps) ) {
+              let jump = student.jumps[key]
               return (
-                <li className="list-group-item" key={i} onClick={e => this.editJump(student, jump)}>
+                <li className="list-group-item" key={key} onClick={e => this.editJump(student, jump)}>
                   <div className="media-body">
                     <strong>Dive Flow {jump.dive_flow}</strong>
                     <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>
                   </div>
                 </li>
               )
-            })}
+            }})()}
           </ul>
         </div>
       </div>
