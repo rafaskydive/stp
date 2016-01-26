@@ -17,3 +17,5 @@ export const SHOW_STUDENT = 'SHOW_STUDENT'
 
 export const COPY_IN_PROGRESS = 'COPY_PROGRESS'
 export const COPY_COMPLETE = 'COPY_COMPLETE'
+
+export const EDIT_JUMP_FIELD = 'EDIT_JUMP_FIELD'

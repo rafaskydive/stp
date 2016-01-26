@@ -16,11 +16,6 @@ class Student extends Component {
     this.props.push(`/student/${student._id}/edit`)
   }
 
-  editJump(student, jump) {
-    this.props.editJump(student, jump)
-    this.props.push(`/student/${student._id}/jump/${jump._id}`)
-  }
-
   render() {
     let { student } = {...this.props}
     return (
@@ -47,7 +42,8 @@ class Student extends Component {
                 {(() => { for ( let key of Object.keys(student.jumps) ) {
                   let jump = student.jumps[key]
                   return (
-                    <li className="list-group-item" key={key} onClick={e => this.editJump(student, jump)}>
+                    <li className="list-group-item" key={key}
+                        onClick={e => this.props.push(`/student/${student._id}/jump/${jump._id}`)}>
                       <div className="media-body">
                         <strong>Dive Flow {jump.dive_flow}</strong>
                         <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>

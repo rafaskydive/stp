@@ -65,9 +65,11 @@ export function editStudent(student) {
   }
 }
 
-export function editJump(student, jump) {
+export function editJumpField(student, jump, field, value) {
+  value = value.match(/(\d+)/) ? Number(value) : value
+  student.jumps[jump._id][field] = value
   return {
-    type: types.EDIT_JUMP,
-    payload: jump
+    type: types.EDIT_STUDENT_FIELD,
+    payload: student
   }
 }
