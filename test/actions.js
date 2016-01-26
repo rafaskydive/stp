@@ -87,8 +87,7 @@ describe('async actions', () => {
 
     const expectedActions = [
       { type: types.REQUEST_STUDENT },
-      { type: types.RECIEVE_STUDENT, payload: { _id: "david-rose", _rev: "1-2", name: "David Rose" } },
-      { type: '@@router/TRANSITION', payload: { arg: '/student/david-rose', method: 'push'} }
+      { type: types.RECIEVE_STUDENT, payload: { _id: "david-rose", _rev: "1-2", name: "David Rose" } }
     ]
 
     const store = mockStore({ student: {} }, expectedActions, done)
@@ -151,9 +150,7 @@ describe('async actions', () => {
           _id: "test-student",
           _rev: "1-3a13612036133f3f195f8e9189b78bb3"
         })
-      },
-      { type: '@@router/TRANSITION', payload: { arg: '/student/test-student', method: 'push'} }
-
+      }
     ]
 
     nock('http://localhost:5984', {"encodedQueryParams":true})

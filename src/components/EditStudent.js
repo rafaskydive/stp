@@ -27,6 +27,7 @@ class EditStudent extends Component {
       phone: this.refs.phone.value
     })
     this.props.saveStudent(_student)
+    this.props.goBack()
   }
 
   handleFormChange(e) {

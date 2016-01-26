@@ -40,7 +40,6 @@ export function fetchStudent(_id) {
     dispatch(requestStudent())
     database.get(_id, (err, doc) => {
       dispatch(receiveStudent(doc))
-      dispatch(routeActions.push(`/student/${doc._id}`))
       return {}
     })
   }
