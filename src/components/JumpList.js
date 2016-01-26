@@ -34,25 +34,30 @@ class Student extends Component {
                   Edit
                 </button>
               </div>
-              <span className="page-title">Student</span>
-              <span>{student.name}</span>
-              <span>{student.phone}</span>
-              <span>{student.email}</span>
+              <span className="page-title">{student.name}</span>
             </div>
           </header>
-          <ul className="list-group">
-            {(() => { for ( let key of Object.keys(student.jumps) ) {
-              let jump = student.jumps[key]
-              return (
-                <li className="list-group-item" key={key} onClick={e => this.editJump(student, jump)}>
-                  <div className="media-body">
-                    <strong>Dive Flow {jump.dive_flow}</strong>
-                    <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>
-                  </div>
-                </li>
-              )
-            }})()}
-          </ul>
+          <div className="sub-pane-group">
+            <div className="pane pane-sm sidebar padded">
+              <p><strong>Email:</strong> {student.email}</p>
+              <p><strong>Phone:</strong> {student.phone}</p>
+            </div>
+            <div className="pane">
+              <ul className="list-group">
+                {(() => { for ( let key of Object.keys(student.jumps) ) {
+                  let jump = student.jumps[key]
+                  return (
+                    <li className="list-group-item" key={key} onClick={e => this.editJump(student, jump)}>
+                      <div className="media-body">
+                        <strong>Dive Flow {jump.dive_flow}</strong>
+                        <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>
+                      </div>
+                    </li>
+                  )
+                }})()}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     )

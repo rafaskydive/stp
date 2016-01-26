@@ -35,14 +35,13 @@ class Jump extends Component {
                   Back
                 </button>
               </div>
-              <span className="page-title">Dive Flow {jump.dive_flow}</span>
-              <span>{student.name}</span>
-              <span>{moment(jump.date).format('MMMM Do YYYY')}</span>
+              <span className="page-title">{student.name}</span>
             </div>
           </header>
           <div className="sub-pane-group">
             <div className="pane pane-sm sidebar padded">
-              <p>Hello</p>
+              <strong>Jump {jump.jump_number} - Dive Flow {jump.dive_flow}</strong>
+              <p>{moment(jump.date).format("MMMM Do YYYY")}</p>
             </div>
             <div className="pane padded">
               <VideoDropzone student={student} jump={jump} copyVideoFile={this.props.copyVideoFile} saveStudent={this.props.saveStudent}/>
