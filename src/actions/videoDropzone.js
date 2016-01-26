@@ -24,7 +24,7 @@ function progress(percent) {
 }
 // TODO: look in to https://www.npmjs.com/package/progress-stream
 
-export function copyVideoFile(student, jump, file, _fs=fs) {
+export function copyVideoFile(student, jump, file, _fs=fs, _mkdirp=mkdirp, cb) {
   return dispatch => {
     let start = moment().unix()
 
@@ -33,7 +33,7 @@ export function copyVideoFile(student, jump, file, _fs=fs) {
     let outfile = `DF ${jump.dive_flow} - ${moment(jump.date).format('YYYY-MM-DD')}${ext}`
     let outdir = path.join('.', 'public', 'videos', student._id)
 
-    mkdirp(outdir, (err) => {
+    _mkdirp(outdir, (err) => {
       if (err) {
         console.log('mkdirp err:', err)
       }
