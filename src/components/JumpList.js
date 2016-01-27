@@ -7,12 +7,10 @@ import moment from 'moment'
 
 class Student extends Component {
   componentDidMount() {
-    if (this.props.params.id) {
-      this.props.fetchStudent(this.props.params.id)
+    if (this.props.params.id === 'new') {
+      return this.props.newStudent()
     }
-    else if (this.props.student._id === "new") {
-      this.props.newStudent()
-    }
+    return this.props.fetchStudent(this.props.params.id)
   }
 
   handleEditField(e) {
