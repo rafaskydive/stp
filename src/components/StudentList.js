@@ -11,9 +11,8 @@ class StudentList extends Component {
   }
 
   addStudent() {
-    this.props.newStudent(() => {
-      this.props.push(`/student/new`)
-    })
+    this.props.newStudent()
+    this.props.push(`/student/new`)
   }
 
   showStudent(student) {

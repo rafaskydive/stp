@@ -23,17 +23,17 @@ describe('sync actions', () => {
     }
     const expected = {
       type: types.NEW_STUDENT,
-      payload: payload
+      payload
     }
-    expect(actions.newStudent()).toEqual(expected)
+    expect(actions.newStudent(e=>{})).toEqual(expected)
   })
 
   it('editStudentField should return an object with field name and value', () => {
     const expected = {
       type: types.EDIT_STUDENT_FIELD,
-      payload: { email: 'f' }
+      payload: { email: "f" }
     }
-    expect(actions.editStudentField({"email":"f"})).toEqual(expected)
+    expect(actions.editStudentField({email:""},"email","f")).toEqual(expected)
   })
 
 })

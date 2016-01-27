@@ -10,9 +10,7 @@ class Student extends Component {
       this.props.fetchStudent(this.props.params.id)
     }
     if (this.props.student._id === "new") {
-      this.props.newStudent(() => {
-        return
-      })
+      this.props.newStudent()
     }
   }
 

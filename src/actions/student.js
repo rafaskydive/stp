@@ -6,14 +6,19 @@ import moment from 'moment'
 const now = moment().format()
 
 export function newStudent(callback) {
-  return dispatch => {
-    let payload = { new: true, type: 'student', jumps: jumpsTemplate }
-    dispatch({
-      type: types.NEW_STUDENT,
-      payload
-    })
-    callback()
+  let payload = { new: true, type: 'student', jumps: jumpsTemplate }
+  return {
+    type: types.NEW_STUDENT,
+    payload
   }
+  // return dispatch => {
+  //   let payload = { new: true, type: 'student', jumps: jumpsTemplate }
+  //   dispatch({
+  //     type: types.NEW_STUDENT,
+  //     payload
+  //   })
+  //   return(callback())
+  // }
 }
 
 function requestStudent() {
