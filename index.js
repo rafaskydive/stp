@@ -25,7 +25,7 @@ function createMainWindow() {
   // Remove 'public' part when deploying
   // win.loadUrl(`file://${__dirname}/index.html`);
   win.loadURL(`file://${__dirname}/public/index.html`);
-  win.openDevTools();
+  // win.openDevTools();
   win.on('closed', onClosed);
 
   return win;

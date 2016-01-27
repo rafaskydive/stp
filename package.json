@@ -25,7 +25,7 @@
     "test:watch": "npm run test -- --watch",
     "start": "electron .",
     "build": "NODE_ENV=production webpack -p --config webpack.config.prod.js",
-    "deploy": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --platform=darwin --arch=x64 --version=$npm_package_electronVersion",
+    "deploy": "electron-packager . $npm_package_productName --out=dist --overwrite --ignore='^/dist$' --ignore='node_modules/\\.bin' --prune --asar --platform=darwin --arch=x64 --version=$npm_package_electronVersion",
     "dev": "node_modules/.bin/webpack-dev-server"
   },
   "files": [
