@@ -18,10 +18,8 @@ class App extends Component {
           <div className="toolbar-actions">
 
             <div className="btn-group">
-              <div className={homeButtonClass}>
-                <span className="icon icon-home"
-                  onClick={() => this.props.push('/')}
-                ></span>
+              <div className={homeButtonClass} onClick={() => this.props.push('/')}>
+                <span className="icon icon-home"></span>
               </div>
             </div>
 
