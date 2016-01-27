@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
+import InlineConfirmButton from 'react-inline-confirm'
 import { connect } from 'react-redux'
 import * as actionCreators from '../actions'
 import moment from 'moment'
@@ -35,10 +36,14 @@ class VideoDropzone extends Component {
               <source src={src} type="video/mp4"/>
             </video>
           </div>
-          <button className='btn btn-warning pull-right' onClick={e => this.removeVideo(e)}>
+          <InlineConfirmButton
+            className='btn btn-warning pull-right'
+            textValues={["Remove Video", "Are you sure?", "Removing..."]}
+            showTimer={true}
+            onClick={e => this.removeVideo(e)}
+            >
             <span className="icon icon-trash icon-text"></span>
-            Remove Video
-          </button>
+          </InlineConfirmButton>
         </div>
       )
     }
