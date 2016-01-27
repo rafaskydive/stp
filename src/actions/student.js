@@ -1,5 +1,7 @@
+const path = require('path')
 import * as types from '../constants'
 import database from '../database'
+import config from '../config'
 import { routeActions } from 'redux-simple-router'
 import { jumpsTemplate } from '../utils'
 import moment from 'moment'
@@ -115,4 +117,34 @@ export function createNextJump(student) {
     })
     dispatch(saveStudent(student))
   }
+}
+
+export function removeJump(student, key) {
+  return dispatch => {
+    let video_file = student.jumps[key].video_file
+    if (video_file) {
+      let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
+      console.log('removing video_file', videoFilePath)
+      fs.unlink(videoFilePath, (err) => {
+        if (err) { return console.log(err) }
+        delete student.jumps[key]
+        dispatch({
+          type: types.RECIEVE_STUDENT,
+          payload: student
+        })
+      })
+    }
+    delete student.jumps[key]
+    dispatch({
+      type: types.RECIEVE_STUDENT,
+      payload: student
+    })
+  }
+
+  // console.log(student.jumps)
+  // delete student.jumps[key]
+  // console.log(student.jumps)
+  // return {
+  //   type: 'NOOP'
+  // }
 }

@@ -50,8 +50,7 @@ class Student extends Component {
   }
 
   removeJump(key) {
-    // TODO: remove jump from student and destroy video file
-    console.log(key)
+    this.props.removeJump(this.props.student, key)
   }
 
   render() {
