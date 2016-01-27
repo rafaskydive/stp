@@ -28,7 +28,7 @@ class VideoDropzone extends Component {
     let { videoDropzone } = {...this.props}
     let video_file = this.props.jump.video_file // this || this.props.videoDropzone.video_file
     if (video_file) {
-      let src = path.join('videos', this.props.student._id, video_file)
+      let src = path.join(config.videoFilePath, this.props.student._id, video_file)
       return (
         <div>
           <div className="dropzone">

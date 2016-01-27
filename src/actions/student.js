@@ -48,7 +48,6 @@ export function fetchStudent(_id) {
 }
 
 export function saveStudent(student) {
-  console.log('saveStudent', student._id)
   return dispatch => {
     dispatch({ type: types.REQUEST_PUT_STUDENT})
     if(! student._id || student._id === "new") {
