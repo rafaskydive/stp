@@ -10,13 +10,11 @@ const path = require('path')
 
 class Jump extends Component {
   componentWillMount () {
-    if (this.props.student._id === null) {
-      console.log('going to fetchStudent')
+    if (this.props.student._id) {
       this.props.fetchStudent(this.props.params.id)
     }
     if (this.props.params.id === 'new') {
-      console.log('going to newStudent')
-      this.props.newStudent(() => {})
+      this.props.newStudent()
     }
   }
 

@@ -6,10 +6,10 @@ import moment from 'moment'
 
 class Student extends Component {
   componentDidMount() {
-    if (this.props.student._id === null) {
+    if (this.props.params.id) {
       this.props.fetchStudent(this.props.params.id)
     }
-    if (this.props.student._id === "new") {
+    else if (this.props.student._id === "new") {
       this.props.newStudent()
     }
   }
@@ -44,9 +44,18 @@ class Student extends Component {
     this.props.push(`/student/${student._id}/jump/${jump._id}`)
   }
 
+  createNextJump() {
+    this.props.createNextJump(this.props.student)
+    this.render()
+  }
+
+  removeJump(key) {
+    // TODO: remove jump from student and destroy video file
+    console.log(key)
+  }
+
   render() {
     let { student } = {...this.props}
-
     return (
       <div className="pane-group">
         <div className="pane">
@@ -132,18 +141,34 @@ class Student extends Component {
             </div>
             <div className="pane">
               <ul className="list-group">
-                {(() => { for ( let key of Object.keys(student.jumps) ) {
-                  let jump = student.jumps[key]
+                {(() => { if (!student.new) {
                   return (
-                    <li className="list-group-item" key={key}
-                        onClick={e => this.showStudentJump(student, jump)}>
-                      <div className="media-body">
-                        <strong>Dive Flow {jump.dive_flow}</strong>
-                        <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>
-                      </div>
+                    <li className="list-group-header">
+                      <button className="btn btn-default" onClick={e => this.createNextJump(e)}>
+                        <span className="icon icon-list-add icon-text"></span>
+                        Add New Jump
+                      </button>
                     </li>
                   )
                 }})()}
+                { Object.keys(student.jumps).map((key) => {
+                  let jump = student.jumps[key]
+                  return (
+                    <li className="list-group-item" key={key}>
+                      <div className="media-body pull-left"
+                          onClick={e => this.showStudentJump(student, jump)}>
+                        <strong>Dive Flow {jump.dive_flow}</strong>
+                        <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>
+                      </div>
+                      <span className="pull-right">
+                        <button className="btn btn-default" onClick={e => this.removeJump(key)}>
+                          <span className="icon icon-trash icon-text"></span>
+                          Remove
+                        </button>
+                      </span>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>
