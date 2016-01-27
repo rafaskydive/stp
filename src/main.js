@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import { syncHistory, routeReducer } from 'redux-simple-router'
 import * as reducers from './reducers'
-import { App, StudentList, Student, EditStudent, JumpList, Jump } from './components'
+import { App, StudentList, Student, JumpList, Jump } from './components'
 
 const middleware = syncHistory(hashHistory);
 
@@ -43,7 +43,6 @@ ReactDOM.render(
           <IndexRoute component={StudentList}/>
           <Route path="student/:id" component={Student}>
             <IndexRoute component={JumpList}/>
-            <Route path="edit" component={EditStudent}/>
             <Route path="jump/:jump_id" component={Jump}/>
           </Route>
         </Route>

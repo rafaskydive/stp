@@ -5,10 +5,13 @@ import { jumpsTemplate } from '../utils'
 import moment from 'moment'
 const now = moment().format()
 
-export function newStudent() {
-  return {
-    type: types.NEW_STUDENT,
-    payload: { new: true, type: 'student', jumps: jumpsTemplate }
+export function newStudent(callback) {
+  return dispatch => {
+    dispatch({
+      type: types.NEW_STUDENT,
+      payload: { new: true, type: 'student', jumps: jumpsTemplate }
+    })
+    callback()
   }
 }
 
@@ -26,7 +29,7 @@ function receiveStudent(json) {
 }
 
 export function fetchStudent(_id) {
-  if(_id === 'new') { return {} }
+  if(_id === 'new') { return }
   return dispatch => {
     dispatch(requestStudent())
     database.get(_id, (err, doc) => {
@@ -39,7 +42,7 @@ export function fetchStudent(_id) {
 export function saveStudent(student) {
   return dispatch => {
     dispatch({ type: types.REQUEST_PUT_STUDENT})
-    if(! student._id) {
+    if(! student._id || student._id === "new") {
       student._id = student.name.replace(/ /g, '-').toLowerCase()
     }
     delete(student.modified)
@@ -51,13 +54,6 @@ export function saveStudent(student) {
   }
 }
 
-export function editStudentField(field) {
-  return {
-    type: types.EDIT_STUDENT_FIELD,
-    payload: field
-  }
-}
-
 export function editStudent(student) {
   return {
     type: types.EDIT_STUDENT,
@@ -65,20 +61,25 @@ export function editStudent(student) {
   }
 }
 
-export function enableJumpEditForm() {
+export function enableStudentEditForm() {
   return {
-    type: types.ENABLE_JUMP_EDIT_FORM,
+    type: types.ENABLE_STUDENT_EDIT_FORM,
   }
 }
 
-export function disableJumpEditForm(student) {
+export function disableStudentEditForm(student) {
   return dispatch => {
     dispatch(fetchStudent(student._id))
-    dispatch( { type: types.DISABLE_JUMP_EDIT_FORM } )
+    dispatch( { type: types.DISABLE_STUDENT_EDIT_FORM } )
   }
-  // return {
-  //   type: types.DISABLE_JUMP_EDIT_FORM,
-  // }
+}
+
+export function editStudentField(student, field, value) {
+  student[field] = value
+  return {
+    type: types.EDIT_STUDENT_FIELD,
+    payload: student
+  }
 }
 
 export function editJumpField(student, jump, field, value) {

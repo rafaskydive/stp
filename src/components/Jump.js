@@ -9,18 +9,14 @@ const path = require('path')
 
 
 class Jump extends Component {
-  jump () {
-    return this.props.student.jumps[this.props.params.jump_id]
-  }
-
   componentDidMount () {
     if (this.props.student._id === null) {
       this.props.fetchStudent(this.props.params.id)
     }
   }
 
-  goBack() {
-    this.props.goBack()
+  jump () {
+    return this.props.student.jumps[this.props.params.jump_id]
   }
 
   handleEditField(e) {
@@ -31,12 +27,12 @@ class Jump extends Component {
 
   enableForm(e) {
     e.preventDefault()
-    this.props.enableJumpEditForm()
+    this.props.enableStudentEditForm()
   }
 
   disableForm(e) {
     e.preventDefault()
-    this.props.disableJumpEditForm(this.props.student)
+    this.props.disableStudentEditForm(this.props.student)
   }
 
   handleSubmit(e) {
@@ -49,9 +45,7 @@ class Jump extends Component {
 
   render () {
     let { student } = {...this.props}
-    if (this.props.student._id === null) { return <div></div> }
-
-    // let jump = student.jumps[this.props.params.jump_id]
+    if (this.props.student._id === 'new') { return <div></div> }
     let jump = this.jump()
     return (
       <div className="pane-group">
@@ -59,12 +53,12 @@ class Jump extends Component {
           <header className="sub-header">
             <div className="toolbar-actions">
               <div className="btn-group pull-right">
-                <button className="btn btn-default" onClick={() => this.goBack()}>
+                <button className="btn btn-default" onClick={() => this.props.push(`/student/${student._id}`)}>
                   <span className="icon icon-left-open icon-text"></span>
                   Back
                 </button>
               </div>
-              <span className="page-title">{student.name}</span>
+              <span className="page-title">{student.name || "New Student"}</span>
             </div>
           </header>
           <div className="sub-pane-group">
@@ -150,7 +144,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {
-  goBack: routeActions.goBack
+  push: routeActions.push
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Jump)

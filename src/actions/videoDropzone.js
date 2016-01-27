@@ -16,7 +16,7 @@ function complete(dest) {
   }
 }
 
-function progress(percent) {
+function copy_progress(percent) {
   return {
     type: types.COPY_PROGRESS,
     payload: { percent: percent }
@@ -49,7 +49,7 @@ export function copyVideoFile(student, jump, file, callback, _fs=fs, _mkdirp=mkd
         count += data.length
         let percent = Math.round(count/stat.size*100)
         if ( percent % 5 === 0 ) {
-          dispatch(progress(percent))
+          dispatch(copy_progress(percent))
         }
       })
 

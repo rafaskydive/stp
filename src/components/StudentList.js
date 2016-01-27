@@ -11,8 +11,9 @@ class StudentList extends Component {
   }
 
   addStudent() {
-    this.props.newStudent()
-    window.location.hash='#/student/new/edit'
+    this.props.newStudent(() => {
+      this.props.push(`/student/new`)
+    })
   }
 
   showStudent(student) {
