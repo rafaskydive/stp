@@ -21,12 +21,7 @@ class EditStudent extends Component {
     if (!this.props.student.modified) {
       return {}
     }
-    const _student = Object.assign({}, this.props.student, {
-      name: this.refs.name.value,
-      email: this.refs.email.value,
-      phone: this.refs.phone.value
-    })
-    this.props.saveStudent(_student)
+    this.props.saveStudent(this.props.student)
     this.props.goBack()
   }
 

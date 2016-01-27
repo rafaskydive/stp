@@ -65,6 +65,22 @@ export function editStudent(student) {
   }
 }
 
+export function enableJumpEditForm() {
+  return {
+    type: types.ENABLE_JUMP_EDIT_FORM,
+  }
+}
+
+export function disableJumpEditForm(student) {
+  return dispatch => {
+    dispatch(fetchStudent(student._id))
+    dispatch( { type: types.DISABLE_JUMP_EDIT_FORM } )
+  }
+  // return {
+  //   type: types.DISABLE_JUMP_EDIT_FORM,
+  // }
+}
+
 export function editJumpField(student, jump, field, value) {
   value = value.match(/(\d+)/) ? Number(value) : value
   student.jumps[jump._id][field] = value

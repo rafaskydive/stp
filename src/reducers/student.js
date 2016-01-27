@@ -17,6 +17,10 @@ export default function student (state=initialState, action) {
     case types.SAVE_STUDENT:
     case types.SHOW_STUDENT:
       return {...action.payload}
+    case types.ENABLE_JUMP_EDIT_FORM:
+      return Object.assign({}, state, { modified: true } )
+    case types.DISABLE_JUMP_EDIT_FORM:
+      return Object.assign({}, state, { modified: false } )      
     case types.EDIT_STUDENT_FIELD:
       return Object.assign({}, state, action.payload)
     default:

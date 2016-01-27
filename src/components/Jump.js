@@ -29,8 +29,21 @@ class Jump extends Component {
     this.props.editJumpField(this.props.student, this.jump(), field, value)
   }
 
+  enableForm(e) {
+    e.preventDefault()
+    this.props.enableJumpEditForm()
+  }
+
+  disableForm(e) {
+    e.preventDefault()
+    this.props.disableJumpEditForm(this.props.student)
+  }
+
   handleSubmit(e) {
     e.preventDefault()
+    if (!this.props.student.modified) {
+      return {}
+    }
     this.props.saveStudent(this.props.student)
   }
 
@@ -62,6 +75,7 @@ class Jump extends Component {
                   <input
                     onChange={e => this.handleEditField(e)}
                     value={jump.jump_number}
+                    disabled={!student.modified}
                     ref="jump_number"
                     name="jump_number"
                     type="number"
@@ -75,6 +89,7 @@ class Jump extends Component {
                   <input
                     onChange={e => this.handleEditField(e)}
                     value={jump.dive_flow}
+                    disabled={!student.modified}
                     ref="dive_flow"
                     name="dive_flow"
                     type="number"
@@ -88,6 +103,7 @@ class Jump extends Component {
                   <input
                     onChange={e => this.handleEditField(e)}
                     value={jump.instructor}
+                    disabled={!student.modified}
                     ref="instructor"
                     name="instructor"
                     type="text"
@@ -95,7 +111,27 @@ class Jump extends Component {
                   />
                 </div>
                 <div className="form-actions">
-                  <button type="submit" className="btn btn-form btn-primary">Save</button>
+                  {(() => { if(this.props.student.modified) {
+                    return (
+                      <div>
+                        <button type="submit" className="btn btn-primary">
+                          <span className="icon icon-install icon-text"></span>
+                          Save
+                        </button>
+                        <button className="btn btn-default" onClick={e => this.disableForm(e)}>
+                          <span className="icon icon-ccw icon-text"></span>
+                          Cancel
+                        </button>
+                      </div>
+                    )
+                  } else {
+                    return (
+                      <button className="btn btn-default" onClick={e => this.enableForm(e)}>
+                        <span className="icon icon-pencil icon-text"></span>
+                        Edit
+                      </button>
+                    )
+                  }})()}
                 </div>
               </form>
             </div>
