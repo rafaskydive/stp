@@ -101,15 +101,17 @@ export function editJumpField(student, jump, field, value) {
 
 export function createNextJump(student) {
   return dispatch => {
-    let sortedKeys = Object.keys(student.jumps).sort((a, b) => { return a > b})
-    let lastKey = sortedKeys.pop()
-    let lastJump = student.jumps[lastKey]
     let newJumpObj = jumpsTemplate
     let newJumpKey = Object.keys(newJumpObj)[0]
     let newJump = newJumpObj[newJumpKey]
-    newJump.dive_flow = lastJump.dive_flow + 1
-    newJump.jump_number = lastJump.jump_number + 1
-    newJump.instructor = lastJump.instructor
+    let sortedKeys = Object.keys(student.jumps).sort((a, b) => { return a > b})
+    if (sortedKeys.length > 0) {
+      let lastKey = sortedKeys.pop()
+      let lastJump = student.jumps[lastKey]
+      newJump.dive_flow = lastJump.dive_flow + 1
+      newJump.jump_number = lastJump.jump_number + 1
+      newJump.instructor = lastJump.instructor
+    }
     student.jumps[newJumpKey] = newJump
     dispatch({
       type: types.CREATE_NEXT_JUMP,
