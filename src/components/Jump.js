@@ -9,9 +9,14 @@ const path = require('path')
 
 
 class Jump extends Component {
-  componentDidMount () {
+  componentWillMount () {
     if (this.props.student._id === null) {
+      console.log('going to fetchStudent')
       this.props.fetchStudent(this.props.params.id)
+    }
+    if (this.props.params.id === 'new') {
+      console.log('going to newStudent')
+      this.props.newStudent(() => {})
     }
   }
 
@@ -45,7 +50,6 @@ class Jump extends Component {
 
   render () {
     let { student } = {...this.props}
-    if (this.props.student._id === 'new') { return <div></div> }
     let jump = this.jump()
     return (
       <div className="pane-group">

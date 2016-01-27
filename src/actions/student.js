@@ -7,9 +7,10 @@ const now = moment().format()
 
 export function newStudent(callback) {
   return dispatch => {
+    let payload = { new: true, type: 'student', jumps: jumpsTemplate }
     dispatch({
       type: types.NEW_STUDENT,
-      payload: { new: true, type: 'student', jumps: jumpsTemplate }
+      payload
     })
     callback()
   }

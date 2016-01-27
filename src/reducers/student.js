@@ -5,7 +5,7 @@ const initialState = {
   name: "",
   email: "",
   phone: "",
-  jumps: [],
+  jumps: {},
   modified: true
 }
 

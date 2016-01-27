@@ -29,7 +29,7 @@ class Student extends Component {
 
   disableForm(e) {
     e.preventDefault()
-    if (this.props.student._id === null) { return this.props.push('/') }
+    if (this.props.student._id === 'new') { return this.props.push('/') }
     this.props.disableStudentEditForm(this.props.student)
   }
 
@@ -41,8 +41,14 @@ class Student extends Component {
     this.props.saveStudent(this.props.student)
   }
 
+  showStudentJump(student, jump) {
+    if (student._id === 'new') { return alert("Please save student first.") }
+    this.props.push(`/student/${student._id}/jump/${jump._id}`)
+  }
+
   render() {
     let { student } = {...this.props}
+
     return (
       <div className="pane-group">
         <div className="pane">
@@ -132,7 +138,7 @@ class Student extends Component {
                   let jump = student.jumps[key]
                   return (
                     <li className="list-group-item" key={key}
-                        onClick={e => this.props.push(`/student/${student._id}/jump/${jump._id}`)}>
+                        onClick={e => this.showStudentJump(student, jump)}>
                       <div className="media-body">
                         <strong>Dive Flow {jump.dive_flow}</strong>
                         <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>
