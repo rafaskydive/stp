@@ -54,6 +54,9 @@ class Jump extends Component {
   render () {
     let { student } = {...this.props}
     let jump = this.jump()
+    let videoDropZoneEl = this.props.student._id === 'new' ? <div></div> : <VideoDropzone jump={jump}/>
+
+
     return (
       <div className="pane-group">
         <div className="pane">
@@ -137,7 +140,7 @@ class Jump extends Component {
               </form>
             </div>
             <div className="pane padded">
-              <VideoDropzone student={student} jump={jump} copyVideoFile={this.props.copyVideoFile} saveStudent={this.props.saveStudent}/>
+              {videoDropZoneEl}
             </div>
           </div>
         </div>

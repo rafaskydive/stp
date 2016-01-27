@@ -1,8 +1,7 @@
 import * as types from '../constants'
+import config from '../config'
 import moment from 'moment'
 const path = require('path')
-
-import config from '../config'
 
 function copying() {
   return {
@@ -58,13 +57,11 @@ export function copyVideoFile(student, jump, file, callback, _fs=fs, _mkdirp=mkd
       rd.on('end', () => {
         let end = moment().unix()
         let duration = end - start
-        console.log('duration:', start, end, duration)
         dispatch(complete(dest))
         callback(outfile)
       })
 
       rd.pipe(wr)
     })
-
   }
 }

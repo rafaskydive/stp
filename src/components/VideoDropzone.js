@@ -19,17 +19,26 @@ class VideoDropzone extends Component {
     })
   }
 
+  removeVideo (e) {
+    this.props.removeVideo(this.props.student, this.props.jump)
+  }
+
   render  () {
     let { videoDropzone } = {...this.props}
-    let video_file = this.props.videoDropzone.video_file || this.props.jump.video_file
+    let video_file = this.props.jump.video_file // this || this.props.videoDropzone.video_file
     if (video_file) {
       let src = path.join('videos', this.props.student._id, video_file)
-      console.log('src', src)
       return (
-        <div className="dropzone">
-          <video width="720px" controls>
-            <source src={src} type="video/mp4"/>
-          </video>
+        <div>
+          <div className="dropzone">
+            <video width="720px" controls>
+              <source src={src} type="video/mp4"/>
+            </video>
+          </div>
+          <button className='btn btn-warning pull-right' onClick={e => this.removeVideo(e)}>
+            <span className="icon icon-trash icon-text"></span>
+            Remove Video
+          </button>
         </div>
       )
     }
@@ -54,10 +63,10 @@ class VideoDropzone extends Component {
 }
 
 function mapStateToProps(state) {
-  return { videoDropzone: state.videoDropzone }
+  return state
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {
 })
 
-export default connect(mapStateToProps)(VideoDropzone)
+export default connect(mapStateToProps, mapDispatchToProps)(VideoDropzone)

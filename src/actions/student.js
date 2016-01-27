@@ -48,6 +48,7 @@ export function fetchStudent(_id) {
 }
 
 export function saveStudent(student) {
+  console.log('saveStudent', student._id)
   return dispatch => {
     dispatch({ type: types.REQUEST_PUT_STUDENT})
     if(! student._id || student._id === "new") {
@@ -130,13 +131,23 @@ export function removeJump(student, key) {
       fs.unlink(videoFilePath, (err) => {
         if (err) { return console.log(err) }
         delete student.jumps[key]
-        dispatch({
-          type: types.RECIEVE_STUDENT,
-          payload: student
-        })
       })
     }
     delete student.jumps[key]
+    dispatch(saveStudent(student))
+  }
+}
+
+export function removeVideo(student, jump) {
+  return dispatch => {
+    let video_file = student.jumps[jump._id].video_file
+    let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
+    console.log('removing video_file', videoFilePath)
+    fs.unlink(videoFilePath, (err) => {
+      if (err) { return console.log(err) }
+      console.log('removed', videoFilePath)
+    })
+    delete student.jumps[jump._id].video_file
     dispatch(saveStudent(student))
   }
 }
