@@ -5,22 +5,13 @@ import config from '../config'
 import { routeActions } from 'redux-simple-router'
 import { jumpsTemplate } from '../utils'
 import moment from 'moment'
-const now = moment().format()
 
 export function newStudent(callback) {
-  let payload = { new: true, type: 'student', jumps: jumpsTemplate }
+  let payload = { new: true, type: 'student', jumps: jumpsTemplate(moment().format()) }
   return {
     type: types.NEW_STUDENT,
     payload
   }
-  // return dispatch => {
-  //   let payload = { new: true, type: 'student', jumps: jumpsTemplate }
-  //   dispatch({
-  //     type: types.NEW_STUDENT,
-  //     payload
-  //   })
-  //   return(callback())
-  // }
 }
 
 function requestStudent() {
@@ -101,7 +92,7 @@ export function editJumpField(student, jump, field, value) {
 
 export function createNextJump(student) {
   return dispatch => {
-    let newJumpObj = jumpsTemplate
+    let newJumpObj = jumpsTemplate(moment().format())
     let newJumpKey = Object.keys(newJumpObj)[0]
     let newJump = newJumpObj[newJumpKey]
     let sortedKeys = Object.keys(student.jumps).sort((a, b) => { return a > b})

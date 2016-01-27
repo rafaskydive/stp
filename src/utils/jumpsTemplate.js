@@ -1,16 +1,15 @@
 import moment from 'moment'
 
-const now = moment().format()
-
-const jumpsTemplate = {}
-
-jumpsTemplate[now] = {
-  _id: now,
-  date: now,
-  dive_flow: 1,
-  jump_number: 3,
-  instructor: "",
-  notes: ""
+export default function jumpsTemplate(now) {
+  const jump = {
+    _id: now,
+    _date: now,
+    dive_flow: 1,
+    jump_number: 3,
+    instructor: "",
+    notes: ""
+  }
+  const obj = {}
+  obj[`${now}`] = jump
+  return obj
 }
-
-export default jumpsTemplate

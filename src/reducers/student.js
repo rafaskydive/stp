@@ -12,7 +12,6 @@ const initialState = {
 export default function student (state=initialState, action) {
   switch(action.type) {
     case types.NEW_STUDENT:
-      console.log('NEW_STUDENT')
       return Object.assign({}, initialState, action.payload)
     case types.RECIEVE_STUDENT:
     case types.SAVE_STUDENT:

@@ -16,10 +16,11 @@ const now = moment().format()
 describe('sync actions', () => {
 
   it('newStudent should return an object with new:true', () => {
+    const jumps = jumpsTemplate(moment().format())
     const payload = {
       new: true,
       type: 'student',
-      jumps: jumpsTemplate
+      jumps: jumps
     }
     const expected = {
       type: types.NEW_STUDENT,
