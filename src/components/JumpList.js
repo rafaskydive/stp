@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import InlineConfirmButton from 'react-inline-confirm'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
@@ -161,10 +162,15 @@ class Student extends Component {
                         <p>Video: {jump.video_file}</p>
                       </div>
                       <span className="pull-right">
-                        <button className="btn btn-default" onClick={e => this.removeJump(key)}>
+                        <InlineConfirmButton
+                          className="btn btn-default"
+                          textValues={["Remove Jump", "Are you sure?", "Removing..."]}
+                          showTimer={true}
+                          isExecuting={false}
+                          onClick={e => this.removeJump(key)}
+                          >
                           <span className="icon icon-trash icon-text"></span>
-                          Remove
-                        </button>
+                        </InlineConfirmButton>
                       </span>
                     </li>
                   )

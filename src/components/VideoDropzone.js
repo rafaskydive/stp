@@ -40,6 +40,7 @@ class VideoDropzone extends Component {
             className='btn btn-warning pull-right'
             textValues={["Remove Video", "Are you sure?", "Removing..."]}
             showTimer={true}
+            isExecuting={false}
             onClick={e => this.removeVideo(e)}
             >
             <span className="icon icon-trash icon-text"></span>
