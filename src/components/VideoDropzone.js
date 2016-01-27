@@ -5,14 +5,16 @@ import * as actionCreators from '../actions'
 import moment from 'moment'
 const path = require('path')
 
+import config from '../config'
+
 class VideoDropzone extends Component {
 
   onDrop (files) {
     let file = files[0]
     let student = {...this.props.student}
     let jump = {...this.props.jump}
-    this.props.copyVideoFile(student, jump, file, (dest) => {
-      student.jumps[jump._id].video_file = dest
+    this.props.copyVideoFile(student, jump, file, (video_file) => {
+      student.jumps[jump._id].video_file = video_file
       this.props.saveStudent(student)
     })
   }
@@ -21,7 +23,8 @@ class VideoDropzone extends Component {
     let { videoDropzone } = {...this.props}
     let video_file = this.props.videoDropzone.video_file || this.props.jump.video_file
     if (video_file) {
-      let src = video_file.replace(/public\//,'')
+      let src = path.join('videos', this.props.student._id, video_file)
+      console.log('src', src)
       return (
         <div className="dropzone">
           <video width="720px" controls>

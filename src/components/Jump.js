@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import VideoDropzone from './VideoDropzone'
+import { jumpsTemplate } from '../utils'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
@@ -10,7 +11,7 @@ const path = require('path')
 
 class Jump extends Component {
   componentWillMount () {
-    if (this.props.student._id) {
+    if (this.props.student._id !== this.props.params.id) {
       this.props.fetchStudent(this.props.params.id)
     }
     if (this.props.params.id === 'new') {
@@ -19,7 +20,11 @@ class Jump extends Component {
   }
 
   jump () {
-    return this.props.student.jumps[this.props.params.jump_id]
+    return (
+      this.props.student._id === 'new' ?
+      jumpsTemplate :
+      this.props.student.jumps[this.props.params.jump_id]
+    )
   }
 
   handleEditField(e) {

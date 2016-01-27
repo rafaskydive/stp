@@ -2,6 +2,8 @@ import * as types from '../constants'
 import moment from 'moment'
 const path = require('path')
 
+import config from '../config'
+
 function copying() {
   return {
     type: types.COPY_PROGRESS,
@@ -30,7 +32,7 @@ export function copyVideoFile(student, jump, file, callback, _fs=fs, _mkdirp=mkd
     dispatch(copying())
     let ext = path.extname(file.path)
     let outfile = `DF ${jump.dive_flow} - ${moment(jump.date).format('YYYY-MM-DD')}${ext}`
-    let outdir = path.join('.', 'public', 'videos', student._id)
+    let outdir = path.join(config.videoFilePath, student._id)
 
     _mkdirp(outdir, (err) => {
       if (err) {
@@ -58,7 +60,7 @@ export function copyVideoFile(student, jump, file, callback, _fs=fs, _mkdirp=mkd
         let duration = end - start
         console.log('duration:', start, end, duration)
         dispatch(complete(dest))
-        callback(dest)
+        callback(outfile)
       })
 
       rd.pipe(wr)
