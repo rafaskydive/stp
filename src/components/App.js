@@ -1,6 +1,5 @@
 // const React = require('react');
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
@@ -12,16 +11,24 @@ class App extends Component {
       'btn btn-default': true,
       'active': this.props.location.pathname === '/'
     })
+    const configButtonClass = Classnames({
+      'btn btn-default pull-right': true,
+      'active': this.props.location.pathname === '/settings'
+    })
     return (
       <div className="window">
         <header className="toolbar toolbar-header">
           <div className="toolbar-actions">
 
             <div className="btn-group">
-              <div className={homeButtonClass}>
-                <span className="icon icon-home"
-                  onClick={() => this.props.push('/')}
-                ></span>
+              <div className={homeButtonClass} onClick={() => this.props.push('/')}>
+                <span className="icon icon-home"></span>
+              </div>
+            </div>
+
+            <div className="btn-group pull-right">
+              <div className={configButtonClass} onClick={() => this.props.push('/settings')}>
+                <span className="icon icon-cog"></span>
               </div>
             </div>
 
