@@ -135,16 +135,6 @@ export function removeJump(student, key) {
       })
     }
     delete student.jumps[key]
-    dispatch({
-      type: types.RECIEVE_STUDENT,
-      payload: student
-    })
+    dispatch(saveStudent(student))
   }
-
-  // console.log(student.jumps)
-  // delete student.jumps[key]
-  // console.log(student.jumps)
-  // return {
-  //   type: 'NOOP'
-  // }
 }
