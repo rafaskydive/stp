@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Link } from 'react-router'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
+import moment from 'moment'
 
 class StudentList extends Component {
   componentDidMount() {
@@ -20,6 +21,19 @@ class StudentList extends Component {
     this.props.push(`/student/${student._id}`)
   }
 
+  _lastJump(student) {
+    let jumps = student.jumps
+    let sortedKeys = Object.keys(jumps).sort((a, b) => { return a > b })
+    return student.jumps[sortedKeys.pop()]
+  }
+  lastJumpDate(student) {
+    let jump = this._lastJump(student)
+    return moment(jump.jump_date).format("MMM Do")
+  }
+  lastJumpInstructor(student) {
+    let instructor = this._lastJump(student).instructor
+    return instructor !== "" ? ` with ${instructor}` : ""
+  }
   render () {
     let { studentList, push } = {...this.props}
     return (
@@ -40,6 +54,7 @@ class StudentList extends Component {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Last Jump</th>
                 <th>Email</th>
                 <th>Phone</th>
               </tr>
@@ -49,6 +64,7 @@ class StudentList extends Component {
                 return (
                   <tr key={student._id} onClick={e => this.showStudent(student)}>
                     <td>{student.name}</td>
+                    <td>{this.lastJumpDate(student)}{this.lastJumpInstructor(student)}</td>
                     <td>{student.email}</td>
                     <td>{student.phone}</td>
                   </tr>

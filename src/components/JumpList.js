@@ -156,7 +156,7 @@ class Student extends Component {
                       <div className="media-body pull-left"
                           onClick={e => this.showStudentJump(student, jump)}>
                         <strong>Dive Flow {jump.dive_flow}</strong>
-                        <p>Date: {moment(jump.date).format('MMMM Do YYYY')}</p>
+                        <p>Date: {moment(jump.jump_date).format('MMMM Do YYYY')}</p>
                         <p>Video: {jump.video_file}</p>
                       </div>
                       <span className="pull-right">
