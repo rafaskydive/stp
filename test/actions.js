@@ -116,17 +116,83 @@ describe('sync actions', () => {
   markAsTested('showStudent')
 })
 
+/******************************************************************************/
+/* ASYNC ACTIONS                                                              */
+/******************************************************************************/
+
 const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
 
 describe('async actions', () => {
-
-  before(function() {
+  after(function() {
+    console.log("DELETING TEST STUDENTS")
     return (
-      database.get('test-student').then(doc => {
-        return database.remove(doc._id, doc._rev)
-      }).then(result => {}).catch(err => {})
+      database.allDocs({keys:["test-student","test-student-two"]}).then(response => {
+        return response.rows.map(row => database.remove(row.key, row.value.rev))
+      })
     )
+  })
+
+
+  describe('saveStudent', () => {
+
+    before(function() {
+      console.log("DELETING TEST STUDENTS")
+      return (
+        database.allDocs({keys:["test-student","test-student-two"]}).then(response => {
+          return response.rows.map(row => database.remove(row.key, row.value.rev))
+        })
+      )
+    })
+
+    it('creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
+      const jump_date = '2016-01-28 11:57:51'
+      const jumps = jumpsTemplate(jump_date)
+      const newStudent = {
+        type: 'student',
+        subtype: 'test-student',
+        name: `Test Student`,
+        email: 'test@example.com',
+        phone: '123-456-7890',
+        jumps: jumps
+      }
+      const expectedActions = [
+        { type: types.REQUEST_PUT_STUDENT },
+        { type: types.REQUEST_STUDENT },
+        (a) => {
+          expect(a.type).toEqual('RECIEVE_STUDENT')
+          expect(a.payload._id).toEqual('test-student')
+          expect(a.payload._rev).toNotEqual(undefined)
+        }
+      ]
+      const store = mockStore({ student: newStudent }, expectedActions, done)
+      store.dispatch(actions.saveStudent(newStudent))
+    })
+
+    it('saves test-student-two', (done) => {
+      const jump_date = '2016-01-28 11:57:51'
+      const jumps = jumpsTemplate(jump_date)
+      const newStudent = {
+        type: 'student',
+        subtype: 'test-student',
+        name: `Test Student Two`,
+        email: 'test2@example.com',
+        phone: '123-456-7890',
+        jumps: jumps
+      }
+      const expectedActions = [
+        { type: types.REQUEST_PUT_STUDENT },
+        { type: types.REQUEST_STUDENT },
+        (a) => {
+          expect(a.type).toEqual('RECIEVE_STUDENT')
+          expect(a.payload._id).toEqual('test-student-two')
+          expect(a.payload._rev).toNotEqual(undefined)
+        }
+      ]
+      const store = mockStore({ student: newStudent }, expectedActions, done)
+      store.dispatch(actions.saveStudent(newStudent))
+    })
+    markAsTested('saveStudent')
   })
 
   describe('disableStudentEditForm', () => {
@@ -146,32 +212,6 @@ describe('async actions', () => {
       store.dispatch(actions.disableStudentEditForm(student))
     })
     markAsTested('disableStudentEditForm')
-  })
-
-  describe('saveStudent', () => {
-    it('saveStudent creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
-      const jump_date = '2016-01-28 11:57:51'
-      const jumps = jumpsTemplate(jump_date)
-      const newStudent = {
-        type: 'student',
-        name: `Test Student`,
-        email: 'test@example.com',
-        phone: '123-456-7890',
-        jumps: jumps
-      }
-      const expectedActions = [
-        { type: types.REQUEST_PUT_STUDENT },
-        { type: types.REQUEST_STUDENT },
-        (a) => {
-          expect(a.type).toEqual('RECIEVE_STUDENT')
-          expect(a.payload._id).toEqual('test-student')
-          expect(a.payload._rev).toNotEqual(undefined)
-        }
-      ]
-      const store = mockStore({ student: newStudent }, expectedActions, done)
-      store.dispatch(actions.saveStudent(newStudent))
-    })
-    markAsTested('saveStudent')
   })
 
   describe('fetchStudent', () => {
