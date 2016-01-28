@@ -31,9 +31,8 @@ export function fetchStudent(_id) {
   if(_id === 'new') { return }
   return dispatch => {
     dispatch(requestStudent())
-    database.get(_id, (err, doc) => {
+    database.get(_id, function (err, doc) {
       dispatch(receiveStudent(doc))
-      return {}
     })
   }
 }
@@ -46,17 +45,10 @@ export function saveStudent(student) {
     }
     delete(student.modified)
     delete(student.new)
-    database.put(student, (err, response) => {
+    database.put(student, function (err, response) {
       if (err) { console.log(err) }
       return dispatch(fetchStudent(response.id))
     })
-  }
-}
-
-export function editStudent(student) {
-  return {
-    type: types.EDIT_STUDENT,
-    payload: student
   }
 }
 
@@ -92,39 +84,44 @@ export function editJumpField(student, jump, field, value) {
 
 export function createNextJump(student) {
   return dispatch => {
-    let newJumpObj = jumpsTemplate(moment().format())
-    let newJumpKey = Object.keys(newJumpObj)[0]
-    let newJump = newJumpObj[newJumpKey]
-    let sortedKeys = Object.keys(student.jumps).sort((a, b) => { return a > b})
-    if (sortedKeys.length > 0) {
-      let lastKey = sortedKeys.pop()
-      let lastJump = student.jumps[lastKey]
-      newJump.dive_flow = lastJump.dive_flow + 1
-      newJump.jump_number = lastJump.jump_number + 1
-      newJump.instructor = lastJump.instructor
-    }
-    student.jumps[newJumpKey] = newJump
-    dispatch({
-      type: types.CREATE_NEXT_JUMP,
-      payload: student
+    database.get(student._id, function (err, student) {
+      if (err) { return console.log(err) }
+      let newJumpObj = jumpsTemplate(moment().format())
+      let newJumpKey = Object.keys(newJumpObj)[0]
+      let newJump = newJumpObj[newJumpKey]
+      let sortedKeys = Object.keys(student.jumps).sort((a, b) => { return a > b})
+      if (sortedKeys.length > 0) {
+        let lastKey = sortedKeys.pop()
+        let lastJump = student.jumps[lastKey]
+        newJump.dive_flow = lastJump.dive_flow + 1
+        newJump.jump_number = lastJump.jump_number + 1
+        newJump.instructor = lastJump.instructor
+      }
+      student.jumps[newJumpKey] = newJump
+      dispatch({
+        type: types.CREATE_NEXT_JUMP
+      })
+      dispatch(saveStudent(student))
     })
-    dispatch(saveStudent(student))
   }
 }
 
 export function removeJump(student, key) {
   return dispatch => {
-    let video_file = student.jumps[key].video_file
-    if (video_file) {
-      let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
-      console.log('removing video_file', videoFilePath)
-      fs.unlink(videoFilePath, (err) => {
-        if (err) { return console.log(err) }
-        delete student.jumps[key]
-      })
-    }
-    delete student.jumps[key]
-    dispatch(saveStudent(student))
+    database.get(student._id, function (err, student) {
+      if (err) { return console.log(err) }
+      let video_file = student.jumps[key].video_file
+      if (video_file) {
+        let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
+        console.log('removing video_file', videoFilePath)
+        fs.unlink(videoFilePath, (err) => {
+          if (err) { return console.log(err) }
+          delete student.jumps[key]
+        })
+      }
+      delete student.jumps[key]
+      dispatch(saveStudent(student))
+    })
   }
 }
 
