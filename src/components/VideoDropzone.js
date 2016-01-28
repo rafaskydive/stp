@@ -12,6 +12,7 @@ class VideoDropzone extends Component {
 
   onDrop (files) {
     let file = files[0]
+    console.log('file:', file)
     let student = {...this.props.student}
     let jump = {...this.props.jump}
     this.props.copyVideoFile(student, jump, file, (video_file) => {
@@ -58,7 +59,13 @@ class VideoDropzone extends Component {
     }
     return (
       <div>
-        <Dropzone className='dropzone' onDrop={(files) => this.onDrop(files)} style={{width: '100%', border: '1px solid black', height: '480px'}}>
+        <Dropzone
+          className='dropzone'
+          multiple={false}
+          accept="video/mp4"
+          onDrop={(files) => this.onDrop(files)}
+          style={{width: '100%', border: '1px solid black', height: '480px'}}
+          >
           <div className="drop-zone-text text-center">
             Drop video file here, or click to select file to upload.
           </div>
