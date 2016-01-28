@@ -13,6 +13,10 @@ import { jumpsTemplate } from '../src/utils'
 
 const now = moment().format()
 
+import database from '../src/database'
+
+console.log(process.env['NODE_ENV'])
+
 describe('sync actions', () => {
 
   it('newStudent should return an object with new:true', () => {
@@ -43,8 +47,71 @@ const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
 
 describe('async actions', () => {
-  afterEach(() => {
-    nock.cleanAll()
+
+  before(function() {
+    return (
+      database.get('test-student').then(doc => {
+        return database.remove(doc._id, doc._rev)
+      }).then(result => {}).catch(err => {})
+    )
+  })
+
+  it('saveStudent creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
+
+    const newStudent = {
+      type: 'student',
+      name: `Test Student`,
+      email: 'test@example.com',
+      phone: '123-456-7890',
+      jumps: [{
+        _id: `1-${now}`,
+        dive_flow: 1,
+        date: now,
+        instructor: "",
+        notes: ""
+      }]
+    }
+
+    const expectedActions = [
+      { type: types.REQUEST_PUT_STUDENT },
+      { type: types.REQUEST_STUDENT },
+      (incomingAction) => {
+        if (incomingAction.type !== 'RECIEVE_STUDENT' ) { throw Error('Expected action of type RECIEVE_STUDENT') }
+        if (incomingAction.payload._id !== 'test-student' ) { throw Error('Expected payload _id to be student-name (test-student)')}
+        if (! incomingAction.payload._rev) { throw Error('Expected payload to have _rev') }
+      }
+    ]
+
+    const store = mockStore({ student: newStudent }, expectedActions, done)
+
+    store.dispatch(actions.saveStudent(newStudent))
+  })
+
+  it('fetchStudent creates RECIEVE_STUDENT after fetching students', (done) => {
+
+    const expectedActions = [
+      { type: types.REQUEST_STUDENT },
+      (incomingAction) => {
+        if( ! incomingAction.payload._rev ) { throw Error('Expected fetchStudent to return a doc with a _rev')}
+      }
+    ]
+
+    const store = mockStore({ student: {} }, expectedActions, done)
+    store.dispatch(actions.fetchStudent("test-student-two"))
+  })
+
+  it('fetchStudents should return RECIEVE_STUDENTS and an array of docs', (done) => {
+
+    const expectedActions = [
+      {
+        type: types.REQUEST_STUDENTS
+      },
+      (incomingAction) => {
+        if( ! incomingAction.payload.length ) { throw "Expected payload to be an array"}
+      }
+    ]
+    const store = mockStore({ studentList: [] }, expectedActions, done)
+    store.dispatch(actions.fetchStudents())
   })
 
   it('copyVideoFile dispatches COPY_IN_PROGRESS and COPY_COMPLETE', (done) => {
@@ -69,138 +136,6 @@ describe('async actions', () => {
       })
 
     })
-  })
-
-  it('fetchStudent creates RECIEVE_STUDENT after fetching students', (done) => {
-    nock('http://localhost:5984')
-      .get('/my-pouch-db/')
-      .reply(200, {db_name:'my-pouch-db'})
-      .get('/my-pouch-db/david-rose')
-      .query(true)
-      .reply(200, { "_id": "david-rose", "_rev": "1-2", "name": "David Rose" })
-
-    const expectedActions = [
-      { type: types.REQUEST_STUDENT },
-      { type: types.RECIEVE_STUDENT, payload: { _id: "david-rose", _rev: "1-2", name: "David Rose" } }
-    ]
-
-    const store = mockStore({ student: {} }, expectedActions, done)
-    store.dispatch(actions.fetchStudent("david-rose"))
-  })
-
-  it('fetchStudents should return RECIEVE_STUDENTS and an array of docs', (done) => {
-    nock('http://localhost:5984')
-      .get('/my-pouch-db/')
-      .reply(200,{db_name:"my-pouch-db"})
-      .get('/my-pouch-db/_design/app/_view/by_name')
-      .query({include_docs:true})
-      .reply(200, {
-        total_rows: 2,
-        offset: 0,
-        rows: [
-          {_id: "david-rose", value: null, doc: {_id: "david-rose", name: "David Rose"}},
-          {_id: "bob-hope", value: null, doc: {_id: "bob-hope", name: "Bob Hope"}}
-        ]
-      })
-
-    const expectedActions = [
-      {
-        type: types.REQUEST_STUDENTS
-      },
-      {
-        type: types.RECIEVE_STUDENTS,
-        payload: [
-          {_id: "david-rose", name: "David Rose"},
-          {_id: "bob-hope", name: "Bob Hope"}
-        ]
-      }
-    ]
-    const store = mockStore({ studentList: [] }, expectedActions, done)
-    store.dispatch(actions.fetchStudents())
-  })
-
-  it('saveStudent creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
-
-    const newStudent = {
-      type: 'student',
-      name: `Test Student`,
-      email: 'test@example.com',
-      phone: '123-456-7890',
-      jumps: [{
-        _id: `1-${now}`,
-        dive_flow: 1,
-        date: now,
-        instructor: "",
-        notes: ""
-      }]
-    }
-
-    const expectedActions = [
-      { type: types.REQUEST_PUT_STUDENT },
-      { type: types.REQUEST_STUDENT },
-      {
-        type: types.RECIEVE_STUDENT,
-        payload: Object.assign({}, newStudent, {
-          _id: "test-student",
-          _rev: "1-3a13612036133f3f195f8e9189b78bb3"
-        })
-      }
-    ]
-
-    nock('http://localhost:5984', {"encodedQueryParams":true})
-      .get('/my-pouch-db/')
-      .reply(200, {"db_name":"my-pouch-db"})
-
-    nock('http://localhost:5984', {"encodedQueryParams":true})
-      .post('/my-pouch-db/_bulk_docs', {
-        "docs":[
-          {
-            "type":"student",
-            "name":"Test Student",
-            "email":"test@example.com",
-            "phone":"123-456-7890",
-            "jumps":[
-              {
-                "_id":`1-${now}`,
-                "dive_flow":1,
-                "date": now,
-                "instructor":"",
-                "notes":""
-              }
-            ],
-            "_id":"test-student"}
-          ],
-          "new_edits":true
-        }
-      )
-      .reply(201, [{"ok":true,"id":"test-student","rev":"1-3a13612036133f3f195f8e9189b78bb3"}])
-
-    nock('http://localhost:5984', {"encodedQueryParams":true})
-      .get('/my-pouch-db/test-student')
-      .query(true)
-      .reply(200, {
-        "_id":"test-student",
-        "_rev":"1-3a13612036133f3f195f8e9189b78bb3",
-        "type":"student",
-        "name":"Test Student",
-        "email":"test@example.com",
-        "phone":"123-456-7890",
-        "jumps":[
-          {
-            "_id":`1-${now}`,
-            "dive_flow":1,
-            "date":now,
-            "instructor":"",
-            "notes":""
-          }
-        ]
-      })
-
-    const store = mockStore({ student: newStudent }, expectedActions, done)
-
-    store.dispatch(actions.saveStudent(newStudent))
-
-    // console.log('store:', store.getState())
   })
 
 })
