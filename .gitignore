@@ -3,4 +3,4 @@ npm-debug.log
 /dist
 /build
 .DS_Store
-STP
+STP*
