@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 import moment from 'moment'
+import Classnames from 'classnames'
 
 class StudentList extends Component {
   componentDidMount() {
@@ -34,7 +35,17 @@ class StudentList extends Component {
     let instructor = this._lastJump(student).instructor
     return instructor !== "" ? ` with ${instructor}` : ""
   }
+  toggleSort(attr) {
+    console.log(`toggleSort("${attr}")`)
+    this.props.toggleSort(attr)
+  }
   render () {
+    let nameSortClass = Classnames({
+      'icon pull-right': true,
+      'icon-arrow-combo': this.props.studentList.sortBy !== "name",
+      'icon-down-dir': this.props.studentList.sortDesc === false && this.props.studentList.sortBy === "name",
+      'icon-up-dir': this.props.studentList.sortDesc === true && this.props.studentList.sortBy === "name"
+    })
     let { studentList, push } = {...this.props}
     return (
       <div className="pane-group">
@@ -53,8 +64,14 @@ class StudentList extends Component {
           <table className="table-striped">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Last Jump</th>
+                <th>
+                  Name
+                  <span className={nameSortClass} onClick={() => this.toggleSort('name')}></span>
+                </th>
+                <th>
+                  Last Jump
+                  <span className='icon icon-right-dir pull-right' onClick={() => this.toggleSort('date')}></span>
+                </th>
                 <th>Email</th>
                 <th>Phone</th>
               </tr>

@@ -36,3 +36,11 @@ export function showStudent(student) {
     payload: student
   }
 }
+
+export function toggleSort(attr) {
+  console.log(attr)
+  return {
+    type: 'SORT',
+    payload: { sortBy: attr }
+  }
+}
