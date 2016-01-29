@@ -52,6 +52,13 @@ class Student extends Component {
     this.props.removeJump(this.props.student, key)
   }
 
+  _sortedJumps() {
+    return Object.keys(this.props.student.jumps).map(key => {
+      return this.props.student.jumps[key]
+    }).sort((a, b) => {
+      return a.jump_date > b.jump_date
+    })
+  }
   render() {
     let { student } = {...this.props}
     return (
@@ -149,13 +156,15 @@ class Student extends Component {
                     </li>
                   )
                 }})()}
-                { Object.keys(student.jumps).map((key) => {
-                  let jump = student.jumps[key]
+                {this._sortedJumps().map(jump => {
                   return (
-                    <li className="list-group-item" key={key}>
+                    <li className="list-group-item" key={jump._id}>
                       <div className="media-body pull-left"
                           onClick={e => this.showStudentJump(student, jump)}>
-                        <strong>Dive Flow {jump.dive_flow}</strong>
+                        <strong>
+                          Jump {jump.jump_number} -
+                          Dive Flow {jump.dive_flow}
+                        </strong>
                         <p>Date: {moment(jump.jump_date).format('MMMM Do YYYY')}</p>
                         <p>Video: {jump.video_file}</p>
                       </div>
