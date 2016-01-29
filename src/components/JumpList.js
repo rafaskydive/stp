@@ -174,7 +174,7 @@ class Student extends Component {
                           textValues={["Remove Jump", "Are you sure?", "Removing..."]}
                           showTimer={true}
                           isExecuting={false}
-                          onClick={e => this.removeJump(key)}
+                          onClick={e => this.removeJump(jump._id)}
                           >
                           <span className="icon icon-trash icon-text"></span>
                         </InlineConfirmButton>

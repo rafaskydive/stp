@@ -36,15 +36,20 @@ class StudentList extends Component {
     return instructor !== "" ? ` with ${instructor}` : ""
   }
   toggleSort(attr) {
-    console.log(`toggleSort("${attr}")`)
     this.props.toggleSort(attr)
   }
   render () {
     let nameSortClass = Classnames({
       'icon pull-right': true,
       'icon-arrow-combo': this.props.studentList.sortBy !== "name",
-      'icon-down-dir': this.props.studentList.sortDesc === false && this.props.studentList.sortBy === "name",
-      'icon-up-dir': this.props.studentList.sortDesc === true && this.props.studentList.sortBy === "name"
+      'icon-down-dir': this.props.studentList.sortDesc === true && this.props.studentList.sortBy === "name",
+      'icon-up-dir': this.props.studentList.sortDesc === false && this.props.studentList.sortBy === "name"
+    })
+    let dateSortClass = Classnames({
+      'icon pull-right': true,
+      'icon-arrow-combo': this.props.studentList.sortBy !== "last_jump_date",
+      'icon-down-dir': this.props.studentList.sortDesc === true && this.props.studentList.sortBy === "last_jump_date",
+      'icon-up-dir': this.props.studentList.sortDesc === false && this.props.studentList.sortBy === "last_jump_date"
     })
     let { studentList, push } = {...this.props}
     return (
@@ -70,7 +75,7 @@ class StudentList extends Component {
                 </th>
                 <th>
                   Last Jump
-                  <span className='icon icon-right-dir pull-right' onClick={() => this.toggleSort('date')}></span>
+                  <span className={dateSortClass} onClick={() => this.toggleSort('last_jump_date')}></span>
                 </th>
                 <th>Email</th>
                 <th>Phone</th>

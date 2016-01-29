@@ -112,8 +112,20 @@ describe('sync actions', () => {
       }
       expect(actions.showStudent(student)).toEqual(expectedAction)
     })
+    markAsTested('showStudent')
   })
-  markAsTested('showStudent')
+
+  describe('toggleSort', () => {
+    it('should dispatch TOGGLE_SORT with payload of sortBy ', () => {
+      const expectedAction = {
+        type: types.TOGGLE_SORT,
+        payload: { sortBy: 'name' }
+      }
+      expect(actions.toggleSort('name')).toEqual(expectedAction)
+    })
+    markAsTested('toggleSort')
+  })
+
 })
 
 /******************************************************************************/
@@ -135,15 +147,6 @@ describe('async actions', () => {
 
 
   describe('saveStudent', () => {
-
-    before(function() {
-      console.log("DELETING TEST STUDENTS")
-      return (
-        database.allDocs({keys:["test-student","test-student-two"]}).then(response => {
-          return response.rows.map(row => database.remove(row.key, row.value.rev))
-        })
-      )
-    })
 
     it('creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
       const jump_date = '2016-01-28 11:57:51'
