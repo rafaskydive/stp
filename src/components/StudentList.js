@@ -23,18 +23,23 @@ class StudentList extends Component {
   }
 
   lastJumpInstructor(student, jump_date) {
-    let instructor = Object.keys(student.jumps)
-    .map(key=>{return student.jumps[key]})
-    .find(jump=>{return jump.jump_date===jump_date})
-    .instructor
-    console.log('instructor', instructor)
+    let instructor = null
+    try {
+      instructor = Object.keys(student.jumps)
+      .map(key=>{return student.jumps[key]})
+      .find(jump=>{return jump.jump_date===jump_date})
+      .instructor
+    }
+    catch (e) {
+      console.log(`${student._id}: ${e}`)
+    }
     return instructor ? ` with ${instructor}` : ""
   }
 
   toggleSort(attr) {
     this.props.toggleSort(attr)
   }
-  
+
   render () {
     let nameSortClass = Classnames({
       'icon pull-right': true,
