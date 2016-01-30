@@ -71,13 +71,13 @@ class StudentList extends Component {
           <table className="table-striped">
             <thead>
               <tr>
-                <th>
+                <th onClick={() => this.toggleSort('name')}>
                   Name
-                  <span className={nameSortClass} onClick={() => this.toggleSort('name')}></span>
+                  <span className={nameSortClass}></span>
                 </th>
-                <th>
+                <th onClick={() => this.toggleSort('last_jump_date')}>
                   Last Jump
-                  <span className={dateSortClass} onClick={() => this.toggleSort('last_jump_date')}></span>
+                  <span className={dateSortClass}></span>
                 </th>
                 <th>Email</th>
                 <th>Phone</th>
