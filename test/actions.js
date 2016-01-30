@@ -139,7 +139,7 @@ describe('async actions', () => {
   after(function() {
     console.log("DELETING TEST STUDENTS")
     return (
-      database.allDocs({keys:["test-student","test-student-two"]}).then(response => {
+      database.allDocs({keys:["test-student","test-student-two", "test-student-three"]}).then(response => {
         return response.rows.map(row => database.remove(row.key, row.value.rev))
       })
     )
@@ -195,6 +195,32 @@ describe('async actions', () => {
       const store = mockStore({ student: newStudent }, expectedActions, done)
       store.dispatch(actions.saveStudent(newStudent))
     })
+
+    it('copies latest jump_date from jump in jumps{} to last_jump_date', (done) => {
+      const jump_date = '2016-01-29 12:00:00'
+      const jumps = jumpsTemplate(jump_date)
+      const newStudent = {
+        type: 'student',
+        subtype: 'test-student',
+        name: 'Test Student Three',
+        email: 'test@example.com',
+        phone: '123-456-7890',
+        jumps: jumps
+      }
+      const expectedActions = [
+        { type: types.REQUEST_PUT_STUDENT },
+        { type: types.REQUEST_STUDENT },
+        (a) => {
+          expect(a.type).toEqual('RECIEVE_STUDENT')
+          expect(a.payload._id).toEqual('test-student-three')
+          expect(a.payload._rev).toNotEqual(undefined)
+          expect(a.payload.last_jump_date).toEqual(jump_date)
+        }
+      ]
+      const store = mockStore({ student: newStudent }, expectedActions, done)
+      store.dispatch(actions.saveStudent(newStudent))
+    })
+
     markAsTested('saveStudent')
   })
 

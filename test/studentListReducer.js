@@ -79,7 +79,8 @@ describe('studentList reducer', () => {
               "1": {jump_date: 1},
               "2": {jump_date: 2},
               "3": {jump_date: 4}
-            }
+            },
+            last_jump_date: 4
           },
           {
             name: "B",
@@ -87,7 +88,8 @@ describe('studentList reducer', () => {
               "1": {jump_date: 1},
               "2": {jump_date: 3},
               "3": {jump_date: 7}
-            }
+            },
+            last_jump_date: 7
           },
           {
             name: "C",
@@ -95,7 +97,8 @@ describe('studentList reducer', () => {
               "1": {jump_date: 1},
               "2": {jump_date: 2},
               "3": {jump_date: 3}
-            }
+            },
+            last_jump_date: 3
           },
           {
             name: "D",
@@ -103,7 +106,8 @@ describe('studentList reducer', () => {
               "1": {jump_date: 1},
               "2": {jump_date: 1},
               "3": {jump_date: 1}
-            }
+            },
+            last_jump_date: 1
           }
         ]
       }

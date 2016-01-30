@@ -22,22 +22,19 @@ class StudentList extends Component {
     this.props.push(`/student/${student._id}`)
   }
 
-  _lastJump(student) {
-    let jumps = student.jumps
-    let sortedKeys = Object.keys(jumps).sort((a, b) => { return a > b })
-    return student.jumps[sortedKeys.pop()]
+  lastJumpInstructor(student, jump_date) {
+    let instructor = Object.keys(student.jumps)
+    .map(key=>{return student.jumps[key]})
+    .find(jump=>{return jump.jump_date===jump_date})
+    .instructor
+    console.log('instructor', instructor)
+    return instructor ? ` with ${instructor}` : ""
   }
-  lastJumpDate(student) {
-    let jump = this._lastJump(student)
-    return moment(jump.jump_date).format("MMM Do")
-  }
-  lastJumpInstructor(student) {
-    let instructor = this._lastJump(student).instructor
-    return instructor !== "" ? ` with ${instructor}` : ""
-  }
+
   toggleSort(attr) {
     this.props.toggleSort(attr)
   }
+  
   render () {
     let nameSortClass = Classnames({
       'icon pull-right': true,
@@ -86,7 +83,7 @@ class StudentList extends Component {
                 return (
                   <tr key={student._id} onClick={e => this.showStudent(student)}>
                     <td>{student.name}</td>
-                    <td>{this.lastJumpDate(student)}{this.lastJumpInstructor(student)}</td>
+                    <td>{moment(student.last_jump_date).format("MMM Do")}{this.lastJumpInstructor(student, student.last_jump_date)}</td>
                     <td>{student.email}</td>
                     <td>{student.phone}</td>
                   </tr>

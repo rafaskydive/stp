@@ -45,6 +45,12 @@ export function saveStudent(student) {
     }
     delete(student.modified)
     delete(student.new)
+    // copy latest jump_date from jumps{} to student.last_jump_date
+    student.last_jump_date = Object.keys(student.jumps).map(key => {
+      return student.jumps[key].jump_date
+    }).sort((a, b) => {
+      return a > b
+    }).pop()    
     database.put(student, function (err, response) {
       if (err) { console.log(err) }
       return dispatch(fetchStudent(response.id))
