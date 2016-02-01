@@ -40,7 +40,7 @@ export function fetchStudent(_id) {
 function validateStudent(student) {
   student.errors = student.errors || []
   if(student.jumps.length < 1) {
-    student.errors.push("Must have at least one jump.")
+    student.errors.push("Must have at least one jump")
   }
   return student
 }

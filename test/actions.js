@@ -230,7 +230,7 @@ describe('async actions', () => {
       const expectedActions = [
         {
           type: types.SAVE_STUDENT_ERROR,
-          payload: { _id: 'test-student-four', email: 'ts4@example.com', errors: [ 'Must have at least one jump.' ], jumps: [], name: 'Test Student Four', phone: '123-456-7890', type: 'student' }
+          payload: { _id: 'test-student-four', email: 'ts4@example.com', errors: [ 'Must have at least one jump' ], jumps: [], name: 'Test Student Four', phone: '123-456-7890', type: 'student' }
         }
       ]
       const store = mockStore({ student: student }, expectedActions, done)
