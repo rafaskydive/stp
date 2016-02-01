@@ -16,7 +16,10 @@ class VideoDropzone extends Component {
     let student = {...this.props.student}
     let jump = {...this.props.jump}
     this.props.copyVideoFile(student, jump, file, (video_file) => {
-      student.jumps[jump._id].video_file = video_file
+      // student.jumps[jump._id].video_file = video_file
+      student.jumps.find(j => {
+        return j.jump_date === jump.jump_date
+      }).video_file = video_file
       this.props.saveStudent(student)
     })
   }
