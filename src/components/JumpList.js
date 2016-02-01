@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ErrorStatus from './ErrorStatus'
+import InstructorInput from './InstructorInput'
 import InlineConfirmButton from 'react-inline-confirm'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
@@ -17,6 +18,7 @@ class Student extends Component {
   handleEditField(e) {
     let field = e.target.name
     let value = e.target.value
+    console.log(field, value)
     this.props.editStudentField(this.props.student, field, value)
   }
 
@@ -119,6 +121,10 @@ class Student extends Component {
                     className="form-control"
                   />
                 </div>
+                <div className="form-group">
+                  <label>Instructor</label>
+                  <InstructorInput value={student.instructor} onChange={e => this.handleEditField(e)}/>
+                </div>
                 <div className="form-actions">
                   {(() => { if(this.props.student.modified) {
                     return (
@@ -163,7 +169,8 @@ class Student extends Component {
                           onClick={e => this.showStudentJump(student, jump)}>
                         <strong>
                           Jump {jump.jump_number} -
-                          Dive Flow {jump.dive_flow}
+                          Dive Flow {jump.dive_flow} -
+                          Instructor {jump.instructor}
                         </strong>
                         <p>Date: {moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</p>
                         <p>Video: {jump.video_file}</p>
