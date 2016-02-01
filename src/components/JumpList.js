@@ -155,7 +155,7 @@ class Student extends Component {
             </div>
             <div className="pane">
               <ul className="list-group">
-                {(() => { if (!student.new) {
+                {(() => { if (!student.new && this.props.student.modified) {
                   return (
                     <li className="list-group-header">
                       <button className="btn btn-default" onClick={e => this.createNextJump(e)}>
@@ -178,17 +178,21 @@ class Student extends Component {
                         <p>Date: {moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</p>
                         <p>Video: {jump.video_file}</p>
                       </div>
-                      <span className="pull-right">
-                        <InlineConfirmButton
-                          className="btn btn-default"
-                          textValues={["Remove Jump", "Are you sure?", "Removing..."]}
-                          showTimer={true}
-                          isExecuting={false}
-                          onClick={e => this.removeJump(jump)}
-                          >
-                          <span className="icon icon-trash icon-text"></span>
-                        </InlineConfirmButton>
-                      </span>
+                      {(() => { if(this.props.student.modified) {
+                        return (
+                          <span className="pull-right">
+                            <InlineConfirmButton
+                              className="btn btn-default"
+                              textValues={["Remove Jump", "Are you sure?", "Removing..."]}
+                              showTimer={true}
+                              isExecuting={false}
+                              onClick={e => this.removeJump(jump)}
+                              >
+                              <span className="icon icon-trash icon-text"></span>
+                            </InlineConfirmButton>
+                          </span>
+                        )
+                      }})()}
                     </li>
                   )
                 })}
