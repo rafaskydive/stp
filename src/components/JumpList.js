@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ErrorStatus from './ErrorStatus'
 import InlineConfirmButton from 'react-inline-confirm'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
@@ -40,7 +41,7 @@ class Student extends Component {
 
   showStudentJump(student, jump) {
     if (student._id === 'new') { return alert("Please save student first.") }
-    this.props.push(`/student/${student._id}/jump/${jump._id}`)
+    this.props.push(`/student/${student._id}/jump/${jump.jump_date}`)
   }
 
   createNextJump() {
@@ -48,14 +49,12 @@ class Student extends Component {
     this.render()
   }
 
-  removeJump(key) {
-    this.props.removeJump(this.props.student, key)
+  removeJump(jump) {
+    this.props.removeJump(this.props.student, jump)
   }
 
   _sortedJumps() {
-    return Object.keys(this.props.student.jumps).map(key => {
-      return this.props.student.jumps[key]
-    }).sort((a, b) => {
+    return this.props.student.jumps.sort((a, b) => {
       return a.jump_date > b.jump_date
     })
   }
@@ -73,6 +72,7 @@ class Student extends Component {
                 </button>
               </div>
               <span className="page-title">{student.name || "New Student"}</span>
+              <ErrorStatus errors={student.errors}/>
             </div>
           </header>
           <div className="sub-pane-group">
@@ -158,14 +158,14 @@ class Student extends Component {
                 }})()}
                 {this._sortedJumps().map(jump => {
                   return (
-                    <li className="list-group-item" key={jump._id}>
+                    <li className="list-group-item" key={jump.jump_date}>
                       <div className="media-body pull-left"
                           onClick={e => this.showStudentJump(student, jump)}>
                         <strong>
                           Jump {jump.jump_number} -
                           Dive Flow {jump.dive_flow}
                         </strong>
-                        <p>Date: {moment(jump.jump_date).format('MMMM Do YYYY')}</p>
+                        <p>Date: {moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</p>
                         <p>Video: {jump.video_file}</p>
                       </div>
                       <span className="pull-right">
@@ -174,7 +174,7 @@ class Student extends Component {
                           textValues={["Remove Jump", "Are you sure?", "Removing..."]}
                           showTimer={true}
                           isExecuting={false}
-                          onClick={e => this.removeJump(jump._id)}
+                          onClick={e => this.removeJump(jump)}
                           >
                           <span className="icon icon-trash icon-text"></span>
                         </InlineConfirmButton>

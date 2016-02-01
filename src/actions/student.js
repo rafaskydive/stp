@@ -7,7 +7,7 @@ import { jumpsTemplate } from '../utils'
 import moment from 'moment'
 
 export function newStudent(callback) {
-  let payload = { new: true, type: 'student', jumps: jumpsTemplate(moment().format()) }
+  let payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format())] }
   return {
     type: types.NEW_STUDENT,
     payload
@@ -37,20 +37,40 @@ export function fetchStudent(_id) {
   }
 }
 
+function validateStudent(student) {
+  student.errors = student.errors || []
+  if(student.jumps.length < 1) {
+    student.errors.push("Must have at least one jump.")
+  }
+  return student
+}
+
+function reportErrors(student) {
+  return {
+    type: types.SAVE_STUDENT_ERROR,
+    payload: student
+  }
+}
+
 export function saveStudent(student) {
   return dispatch => {
-    dispatch({ type: types.REQUEST_PUT_STUDENT})
     if(! student._id || student._id === "new") {
       student._id = student.name.replace(/ /g, '-').toLowerCase()
     }
     delete(student.modified)
     delete(student.new)
+    delete(student.errros)
+    student = validateStudent(student)
+    if (student.errors.length > 0) {
+      return dispatch(reportErrors(student))
+    }
     // copy latest jump_date from jumps{} to student.last_jump_date
     student.last_jump_date = Object.keys(student.jumps).map(key => {
       return student.jumps[key].jump_date
     }).sort((a, b) => {
       return a > b
-    }).pop()    
+    }).pop() || ""
+    dispatch({ type: types.REQUEST_PUT_STUDENT})
     database.put(student, function (err, response) {
       if (err) { console.log(err) }
       return dispatch(fetchStudent(response.id))
@@ -81,7 +101,10 @@ export function editStudentField(student, field, value) {
 
 export function editJumpField(student, jump, field, value) {
   value = value.match(/(\d+)/) ? Number(value) : value
-  student.jumps[jump._id][field] = value
+  let _jump = student.jumps.find(j => {
+    return j.jump_date == jump.jump_date
+  })
+  _jump[field] = value
   return {
     type: types.EDIT_STUDENT_FIELD,
     payload: student
@@ -92,18 +115,17 @@ export function createNextJump(student) {
   return dispatch => {
     database.get(student._id, function (err, student) {
       if (err) { return console.log(err) }
-      let newJumpObj = jumpsTemplate(moment().format())
-      let newJumpKey = Object.keys(newJumpObj)[0]
-      let newJump = newJumpObj[newJumpKey]
-      let sortedKeys = Object.keys(student.jumps).sort((a, b) => { return a > b})
-      if (sortedKeys.length > 0) {
-        let lastKey = sortedKeys.pop()
-        let lastJump = student.jumps[lastKey]
+      let newJump = jumpsTemplate(moment().format())
+      let lastJump = student.jumps.sort((a, b) => {
+        return a.jump_date < b.jump_date
+      })[0]
+      if ( ! lastJump ) { lastJump = newJump }
+      else {
         newJump.dive_flow = lastJump.dive_flow + 1
         newJump.jump_number = lastJump.jump_number + 1
         newJump.instructor = lastJump.instructor
       }
-      student.jumps[newJumpKey] = newJump
+      student.jumps.push(newJump)
       dispatch({
         type: types.CREATE_NEXT_JUMP
       })
@@ -112,20 +134,21 @@ export function createNextJump(student) {
   }
 }
 
-export function removeJump(student, key) {
+export function removeJump(student, jump) {
   return dispatch => {
     database.get(student._id, function (err, student) {
       if (err) { return console.log(err) }
-      let video_file = student.jumps[key].video_file
+      let _jump = student.jumps.find(j => {
+        return j.jump_date === jump.jump_date
+      })
+      let video_file = _jump.video_file
       if (video_file) {
         let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
-        console.log('removing video_file', videoFilePath)
         fs.unlink(videoFilePath, (err) => {
           if (err) { return console.log(err) }
-          delete student.jumps[key]
         })
       }
-      delete student.jumps[key]
+      student.jumps.splice(student.jumps.indexOf(_jump), 1)
       dispatch(saveStudent(student))
     })
   }

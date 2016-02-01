@@ -23,7 +23,9 @@ class Jump extends Component {
     return (
       this.props.student._id === 'new' ?
       jumpsTemplate :
-      this.props.student.jumps[this.props.params.jump_id]
+      this.props.student.jumps.find(j => {
+        return j.jump_date === this.props.params.jump_id
+      })
     )
   }
 

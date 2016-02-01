@@ -27,7 +27,7 @@ describe('sync actions', () => {
 
   describe('newStudent', () => {
     it('should create an action to set student to new state', () => {
-      const payload = { new: true, type: 'student', jumps: jumpsTemplate(moment().format()) }
+      const payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format())] }
       const expectedAction = {
         type: types.NEW_STUDENT,
         payload
@@ -58,16 +58,15 @@ describe('sync actions', () => {
   describe('editJumpField', () => {
     it('should create EDIT_STUDENT_FIELD and modify a text field', () => {
       const jump_date = '2016-01-28T08:51:43-05:00'
-      const jump = jumpsTemplate(jump_date)[jump_date]
+      const jump = jumpsTemplate(jump_date)
       const student = {
         name: 'Test Student',
-        jumps: jumpsTemplate(jump_date)
+        jumps: [jumpsTemplate(jump_date)]
       }
       const field = "instructor"
       const value = "Test Instructor"
-      const expectedJumps = {}
-      expectedJumps[`${jump_date}`] = Object.assign({}, jump)
-      expectedJumps[`${jump_date}`].instructor = "Test Instructor"
+      const expectedJumps = [jump]
+      expectedJumps[0].instructor = "Test Instructor"
       const expectedAction = {
         type: types.EDIT_STUDENT_FIELD,
         payload: {
@@ -79,16 +78,15 @@ describe('sync actions', () => {
 
     it('should create EDIT_STUDENT_FIELD and modify a number field', () => {
       const jump_date = '2016-01-28T08:51:43-05:00'
-      const jump = jumpsTemplate(jump_date)[jump_date]
+      const jump = jumpsTemplate(jump_date)
       const student = {
         name: 'Test Student',
-        jumps: jumpsTemplate(jump_date)
+        jumps: [jumpsTemplate(jump_date)]
       }
       const field = "jump_number"
       const value = "10"
-      const expectedJumps = {}
-      expectedJumps[`${jump_date}`] = Object.assign({}, jump)
-      expectedJumps[`${jump_date}`].jump_number = 10
+      const expectedJumps = [jump]
+      expectedJumps[0].jump_number = 10
       const expectedAction = {
         type: types.EDIT_STUDENT_FIELD,
         payload: {
@@ -150,7 +148,7 @@ describe('async actions', () => {
 
     it('creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
       const jump_date = '2016-01-28 11:57:51'
-      const jumps = jumpsTemplate(jump_date)
+      const jumps = [jumpsTemplate(jump_date)]
       const newStudent = {
         type: 'student',
         subtype: 'test-student',
@@ -198,7 +196,7 @@ describe('async actions', () => {
 
     it('copies latest jump_date from jump in jumps{} to last_jump_date', (done) => {
       const jump_date = '2016-01-29 12:00:00'
-      const jumps = jumpsTemplate(jump_date)
+      const jumps = [jumpsTemplate(jump_date)]
       const newStudent = {
         type: 'student',
         subtype: 'test-student',
@@ -221,6 +219,23 @@ describe('async actions', () => {
       store.dispatch(actions.saveStudent(newStudent))
     })
 
+    it('with errors, dispatches reportErrors instead of save flow', (done) => {
+      const student = {
+        type: 'student',
+        name: 'Test Student Four',
+        email: 'ts4@example.com',
+        phone: '123-456-7890',
+        jumps: []
+      }
+      const expectedActions = [
+        {
+          type: types.SAVE_STUDENT_ERROR,
+          payload: { _id: 'test-student-four', email: 'ts4@example.com', errors: [ 'Must have at least one jump.' ], jumps: [], name: 'Test Student Four', phone: '123-456-7890', type: 'student' }
+        }
+      ]
+      const store = mockStore({ student: student }, expectedActions, done)
+      store.dispatch(actions.saveStudent(student))
+    })
     markAsTested('saveStudent')
   })
 
@@ -354,6 +369,7 @@ describe('async actions', () => {
 
     it('should remove specified jump and video, then save student', (done) => {
       const jump_date = '2016-01-28 11:57:51'
+      const jump = jumpsTemplate(jump_date)
       const student = {_id: 'test-student'}
       const expectedActions = [
         { type: types.REQUEST_PUT_STUDENT },
@@ -365,7 +381,7 @@ describe('async actions', () => {
         }
       ]
       const store = mockStore(student, expectedActions, done)
-      store.dispatch(actions.removeJump(student, jump_date))
+      store.dispatch(actions.removeJump(student, jump))
     })
     markAsTested('removeJump')
   })

@@ -88,7 +88,7 @@ class StudentList extends Component {
                 return (
                   <tr key={student._id} onClick={e => this.showStudent(student)}>
                     <td>{student.name}</td>
-                    <td>{moment(student.last_jump_date).format("MMM Do")}{this.lastJumpInstructor(student, student.last_jump_date)}</td>
+                    <td>{moment(student.last_jump_date).format("ddd MMM Do")}{this.lastJumpInstructor(student, student.last_jump_date)}</td>
                     <td>{student.email}</td>
                     <td>{student.phone}</td>
                   </tr>

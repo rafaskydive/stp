@@ -21,7 +21,7 @@
   },
   "electronVersion": "0.35.2",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive",
+    "test": "NODE_ENV=development mocha --compilers js:babel-core/register --recursive",
     "test:watch": "NODE_ENV=development npm run test -- --watch",
     "start": "electron .",
     "build": "NODE_ENV=production webpack -p --config webpack.config.prod.js",

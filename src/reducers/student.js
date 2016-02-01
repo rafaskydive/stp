@@ -5,7 +5,7 @@ const initialState = {
   name: "",
   email: "",
   phone: "",
-  jumps: {},
+  jumps: [],
   modified: true
 }
 
@@ -26,6 +26,8 @@ export default function student (state=initialState, action) {
     case types.EDIT_STUDENT_FIELD:
     case types.CREATE_NEXT_JUMP:
       return Object.assign({}, state, action.payload)
+    case types.SAVE_STUDENT_ERROR:
+      return Object.assign({}, state, { errors: action.payload.errors })
     default:
       return state
   }
