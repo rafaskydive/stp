@@ -58,7 +58,7 @@ class StudentList extends Component {
       <div className="pane-group">
         <div className="pane">
           <header className="sub-header">
-            <div className="toolbar-actions">
+            <div className="toolbar-actions text-center">
               <div className="btn-group pull-right">
                 <button className="btn btn-default" onClick={() => this.addStudent()}>
                   <span className="icon icon-user-add icon-text"></span>

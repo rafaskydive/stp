@@ -64,8 +64,8 @@ class Jump extends Component {
       <div className="pane-group">
         <div className="pane">
           <header className="sub-header">
-            <div className="toolbar-actions">
-              <div className="btn-group pull-right">
+            <div className="toolbar-actions text-center">
+              <div className="btn-group pull-left">
                 <button className="btn btn-default" onClick={() => this.props.push(`/student/${student._id}`)}>
                   <span className="icon icon-left-open icon-text"></span>
                   Back
