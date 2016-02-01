@@ -17,15 +17,17 @@ class InstructorInput extends Component {
 
   setInstructor(e) {
     this.props.onChange(e)
-    this.props.setInstructorOnFirstJump(this.props.student, e.target.value)
-    this.props.saveStudent(this.props.student)
+    if (this.props.student.jumps.length === 1) {
+      this.props.setInstructorOnFirstJump(this.props.student, e.target.value)
+      this.props.saveStudent(this.props.student)
+    }
   }
 
   render() {
-    console.log(this.props)
     return(
       <select value={this.props.value}
         required
+        disabled={this.props.disabled}
         onChange={e => this.setInstructor(e)}
         ref="instructor"
         name="instructor"

@@ -143,7 +143,6 @@ describe('async actions', () => {
     )
   })
 
-
   describe('saveStudent', () => {
 
     it('creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
@@ -237,6 +236,31 @@ describe('async actions', () => {
       store.dispatch(actions.saveStudent(student))
     })
     markAsTested('saveStudent')
+  })
+
+  describe('setInstructorOnFirstJump', () =>  {
+    it('copies student.instructor to student.jumps[0].instructor', (done) => {
+      const jump_date = '2016-01-29 12:00:00'
+      const jumps = [jumpsTemplate(jump_date)]
+      const newStudent = {
+        type: 'student',
+        subtype: 'test-student',
+        name: 'Test Student Five',
+        email: 'test@example.com',
+        phone: '123-456-7890',
+        instructor: 'Test Instructor',
+        jumps: jumps
+      }
+      const expectedActions = [
+        (a) => {
+          expect(a.type).toEqual(types.SET_INSTRUCTOR_ON_FIRST_JUMP)
+          expect(a.payload.jumps[0].instructor).toEqual(newStudent.instructor)
+        }
+      ]
+      const store = mockStore({ student: newStudent }, expectedActions, done)
+      store.dispatch(actions.setInstructorOnFirstJump(newStudent, newStudent.instructor))
+    })
+    markAsTested('setInstructorOnFirstJump')
   })
 
   describe('disableStudentEditForm', () => {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import VideoDropzone from './VideoDropzone'
+import InstructorInput from './InstructorInput'
 import { jumpsTemplate } from '../utils'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
@@ -106,15 +107,10 @@ class Jump extends Component {
                 </div>
                 <div className="form-group">
                   <label>Instructor</label>
-                  <input
-                    onChange={e => this.handleEditField(e)}
-                    value={jump.instructor}
+                  <InstructorInput
                     disabled={!student.modified}
-                    ref="instructor"
-                    name="instructor"
-                    type="text"
-                    className="form-control"
-                  />
+                    value={jump.instructor}
+                    onChange={e => this.handleEditField(e)}/>
                 </div>
                 <div className="form-actions">
                   {(() => { if(this.props.student.modified) {

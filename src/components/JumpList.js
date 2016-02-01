@@ -18,7 +18,6 @@ class Student extends Component {
   handleEditField(e) {
     let field = e.target.name
     let value = e.target.value
-    console.log(field, value)
     this.props.editStudentField(this.props.student, field, value)
   }
 
@@ -123,7 +122,11 @@ class Student extends Component {
                 </div>
                 <div className="form-group">
                   <label>Instructor</label>
-                  <InstructorInput value={student.instructor} onChange={e => this.handleEditField(e)}/>
+                  <InstructorInput
+                    disabled={!student.modified}
+                    value={student.instructor}
+                    onChange={e => this.handleEditField(e)}
+                  />
                 </div>
                 <div className="form-actions">
                   {(() => { if(this.props.student.modified) {

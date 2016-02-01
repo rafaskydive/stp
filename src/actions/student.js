@@ -53,7 +53,6 @@ function reportErrors(student) {
 }
 
 export function saveStudent(student) {
-  console.log('saveStudent:', student)
   return dispatch => {
     if(! student._id || student._id === "new") {
       student._id = student.name.replace(/ /g, '-').toLowerCase()
@@ -115,7 +114,7 @@ export function editJumpField(student, jump, field, value) {
 export function setInstructorOnFirstJump(student, instructor) {
   student.jumps[0].instructor = instructor
   return {
-    type: 'SET_INSTRUCTOR_ON_FIRST_JUMP',
+    type: types.SET_INSTRUCTOR_ON_FIRST_JUMP,
     payload: student
   }
 }
