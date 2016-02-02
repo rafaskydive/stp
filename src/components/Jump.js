@@ -137,7 +137,7 @@ class Jump extends Component {
                 </div>
               </form>
             </div>
-            <div className="pane padded">
+            <div className="pane padded video-page">
               {videoDropZoneEl}
             </div>
           </div>

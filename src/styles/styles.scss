@@ -15,8 +15,16 @@
   }
 }
 
+.video-page {
+  background-color: #000;
+}
 .dropzone {
-  width: 720px;
+  background-color: #333;
+  width: 100%;
+  .drop-zone-text {
+    color: white;
+    font-weight: $font-weight-bold;
+  }
 }
 
 progress {

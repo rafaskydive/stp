@@ -34,9 +34,9 @@ class VideoDropzone extends Component {
     if (video_file) {
       let src = path.join(config.videoFilePath, this.props.student._id, video_file)
       return (
-        <div>
+        <div className="">
           <div className="dropzone">
-            <video width="720px" controls>
+            <video width="100%" controls>
               <source src={src} type="video/mp4"/>
             </video>
           </div>
@@ -55,13 +55,13 @@ class VideoDropzone extends Component {
     if (this.props.videoDropzone.percent > 0) {
       return (
         <div className="dropzone">
-          <strong>Copying: {this.props.videoDropzone.percent} %</strong>
+          <span className="drop-zone-text">Copying: {this.props.videoDropzone.percent} %</span>
           <progress value={this.props.videoDropzone.percent} max={100}></progress>
         </div>
       )
     }
     return (
-      <div>
+      <div className="">
         <Dropzone
           className='dropzone'
           multiple={false}
