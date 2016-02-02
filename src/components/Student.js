@@ -18,35 +18,15 @@ class Student extends Component {
 
   render() {
     let { student } = {...this.props}
-    let jumpsBtnClass = Classnames({
-      'btn btn-default': true,
-      'active': this.props.location.pathname === `/student/${student._id}`
-    })
-    let notesBtnClass = Classnames({
-      'btn btn-default': true,
-      'active': this.props.location.pathname === `/student/${student._id}/notes`
-    })
+    let backButton = this.props.location.pathname.match(/\/jump\//) ? `/student/${student._id}` : "/"
     return (
       <div className="pane-group">
         <div className="pane">
           <header className="sub-header">
             <div className="toolbar-actions text-center">
-              <div className="btn-group pull-left">
-                <button className="btn btn-default" onClick={() => this.props.push('/')}>
-                  <span className="icon icon-left-open icon-text"></span>
-                  All Students
-                </button>
-              </div>
-              <div className='btn-group pull-left'>
-                <div className={jumpsBtnClass} onClick={e => {this.props.push(`/student/${student._id}`)}}>
-                  <span className='icon icon-text icon-flight'></span>
-                  Jumps
-                </div>
-                <div className={notesBtnClass} onClick={e => {this.props.push(`/student/${student._id}/notes`)}}>
-                  <span className='icon icon-text icon-doc-text'></span>
-                  Notes
-                </div>
-              </div>
+              <button className="btn btn-default pull-left" onClick={() => this.props.push(backButton)}>
+                <span className="icon icon-left-open"></span>
+              </button>
               <span className="page-title">{student.name || "New Student"}</span>
               <ErrorStatus errors={student.errors}/>
             </div>
