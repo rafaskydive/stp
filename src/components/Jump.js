@@ -63,18 +63,17 @@ class Jump extends Component {
     return (
       <div className="pane-group">
         <div className="pane">
-          <header className="sub-header">
-            <div className="toolbar-actions text-center">
-              <div className="btn-group pull-left">
-                <button className="btn btn-default" onClick={() => this.props.push(`/student/${student._id}`)}>
-                  <span className="icon icon-left-open icon-text"></span>
-                  Back
-                </button>
-              </div>
-              <span className="page-title">{student.name || "New Student"}</span>
+          <header className="video-page">
+            <div className="text-center">
+              <span className="page-title">
+                Dive Flow {jump.dive_flow} -&nbsp;
+                {moment(jump.jump_date).format("dddd MMMM Do")} -&nbsp;
+                {jump.instructor}
+              </span>
             </div>
           </header>
           <div className="sub-pane-group">
+            {/* TODO: move this to Jump }
             <div className="pane pane-sm sidebar padded">
               <form onSubmit={e => this.handleSubmit(e)}>
                 <div className="form-group">
@@ -137,6 +136,7 @@ class Jump extends Component {
                 </div>
               </form>
             </div>
+            {*/}
             <div className="pane padded video-page">
               {videoDropZoneEl}
             </div>

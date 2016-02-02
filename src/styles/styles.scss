@@ -17,6 +17,10 @@
 
 .video-page {
   background-color: #000;
+  .page-title {
+    color: $primary-color;
+    font-weight: $font-weight-bold;
+  }
 }
 .dropzone {
   background-color: #333;
