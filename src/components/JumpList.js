@@ -9,6 +9,12 @@ import moment from 'moment'
 
 class JumpList extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      activeTab: 'jumps'
+    }
+  }
   handleEditField(e) {
     let field = e.target.name
     let value = e.target.value
@@ -53,6 +59,11 @@ class JumpList extends Component {
       return a.jump_date > b.jump_date
     })
   }
+
+  setActiveTab(tab) {
+    this.setState({activeTab: tab})
+  }
+
   render() {
     let { student } = {...this.props}
     return (
@@ -134,50 +145,76 @@ class JumpList extends Component {
           </form>
         </div>
         <div className="pane">
-
-          <ul className="list-group">
-            {(() => { if (!student.new && this.props.student.modified) {
-              return (
-                <li className="list-group-header">
-                  <button className="btn btn-default" onClick={e => this.createNextJump(e)}>
-                    <span className="icon icon-list-add icon-text"></span>
-                    Add New Jump
-                  </button>
-                </li>
-              )
-            }})()}
-            {this._sortedJumps().map(jump => {
-              return (
-                <li className="list-group-item" key={jump.jump_date}>
-                  <div className="media-body pull-left"
-                      onClick={e => this.showStudentJump(student, jump)}>
-                    <strong>
-                      Jump {jump.jump_number} -
-                      Dive Flow {jump.dive_flow} -
-                      Instructor {jump.instructor}
-                    </strong>
-                    <p>Date: {moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</p>
-                    <p>Video: {jump.video_file}</p>
-                  </div>
-                  {(() => { if(this.props.student.modified) {
-                    return (
-                      <span className="pull-right">
-                        <InlineConfirmButton
-                          className="btn btn-default"
-                          textValues={["Remove Jump", "Are you sure?", "Removing..."]}
-                          showTimer={true}
-                          isExecuting={false}
-                          onClick={e => this.removeJump(jump)}
-                          >
-                          <span className="icon icon-trash icon-text"></span>
-                        </InlineConfirmButton>
-                      </span>
-                    )
-                  }})()}
-                </li>
-              )
-            })}
-          </ul>
+          <div className="tab-group">
+            <div className={this.state.activeTab === 'jumps' ? 'tab-item active' : 'tab-item'} onClick={() => this.setActiveTab('jumps')}>
+              Jumps
+            </div>
+            <div className={this.state.activeTab === 'notes' ? 'tab-item active' : 'tab-item'} onClick={() => this.setActiveTab('notes')}>
+              Notes
+            </div>
+          </div>
+          {(() => { if (this.state.activeTab === 'jumps') {
+            return (
+              <ul className="list-group">
+                {(() => { if (!student.new && this.props.student.modified) {
+                  return (
+                    <li className="list-group-header">
+                      <button className="btn btn-default" onClick={e => this.createNextJump(e)}>
+                        <span className="icon icon-list-add icon-text"></span>
+                        Add New Jump
+                      </button>
+                    </li>
+                  )
+                }})()}
+                {this._sortedJumps().map(jump => {
+                  return (
+                    <li className="list-group-item" key={jump.jump_date}>
+                      <div className="media-body pull-left"
+                          onClick={e => this.showStudentJump(student, jump)}>
+                        <strong>
+                          Jump {jump.jump_number} -
+                          Dive Flow {jump.dive_flow} -
+                          Instructor {jump.instructor}
+                        </strong>
+                        <p>Date: {moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</p>
+                        <p>Video: {jump.video_file}</p>
+                      </div>
+                      {(() => { if(this.props.student.modified) {
+                        return (
+                          <span className="pull-right">
+                            <InlineConfirmButton
+                              className="btn btn-default"
+                              textValues={["Remove Jump", "Are you sure?", "Removing..."]}
+                              showTimer={true}
+                              isExecuting={false}
+                              onClick={e => this.removeJump(jump)}
+                              >
+                              <span className="icon icon-trash icon-text"></span>
+                            </InlineConfirmButton>
+                          </span>
+                        )
+                      }})()}
+                    </li>
+                  )
+                })}
+              </ul>
+            )
+          } else {
+            return (
+              <ul className="list-group">
+                {(() => { if (!student.new && this.props.student.modified) {
+                  return (
+                    <li className="list-group-header">
+                      <button className="btn btn-default" onClick={e => this.createNote(e)}>
+                        <span className="icon icon-list-add icon-text"></span>
+                        Add New Note
+                      </button>
+                    </li>
+                  )
+                }})()}
+              </ul>
+            )
+          }})()}
         </div>
       </div>
     )
