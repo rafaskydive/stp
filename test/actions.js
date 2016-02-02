@@ -19,6 +19,19 @@ function markAsTested(action) {
   ACTIONS.splice(ACTIONS.indexOf(action), 1)
 }
 
+before(() => {
+  database.put({
+    _id: '_design/app',
+    views: {
+      by_name: {
+        map: "function(doc){if(doc.type==='student'){emit(doc)}}"
+      }
+    }
+  },
+  function(err, result) {
+    if(err){console.log(err)}
+  })
+})
 after(() => {
   console.log('UNTESTED ACTIONS', ACTIONS)
 })
