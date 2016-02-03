@@ -167,7 +167,8 @@ describe('async actions', () => {
         name: `Test Student`,
         email: 'test@example.com',
         phone: '123-456-7890',
-        jumps: jumps
+        jumps: jumps,
+        notes: []
       }
       const expectedActions = [
         { type: types.REQUEST_PUT_STUDENT },
@@ -191,7 +192,8 @@ describe('async actions', () => {
         name: `Test Student Two`,
         email: 'test2@example.com',
         phone: '123-456-7890',
-        jumps: jumps
+        jumps: jumps,
+        notes: []
       }
       const expectedActions = [
         { type: types.REQUEST_PUT_STUDENT },
@@ -215,7 +217,8 @@ describe('async actions', () => {
         name: 'Test Student Three',
         email: 'test@example.com',
         phone: '123-456-7890',
-        jumps: jumps
+        jumps: jumps,
+        notes: []
       }
       const expectedActions = [
         { type: types.REQUEST_PUT_STUDENT },
@@ -237,12 +240,13 @@ describe('async actions', () => {
         name: 'Test Student Four',
         email: 'ts4@example.com',
         phone: '123-456-7890',
-        jumps: []
+        jumps: [],
+        notes: []
       }
       const expectedActions = [
         {
           type: types.SAVE_STUDENT_ERROR,
-          payload: { _id: 'test-student-four', email: 'ts4@example.com', errors: [ 'Must have at least one jump' ], jumps: [], name: 'Test Student Four', phone: '123-456-7890', type: 'student' }
+          payload: { _id: 'test-student-four', email: 'ts4@example.com', errors: [ 'Must have at least one jump' ], jumps: [], notes: [], name: 'Test Student Four', phone: '123-456-7890', type: 'student' }
         }
       ]
       const store = mockStore({ student: student }, expectedActions, done)
@@ -262,7 +266,8 @@ describe('async actions', () => {
         email: 'test@example.com',
         phone: '123-456-7890',
         instructor: 'Test Instructor',
-        jumps: jumps
+        jumps: jumps,
+        notes: []
       }
       const expectedActions = [
         (a) => {

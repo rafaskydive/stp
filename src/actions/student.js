@@ -42,6 +42,11 @@ function validateStudent(student) {
   if(student.jumps.length < 1) {
     student.errors.push("Must have at least one jump")
   }
+  student.notes.map(note => {
+    if(note.text.trim() === "") {
+      student.errors.push("Note text cannot be blank")
+    }
+  })
   return student
 }
 
@@ -75,6 +80,13 @@ export function saveStudent(student) {
       if (err) { console.log(err) }
       return dispatch(fetchStudent(response.id))
     })
+  }
+}
+
+export function saveNote(student, note) {
+  return dispatch => {
+    student.notes.push(note)
+    return dispatch(saveStudent(student))
   }
 }
 

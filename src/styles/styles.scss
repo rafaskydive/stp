@@ -61,3 +61,14 @@ progress {
     // height: 100%;
   }
 }
+
+.list-group {
+  * {
+    // overflow:visible;
+    white-space: pre-wrap;
+  }
+}
+
+.media-body {
+  // overflow: visible;
+}
