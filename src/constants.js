@@ -29,3 +29,4 @@ export const EDIT_JUMP_FIELD = 'EDIT_JUMP_FIELD'
 export const CREATE_NEXT_JUMP = 'CREATE_NEXT_JUMP'
 
 export const TOGGLE_SORT = 'TOGGLE_SORT'
+export const FILTER_BY_NAME = 'FILTER_BY_NAME'

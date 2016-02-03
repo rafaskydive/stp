@@ -2,16 +2,25 @@ import * as types from '../constants'
 
 const initialState = {
   students: [],
+  filteredStudents: [],
   sortBy: null,
-  sortDesc: true
+  sortDesc: true,
+  nameFilter: null
 }
 
 export default function studentList (state=initialState, action) {
   switch (action.type) {
     case types.RECIEVE_STUDENTS:
       return Object.assign({}, state, {
-        students: [...action.payload]
+        students: [...action.payload],
+        filteredStudents: [...action.payload]
       })
+    case types.FILTER_BY_NAME:
+      let re = RegExp(`${action.payload}`, 'i')
+      let filteredStudents = state.students.map(student => {
+        if (student.name.match(re)) { return student }
+      }).filter(n => { return n })
+      return Object.assign({}, state, {nameFilter: action.payload.nameFilter, filteredStudents: filteredStudents})
     case types.TOGGLE_SORT:
       let students = state.students
       const sortedStudents = []

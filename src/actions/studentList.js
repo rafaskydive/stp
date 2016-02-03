@@ -43,3 +43,10 @@ export function toggleSort(attr) {
     payload: { sortBy: attr }
   }
 }
+
+export function filterByName(str) {
+  return {
+    type: types.FILTER_BY_NAME,
+    payload: str
+  }
+}

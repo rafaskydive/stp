@@ -52,6 +52,9 @@ span.currency-color.orange { background-color: #fdb; }
 span.currency-color.red { background-color: #fcc; }
 span.currency-color.uncurrent { background-color: #f88; }
 
+.student-list-filter {
+  margin-left: $padding;
+}
 // photon overrides
 
 .toolbar-actions {

@@ -48,6 +48,10 @@ class StudentList extends Component {
     return ""
   }
 
+  filterByName(e) {
+    this.props.filterByName(e.target.value)
+  }
+
   render () {
     let nameSortClass = Classnames({
       'icon pull-right': true,
@@ -61,12 +65,22 @@ class StudentList extends Component {
       'icon-down-dir': this.props.studentList.sortDesc === true && this.props.studentList.sortBy === "last_jump_date",
       'icon-up-dir': this.props.studentList.sortDesc === false && this.props.studentList.sortBy === "last_jump_date"
     })
+
     let { studentList, push } = {...this.props}
+
     return (
       <div className="pane-group">
         <div className="pane">
           <header className="sub-header">
             <div className="toolbar-actions text-center">
+
+              <input
+                onChange={e => this.filterByName(e)}
+                placeholder="Filter by Name"
+                className="student-list-filter pull-left"
+                value={this.props.nameFilter}
+              />
+
               <div className="btn-group pull-right">
                 <button className="btn btn-default" onClick={() => this.addStudent()}>
                   <span className="icon icon-user-add icon-text"></span>
@@ -93,7 +107,7 @@ class StudentList extends Component {
               </tr>
             </thead>
             <tbody>
-              {studentList.students.map(student => {
+              {studentList.filteredStudents.map(student => {
                 let daysSinceLastJump = moment(student.last_jump_date).twix().count('days') - 1
                 return (
                   <tr key={student._id} onClick={e => this.showStudent(student)}>
