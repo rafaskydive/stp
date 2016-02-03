@@ -36,8 +36,9 @@ progress {
 }
 
 .conditional-input {
+  display: block;
   border-bottom: 1px solid $dark-border-color;
-  margin-bottom: $padding;
+  margin-bottom: $padding-less;
 }
 // photon overrides
 

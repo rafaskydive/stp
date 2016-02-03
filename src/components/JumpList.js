@@ -47,8 +47,8 @@ class JumpList extends Component {
               <div className="media-body pull-left"
                   onClick={e => this.showStudentJump(student, jump)}>
                 <strong>
-                  Jump {jump.jump_number} -
                   Dive Flow {jump.dive_flow} -
+                  Jump {jump.jump_number} -
                   Instructor {jump.instructor}
                 </strong>
                 <p>Date: {moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</p>

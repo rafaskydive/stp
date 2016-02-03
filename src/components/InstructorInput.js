@@ -27,7 +27,7 @@ class InstructorInput extends Component {
     let { label } = {...this.props}
     return this.props.disabled ?
     (
-      <div className="conditional-input">{label}: <strong className="pull-right">{this.props.value}</strong></div>
+      <div className="conditional-input">{label}<br/>{this.props.value}</div>
     ) :
     (
       <div className="form-group">
