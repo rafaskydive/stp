@@ -21,8 +21,8 @@
   },
   "electronVersion": "0.35.2",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive",
-    "test:watch": "npm run test -- --watch",
+    "test": "NODE_ENV=development mocha --compilers js:babel-core/register --recursive",
+    "test:watch": "NODE_ENV=development npm run test -- --watch",
     "start": "electron .",
     "build": "NODE_ENV=production webpack -p --config webpack.config.prod.js",
     "deploy": "electron-packager . $npm_package_productName --out=dist --overwrite --ignore='^/dist$' --ignore='node_modules/\\.bin' --prune --asar --platform=darwin --arch=x64 --version=$npm_package_electronVersion",
@@ -46,7 +46,8 @@
     "react-router": "^2.0.0-rc5",
     "redux": "3.0.4",
     "redux-simple-router": "^2.0.4",
-    "redux-thunk": "1.0.0"
+    "redux-thunk": "1.0.0",
+    "twix": "^0.9.0"
   },
   "devDependencies": {
     "babel-core": "6.2.1",
@@ -63,7 +64,9 @@
     "eslint-config-airbnb": "1.0.2",
     "eslint-plugin-react": "3.11.2",
     "expect": "^1.13.4",
+    "faker": "^3.0.1",
     "file-loader": "0.8.5",
+    "memdown": "^1.1.2",
     "mocha": "2.3.4",
     "nock": "^5.2.1",
     "node-sass": "^3.4.2",

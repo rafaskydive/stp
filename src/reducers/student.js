@@ -5,14 +5,14 @@ const initialState = {
   name: "",
   email: "",
   phone: "",
-  jumps: {},
+  jumps: [],
+  notes: [],
   modified: true
 }
 
 export default function student (state=initialState, action) {
   switch(action.type) {
     case types.NEW_STUDENT:
-      console.log('NEW_STUDENT')
       return Object.assign({}, initialState, action.payload)
     case types.RECIEVE_STUDENT:
     case types.SAVE_STUDENT:
@@ -26,7 +26,10 @@ export default function student (state=initialState, action) {
       return Object.assign({}, state, { modified: false } )
     case types.EDIT_STUDENT_FIELD:
     case types.CREATE_NEXT_JUMP:
+    case types.SET_INSTRUCTOR_ON_FIRST_JUMP:
       return Object.assign({}, state, action.payload)
+    case types.SAVE_STUDENT_ERROR:
+      return Object.assign({}, state, { errors: action.payload.errors, modified: false })
     default:
       return state
   }

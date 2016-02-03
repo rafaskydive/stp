@@ -5,22 +5,13 @@ import config from '../config'
 import { routeActions } from 'redux-simple-router'
 import { jumpsTemplate } from '../utils'
 import moment from 'moment'
-const now = moment().format()
 
 export function newStudent(callback) {
-  let payload = { new: true, type: 'student', jumps: jumpsTemplate }
+  let payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format())] }
   return {
     type: types.NEW_STUDENT,
     payload
   }
-  // return dispatch => {
-  //   let payload = { new: true, type: 'student', jumps: jumpsTemplate }
-  //   dispatch({
-  //     type: types.NEW_STUDENT,
-  //     payload
-  //   })
-  //   return(callback())
-  // }
 }
 
 function requestStudent() {
@@ -40,32 +31,48 @@ export function fetchStudent(_id) {
   if(_id === 'new') { return }
   return dispatch => {
     dispatch(requestStudent())
-    database.get(_id, (err, doc) => {
+    database.get(_id, function (err, doc) {
       dispatch(receiveStudent(doc))
-      return {}
     })
+  }
+}
+
+function reportErrors(student) {
+  return {
+    type: types.SAVE_STUDENT_ERROR,
+    payload: student
   }
 }
 
 export function saveStudent(student) {
   return dispatch => {
-    dispatch({ type: types.REQUEST_PUT_STUDENT})
     if(! student._id || student._id === "new") {
       student._id = student.name.replace(/ /g, '-').toLowerCase()
     }
     delete(student.modified)
     delete(student.new)
-    database.put(student, (err, response) => {
+    delete(student.errros)
+    student.last_jump_date = Object.keys(student.jumps).map(key => {
+      return student.jumps[key].jump_date
+    }).sort((a, b) => {
+      return a > b
+    }).pop() || ""
+    dispatch({ type: types.REQUEST_PUT_STUDENT})
+    database.put(student, function (err, response) {
       if (err) { console.log(err) }
       return dispatch(fetchStudent(response.id))
     })
   }
 }
 
-export function editStudent(student) {
-  return {
-    type: types.EDIT_STUDENT,
-    payload: student
+export function saveNote(student, note) {
+  return dispatch => {
+    if(note.text.trim() === "") {
+      Object.assign(student, {errors: ['Note text may not be blank']})
+      return dispatch(reportErrors(student))
+    }
+    student.notes.push(note)
+    return dispatch(saveStudent(student))
   }
 }
 
@@ -92,61 +99,96 @@ export function editStudentField(student, field, value) {
 
 export function editJumpField(student, jump, field, value) {
   value = value.match(/(\d+)/) ? Number(value) : value
-  student.jumps[jump._id][field] = value
+  let _jump = student.jumps.find(j => {
+    return j.jump_date == jump.jump_date
+  })
+  _jump[field] = value
   return {
     type: types.EDIT_STUDENT_FIELD,
     payload: student
   }
 }
 
-export function createNextJump(student) {
-  return dispatch => {
-    let newJumpObj = jumpsTemplate
-    let newJumpKey = Object.keys(newJumpObj)[0]
-    let newJump = newJumpObj[newJumpKey]
-    let sortedKeys = Object.keys(student.jumps).sort((a, b) => { return a > b})
-    if (sortedKeys.length > 0) {
-      let lastKey = sortedKeys.pop()
-      let lastJump = student.jumps[lastKey]
-      newJump.dive_flow = lastJump.dive_flow + 1
-      newJump.jump_number = lastJump.jump_number + 1
-      newJump.instructor = lastJump.instructor
-    }
-    student.jumps[newJumpKey] = newJump
-    dispatch({
-      type: types.CREATE_NEXT_JUMP,
-      payload: student
-    })
-    dispatch(saveStudent(student))
+export function setInstructorOnFirstJump(student, instructor) {
+  student.jumps[0].instructor = instructor
+  return {
+    type: types.SET_INSTRUCTOR_ON_FIRST_JUMP,
+    payload: student
   }
 }
 
-export function removeJump(student, key) {
+export function createNextJump(student) {
   return dispatch => {
-    let video_file = student.jumps[key].video_file
-    if (video_file) {
-      let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
-      console.log('removing video_file', videoFilePath)
-      fs.unlink(videoFilePath, (err) => {
-        if (err) { return console.log(err) }
-        delete student.jumps[key]
+    database.get(student._id, function (err, student) {
+      if (err) { return console.log(err) }
+      let newJump = jumpsTemplate(moment().format())
+      let lastJump = student.jumps.sort((a, b) => {
+        return a.jump_date < b.jump_date
+      })[0]
+      if ( ! lastJump ) { lastJump = newJump }
+      else {
+        newJump.dive_flow = lastJump.dive_flow + 1
+        newJump.jump_number = lastJump.jump_number + 1
+        newJump.instructor = lastJump.instructor
+      }
+      student.jumps.push(newJump)
+      dispatch({
+        type: types.CREATE_NEXT_JUMP
       })
-    }
-    delete student.jumps[key]
+      dispatch(saveStudent(student))
+    })
+  }
+}
+
+export function removeJump(student, jump) {
+  return dispatch => {
+    database.get(student._id, function (err, student) {
+      if (err) { return console.log(err) }
+      // one jump must remain or weird shit happens
+      if (student.jumps.length === 1) {
+        Object.assign(student, {errors: ['Student must have at least one jump']})
+        return dispatch(reportErrors(student))
+      }
+      let _jump = student.jumps.find(j => {
+        return j.jump_date === jump.jump_date
+      })
+      let video_file = _jump.video_file
+      if (video_file) {
+        let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
+        fs.unlink(videoFilePath, (err) => {
+          if (err) { return console.log(err) }
+        })
+      }
+      student.jumps.splice(student.jumps.indexOf(_jump), 1)
+      dispatch(saveStudent(student))
+    })
+  }
+}
+
+export function removeNote(student, note) {
+  return dispatch => {
+    let _note = student.notes.find(n => {
+      return n.date === note.date
+    })
+    student.notes.splice(student.notes.indexOf(_note), 1)
     dispatch(saveStudent(student))
   }
 }
 
 export function removeVideo(student, jump) {
   return dispatch => {
-    let video_file = student.jumps[jump._id].video_file
+    let video_file = student.jumps.find(j => {
+      return j.jump_date === jump.jump_date
+    }).video_file
     let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
     console.log('removing video_file', videoFilePath)
     fs.unlink(videoFilePath, (err) => {
       if (err) { return console.log(err) }
       console.log('removed', videoFilePath)
     })
-    delete student.jumps[jump._id].video_file
+    delete student.jumps.find(j => {
+      return j.jump_date === jump.jump_date
+    }).video_file
     dispatch(saveStudent(student))
   }
 }

@@ -4,23 +4,57 @@
 .sub-header {
   background-color: $border-color;
   border-bottom: 1px solid $dark-border-color;
-  span {
-    padding-right: $padding-more;
-  }
   .page-title {
-    padding-left: 4px;
+    // padding-left: 4px;
+    font-weight: $font-weight-bold;
+  }
+  .error {
+    color: red;
+    padding-left: 12px;
     font-weight: $font-weight-bold;
   }
 }
 
+.video-page {
+  background-color: #000;
+  .page-title {
+    color: $primary-color;
+    font-weight: $font-weight-bold;
+  }
+}
 .dropzone {
-  width: 720px;
+  background-color: #333;
+  width: 100%;
+  .drop-zone-text {
+    color: white;
+    font-weight: $font-weight-bold;
+  }
 }
 
 progress {
   width: 100%;
 }
 
+.conditional-input {
+  display: block;
+  border-bottom: 1px solid $dark-border-color;
+  margin-bottom: $padding-less;
+}
+
+span.currency-color {
+  width: 5em;
+  float: right;
+  padding: 0px 5px 0px 5px;
+  background-color: #cfc;
+}
+span.currency-color.yellow { background-color: #ffc; }
+span.currency-color.orange { background-color: #fdb; }
+span.currency-color.red { background-color: #fcc; }
+span.currency-color.uncurrent { background-color: #f88; }
+
+.student-list-filter {
+  margin-left: $padding;
+}
 // photon overrides
 
 .toolbar-actions {
@@ -46,4 +80,15 @@ progress {
   .pane {
     // height: 100%;
   }
+}
+
+.list-group {
+  * {
+    // overflow:visible;
+    white-space: pre-wrap;
+  }
+}
+
+.media-body {
+  // overflow: visible;
 }
