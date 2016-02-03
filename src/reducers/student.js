@@ -29,7 +29,7 @@ export default function student (state=initialState, action) {
     case types.SET_INSTRUCTOR_ON_FIRST_JUMP:
       return Object.assign({}, state, action.payload)
     case types.SAVE_STUDENT_ERROR:
-      return Object.assign({}, state, { errors: action.payload.errors })
+      return Object.assign({}, state, { errors: action.payload.errors, modified: false })
     default:
       return state
   }

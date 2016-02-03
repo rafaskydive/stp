@@ -233,25 +233,6 @@ describe('async actions', () => {
       const store = mockStore({ student: newStudent }, expectedActions, done)
       store.dispatch(actions.saveStudent(newStudent))
     })
-
-    it('with errors, dispatches reportErrors instead of save flow', (done) => {
-      const student = {
-        type: 'student',
-        name: 'Test Student Four',
-        email: 'ts4@example.com',
-        phone: '123-456-7890',
-        jumps: [],
-        notes: []
-      }
-      const expectedActions = [
-        {
-          type: types.SAVE_STUDENT_ERROR,
-          payload: { _id: 'test-student-four', email: 'ts4@example.com', errors: [ 'Must have at least one jump' ], jumps: [], notes: [], name: 'Test Student Four', phone: '123-456-7890', type: 'student' }
-        }
-      ]
-      const store = mockStore({ student: student }, expectedActions, done)
-      store.dispatch(actions.saveStudent(student))
-    })
     markAsTested('saveStudent')
   })
 

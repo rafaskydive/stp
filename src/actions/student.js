@@ -37,19 +37,6 @@ export function fetchStudent(_id) {
   }
 }
 
-function validateStudent(student) {
-  student.errors = student.errors || []
-  if(student.jumps.length < 1) {
-    student.errors.push("Must have at least one jump")
-  }
-  student.notes.map(note => {
-    if(note.text.trim() === "") {
-      student.errors.push("Note text cannot be blank")
-    }
-  })
-  return student
-}
-
 function reportErrors(student) {
   return {
     type: types.SAVE_STUDENT_ERROR,
@@ -65,11 +52,6 @@ export function saveStudent(student) {
     delete(student.modified)
     delete(student.new)
     delete(student.errros)
-    student = validateStudent(student)
-    if (student.errors.length > 0) {
-      return dispatch(reportErrors(student))
-    }
-    // copy latest jump_date from jumps{} to student.last_jump_date
     student.last_jump_date = Object.keys(student.jumps).map(key => {
       return student.jumps[key].jump_date
     }).sort((a, b) => {
@@ -85,6 +67,10 @@ export function saveStudent(student) {
 
 export function saveNote(student, note) {
   return dispatch => {
+    if(note.text.trim() === "") {
+      Object.assign(student, {errors: ['Note text may not be blank']})
+      return dispatch(reportErrors(student))
+    }
     student.notes.push(note)
     return dispatch(saveStudent(student))
   }
@@ -158,6 +144,11 @@ export function removeJump(student, jump) {
   return dispatch => {
     database.get(student._id, function (err, student) {
       if (err) { return console.log(err) }
+      // one jump must remain or weird shit happens
+      if (student.jumps.length === 1) {
+        Object.assign(student, {errors: ['Student must have at least one jump']})
+        return dispatch(reportErrors(student))
+      }
       let _jump = student.jumps.find(j => {
         return j.jump_date === jump.jump_date
       })
@@ -171,6 +162,16 @@ export function removeJump(student, jump) {
       student.jumps.splice(student.jumps.indexOf(_jump), 1)
       dispatch(saveStudent(student))
     })
+  }
+}
+
+export function removeNote(student, note) {
+  return dispatch => {
+    let _note = student.notes.find(n => {
+      return n.date === note.date
+    })
+    student.notes.splice(student.notes.indexOf(_note), 1)
+    dispatch(saveStudent(student))
   }
 }
 

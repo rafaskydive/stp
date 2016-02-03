@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
+import InlineConfirmButton from 'react-inline-confirm'
 import moment from 'moment'
 
 class Note extends Component {
+  removeNote(e) {
+    this.props.removeNote(e)
+  }
+
   render () {
     let { note } = {...this.props}
     return (
@@ -10,6 +15,21 @@ class Note extends Component {
           <strong>{moment(note.date).format("dddd, MMMM Do h:mm a")}</strong>
           <p>{note.text}</p>
         </div>
+        {(() => { if(this.props.student.modified) {
+          return (
+            <span className="pull-right">
+              <InlineConfirmButton
+                className="btn btn-default"
+                textValues={["Remove Note", "Are you sure?", "Removing"]}
+                showTimer={true}
+                isExecuting={false}
+                onClick={e => this.removeNote(note)}
+                >
+                <span className="icon icon-trash icon-text"></span>
+              </InlineConfirmButton>
+            </span>
+          )
+        }})()}
       </li>
     )
   }
@@ -87,6 +107,10 @@ export default class Notes extends Component {
     this.setState({creatingNote: false})
   }
 
+  removeNote(note) {
+    this.props.removeNote(this.props.student, note)
+  }
+
   _sortedNotes() {
     return this.props.student.notes.sort((a, b) => {
       return a.date < b.date
@@ -104,7 +128,7 @@ export default class Notes extends Component {
           saveNote={e => this.saveNote(e)}
         />
         {this._sortedNotes().map(_note => {
-          return <Note note={_note} key={_note.date}/>
+          return <Note note={_note} student={student} removeNote={e => this.removeNote(e)} key={_note.date}/>
         })}
       </ul>
     )
