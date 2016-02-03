@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import JumpList from './JumpList'
 import Notes from './Notes'
 import ErrorStatus from './ErrorStatus'
+import ConditionalInput from './ConditionalInput'
 import InstructorInput from './InstructorInput'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
@@ -61,55 +62,47 @@ class Student extends Component {
       <div className="sub-pane-group">
         <div className="pane pane-sm sidebar padded">
           <form onSubmit={e => this.handleSubmit(e)}>
-            <div className="form-group">
-              <label>Name</label>
-              <input required
-                onChange={e => this.handleEditField(e)}
-                value={student.name}
-                disabled={!student.modified}
-                ref="name"
-                name="name"
-                type="text"
-                placeholder="Firstname Lastname"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input required
-                onChange={e => this.handleEditField(e)}
-                value={student.email}
-                disabled={!student.modified}
-                ref="email"
-                name="email"
-                type="email"
-                placeholder="email@example.com"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label>Phone</label>
-              <input required
-                onChange={e => this.handleEditField(e)}
-                value={student.phone}
-                disabled={!student.modified}
-                ref="phone"
-                name="phone"
-                type="tel"
-                pattern="(\d{3})-(\d{3})-(\d{4})"
-                title="Must be in format '123-456-7890'"
-                placeholder="123-456-7890"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label>Instructor</label>
-              <InstructorInput
-                disabled={!student.modified}
-                value={student.instructor}
-                onChange={e => this.handleEditField(e)}
-              />
-            </div>
+            <ConditionalInput required
+              label="Name"
+              onChange={e => this.handleEditField(e)}
+              value={student.name}
+              disabled={!student.modified}
+              ref="name"
+              name="name"
+              type="text"
+              placeholder="Firstname Lastname"
+              className="form-control"
+            />
+            <ConditionalInput required
+              label="Email"
+              onChange={e => this.handleEditField(e)}
+              value={student.email}
+              disabled={!student.modified}
+              ref="email"
+              name="email"
+              type="email"
+              placeholder="email@example.com"
+              className="form-control"
+            />
+            <ConditionalInput required
+              label="Phone"
+              onChange={e => this.handleEditField(e)}
+              value={student.phone}
+              disabled={!student.modified}
+              ref="phone"
+              name="phone"
+              type="tel"
+              pattern="(\d{3})-(\d{3})-(\d{4})"
+              title="Must be in format '123-456-7890'"
+              placeholder="123-456-7890"
+              className="form-control"
+            />
+            <InstructorInput
+              label="Instructor"
+              disabled={!student.modified}
+              value={student.instructor}
+              onChange={e => this.handleEditField(e)}
+            />
             <div className="form-actions">
               {(() => { if(this.props.student.modified) {
                 return (

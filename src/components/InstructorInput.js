@@ -24,23 +24,31 @@ class InstructorInput extends Component {
   }
 
   render() {
-    return(
-      <select value={this.props.value}
-        required
-        disabled={this.props.disabled}
-        onChange={e => this.setInstructor(e)}
-        ref="instructor"
-        name="instructor"
-        type="text"
-        placeholder="Instructor Name"
-        className="form-control"
-      >
-      {this.state.instructors.map((instructor, i) => {
-        return (
-          <option value={instructor} key={i}>{instructor}</option>
-        )
-      })}
-      </select>
+    let { label } = {...this.props}
+    return this.props.disabled ?
+    (
+      <div className="conditional-input">{label}: <strong className="pull-right">{this.props.value}</strong></div>
+    ) :
+    (
+      <div className="form-group">
+        <label>{label}</label>
+        <select value={this.props.value}
+          required
+          disabled={this.props.disabled}
+          onChange={e => this.setInstructor(e)}
+          ref="instructor"
+          name="instructor"
+          type="text"
+          placeholder="Instructor Name"
+          className="form-control"
+        >
+        {this.state.instructors.map((instructor, i) => {
+          return (
+            <option value={instructor} key={i}>{instructor}</option>
+          )
+        })}
+        </select>
+      </div>
     )
   }
 }

@@ -35,6 +35,10 @@ progress {
   width: 100%;
 }
 
+.conditional-input {
+  border-bottom: 1px solid $dark-border-color;
+  margin-bottom: $padding;
+}
 // photon overrides
 
 .toolbar-actions {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import VideoDropzone from './VideoDropzone'
+import ConditionalInput from './ConditionalInput'
 import InstructorInput from './InstructorInput'
 import { jumpsTemplate } from '../utils'
 import { connect } from 'react-redux'
@@ -62,41 +63,35 @@ class Jump extends Component {
       <div className="sub-pane-group">
         <div className="pane pane-sm sidebar padded">
           <form onSubmit={e => this.handleSubmit(e)}>
-            <div className="form-group">
-              <label>Jump Number</label>
-              <input
-                onChange={e => this.handleEditField(e)}
-                value={jump.jump_number}
-                disabled={!student.modified}
-                ref="jump_number"
-                name="jump_number"
-                type="number"
-                min={1}
-                max={100}
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label>Dive Flow</label>
-              <input
-                onChange={e => this.handleEditField(e)}
-                value={jump.dive_flow}
-                disabled={!student.modified}
-                ref="dive_flow"
-                name="dive_flow"
-                type="number"
-                min={1}
-                max={18}
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label>Instructor</label>
-              <InstructorInput
-                disabled={!student.modified}
-                value={jump.instructor}
-                onChange={e => this.handleEditField(e)}/>
-            </div>
+            <ConditionalInput
+              label="Dive Flow"
+              onChange={e => this.handleEditField(e)}
+              value={jump.dive_flow}
+              disabled={!student.modified}
+              ref="dive_flow"
+              name="dive_flow"
+              type="number"
+              min={1}
+              max={18}
+              className="form-control"
+            />
+            <ConditionalInput
+              label="Jump Number"
+              onChange={e => this.handleEditField(e)}
+              value={jump.jump_number}
+              disabled={!student.modified}
+              ref="jump_number"
+              name="jump_number"
+              type="number"
+              min={1}
+              max={100}
+              className="form-control"
+            />
+            <InstructorInput
+              label="Instructor"
+              disabled={!student.modified}
+              value={jump.instructor}
+              onChange={e => this.handleEditField(e)}/>
             <div className="form-actions">
               {(() => { if(this.props.student.modified) {
                 return (
