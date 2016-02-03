@@ -74,12 +74,15 @@ class StudentList extends Component {
           <header className="sub-header">
             <div className="toolbar-actions text-center">
 
-              <input
-                onChange={e => this.filterByName(e)}
-                placeholder="Filter by Name"
-                className="student-list-filter pull-left"
-                value={this.props.nameFilter}
-              />
+              <form>
+                <input
+                  autoFocus={true}
+                  onChange={e => this.filterByName(e)}
+                  placeholder="Filter by Name"
+                  className="student-list-filter pull-left"
+                  value={this.props.nameFilter}
+                />
+              </form>
 
               <div className="btn-group pull-right">
                 <button className="btn btn-default" onClick={() => this.addStudent()}>
