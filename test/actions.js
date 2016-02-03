@@ -150,7 +150,7 @@ describe('async actions', () => {
   after(function() {
     console.log("DELETING TEST STUDENTS")
     return (
-      database.allDocs({keys:["test-student","test-student-two", "test-student-three"]}).then(response => {
+      database.allDocs({keys:["test-student","test-student-two", "test-student-three", "save-note-student", "remove-note-student"]}).then(response => {
         return response.rows.map(row => database.remove(row.key, row.value.rev))
       })
     )
@@ -279,6 +279,63 @@ describe('async actions', () => {
       store.dispatch(actions.disableStudentEditForm(student))
     })
     markAsTested('disableStudentEditForm')
+  })
+
+  describe('saveNote', () => {
+    it('should save note', (done) => {
+      const student = {
+        type: 'student',
+        name: 'Save Note Student',
+        jumps: [jumpsTemplate('w-h-a-t e-v-e-r')],
+        notes: []
+      }
+      const expectedActions = [
+        { type: types.REQUEST_PUT_STUDENT },
+        { type: types.REQUEST_STUDENT },
+        (a) => {
+          expect(a.type).toEqual(types.RECIEVE_STUDENT)
+          expect(a.payload.notes[0].text).toEqual('success')
+        }
+      ]
+      const store = mockStore(student, expectedActions, done)
+      store.dispatch(actions.saveNote(student, {date: 'x', text: 'success'}))
+    })
+
+    it('with errors, should not save note', (done) => {
+      const expectedActions = [
+        {
+          type: types.SAVE_STUDENT_ERROR,
+          payload: { errors: [ 'Note text may not be blank' ], student: { notes: [] } }
+        }
+      ]
+      const store = mockStore({student:{notes:[]}}, expectedActions, done)
+      store.dispatch(actions.saveNote({student:{notes:[]}}, {date: 'x', text: ''}))
+    })
+    markAsTested('saveNote')
+  })
+
+  describe('removeNote', () => {
+
+    it('should remove specified note', (done) => {
+      const student = {
+        type: 'student',
+        name: 'Remove Note Student',
+        jumps: [jumpsTemplate('w-h-a-t e-v-e-r')],
+        notes: [{date:'x',text:'keep'},{date:'y',text:'remove'}]
+      }
+      const expectedActions = [
+        { type: types.REQUEST_PUT_STUDENT },
+        { type: types.REQUEST_STUDENT },
+        (a) => {
+          expect(a.type).toEqual(types.RECIEVE_STUDENT)
+          expect(a.payload.notes.length).toEqual(1)
+          expect(a.payload.notes[0].text).toEqual('keep')
+        }
+      ]
+      const store = mockStore(student, expectedActions, done)
+      store.dispatch(actions.removeNote(student, {date:'y',text:'remove'}))
+    })
+    markAsTested('removeNote')
   })
 
   describe('fetchStudent', () => {
