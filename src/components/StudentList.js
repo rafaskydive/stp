@@ -23,18 +23,17 @@ class StudentList extends Component {
     this.props.push(`/student/${student._id}`)
   }
 
-  lastJumpInstructor(student, jump_date) {
-    let instructor = null
+  lastJumpInfo(student, jump_date) {
+    let jump = null
     try {
-      instructor = Object.keys(student.jumps)
+      jump = Object.keys(student.jumps)
       .map(key=>{return student.jumps[key]})
       .find(jump=>{return jump.jump_date===jump_date})
-      .instructor
     }
     catch (e) {
       console.log(`${student._id}: ${e}`)
     }
-    return instructor ? ` with ${instructor}` : ""
+    return jump ? ` DF${jump.dive_flow} ${jump.instructor.match(/\b\w/g).join('')}` : ""
   }
 
   toggleSort(attr) {
@@ -84,13 +83,13 @@ class StudentList extends Component {
                   Name
                   <span className={nameSortClass}></span>
                 </th>
+                <th>Phone</th>
+                <th>Email</th>
                 <th onClick={() => this.toggleSort('last_jump_date')}>
                   Last Jump
                   <span className={dateSortClass}></span>
                 </th>
-                <th>Currency</th>
-                <th>Email</th>
-                <th>Phone</th>
+                <th>Last Dive Flow</th>
               </tr>
             </thead>
             <tbody>
@@ -99,13 +98,13 @@ class StudentList extends Component {
                 return (
                   <tr key={student._id} onClick={e => this.showStudent(student)}>
                     <td>{student.name}</td>
+                    <td>{student.phone}</td>
+                    <td>{student.email}</td>
                     <td>
                       {moment(student.last_jump_date).format("ddd MMM Do")}
-                      {this.lastJumpInstructor(student, student.last_jump_date)}
                       <span className={`currency-color ${this.currencyClass(daysSinceLastJump)}`}>{daysSinceLastJump} days</span>
                     </td>
-                    <td>{student.email}</td>
-                    <td>{student.phone}</td>
+                    <td>{this.lastJumpInfo(student, student.last_jump_date)}</td>
                   </tr>
                 )
               })}
