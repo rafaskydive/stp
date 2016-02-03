@@ -3,7 +3,7 @@ import * as types from '../constants'
 const initialState = {
   students: [],
   sortBy: null,
-  sortDesc: false
+  sortDesc: true
 }
 
 export default function studentList (state=initialState, action) {
