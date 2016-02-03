@@ -15,9 +15,16 @@ function receiveStudents(response) {
 }
 
 export function fetchStudents() {
+  const query = {
+    map: function(doc) {
+      if(doc.type==='student' && doc.last_jump_date) {
+        emit(doc.last_jump_date)
+      }
+    }
+}
   return dispatch => {
     dispatch(requestStudents())
-    database.query('app/by_name', { include_docs: true }, (err, response) => {
+    database.query(query, { include_docs: true, descending: true }, (err, response) => {
       if (err) { console.log(err) }
       return dispatch(receiveStudents(response))
     })

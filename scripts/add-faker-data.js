@@ -7,23 +7,32 @@ database = new PouchDB('http://localhost:5984/my-pouch-db')
 var instructors = ['David Rose', 'James Englund', 'Kevin Purdy']
 
 var fakeStudent = function() {
-  var name = faker.name.findName()
+  var name = faker.name.firstName() + ' ' + faker.name.lastName()
   var _id = name.replace(/([^a-z]+)/ig,'-').toLowerCase()
   var instructor = faker.random.arrayElement(instructors)
   var jumps = []
   var notes = []
 
-  for(var x = 1; x <= Math.floor(Math.random()*10); x++) {
+  for(var x = 1; x <= Math.floor(Math.random()*18); x++) {
     var jump = {
       jump_date: moment(faker.date.recent(90)).format(),
-      dive_flow: x,
-      jump_number: x + 1,
       instructor: faker.random.arrayElement(instructors)
     }
     jumps.push(jump)
   }
 
-  for(var x = 1; x <= Math.floor(Math.random()*10); x++) {
+  sortedJumps = jumps.sort(function(a, b) {
+    console.log(new Date(a.jump_date))
+    return new Date(a.jump_date) - new Date(b.jump_date)
+  })
+
+  datedJumps = sortedJumps.map(function(jump, i) {
+    jump.jump_number = i + 3
+    jump.dive_flow = i + 1
+    return jump
+  })
+
+  for(var x = 1; x <= Math.floor(Math.random()*18); x++) {
     var note = {
       date: moment(faker.date.recent(60)).format(),
       text: faker.lorem.sentence()
@@ -38,7 +47,7 @@ var fakeStudent = function() {
     email: faker.internet.email(),
     phone: faker.phone.phoneNumberFormat(),
     instructor: instructor,
-    jumps: jumps,
+    jumps: datedJumps,
     notes: notes
   }
 
@@ -53,7 +62,7 @@ var fakeStudent = function() {
 
 var students = []
 
-for(var x = 0; x <= 20; x++) {
+for(var x = 0; x <= 25; x++) {
   students.push(fakeStudent())
 }
 

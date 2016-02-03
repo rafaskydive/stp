@@ -22,37 +22,37 @@ function deleteDocs(callback) {
   })
 }
 
-function initialDocs() {
-  return (
-    {
-      docs: [
-        {
-          _id: '_design/app',
-          views: {
-            by_name: {
-              "map": "function(doc) {\n  if(doc.type==='student'){emit(doc)}\n}"
-            }
-          }
-        },
-        {
-          _id: "instructors",
-          type: "instructors",
-          instructors: [
-            "David Rose",
-            "James Englund",
-            "Kevin Purdy"
-          ]
-        }
-      ]
-    }
-  )
-}
+// function initialDocs() {
+//   return (
+//     {
+//       docs: [
+//         {
+//           _id: '_design/app',
+//           views: {
+//             by_name: {
+//               "map": "function(doc) {\n  if(doc.type==='student'){emit(doc)}\n}"
+//             }
+//           }
+//         },
+//         {
+//           _id: "instructors",
+//           type: "instructors",
+//           instructors: [
+//             "David Rose",
+//             "James Englund",
+//             "Kevin Purdy"
+//           ]
+//         }
+//       ]
+//     }
+//   )
+// }
 
 var repopulate = function () {
-  database.bulkDocs(initialDocs(), function(err, response) {
-    if (err) { return console.log(err) }
-    console.log(response)
-  })
+  // database.bulkDocs(initialDocs(), function(err, response) {
+  //   if (err) { return console.log(err) }
+  //   console.log(response)
+  // })
 }
 
 deleteDocs(repopulate)
