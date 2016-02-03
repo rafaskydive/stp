@@ -47,7 +47,8 @@ export default function studentList (state=initialState, action) {
       return Object.assign({}, state, {
         sortBy: sortBy,
         sortDesc: sortDesc,
-        students: sortedStudents
+        students: sortedStudents,
+        filteredStudents: sortedStudents
       })
     default:
       return state
