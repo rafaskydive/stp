@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 import moment from 'moment'
+import twix from 'twix'
 import Classnames from 'classnames'
 
 class StudentList extends Component {
@@ -38,6 +39,14 @@ class StudentList extends Component {
 
   toggleSort(attr) {
     this.props.toggleSort(attr)
+  }
+
+  currencyClass(daysSinceLastJump) {
+    if(daysSinceLastJump > 30) { return "uncurrent" }
+    if(daysSinceLastJump > 21) { return "red" }
+    if(daysSinceLastJump > 14) { return "orange" }
+    if(daysSinceLastJump > 7 ) { return "yellow" }
+    return ""
   }
 
   render () {
@@ -79,16 +88,22 @@ class StudentList extends Component {
                   Last Jump
                   <span className={dateSortClass}></span>
                 </th>
+                <th>Currency</th>
                 <th>Email</th>
                 <th>Phone</th>
               </tr>
             </thead>
             <tbody>
               {studentList.students.map(student => {
+                let daysSinceLastJump = moment(student.last_jump_date).twix().count('days') - 1
                 return (
                   <tr key={student._id} onClick={e => this.showStudent(student)}>
                     <td>{student.name}</td>
-                    <td>{moment(student.last_jump_date).format("ddd MMM Do")}{this.lastJumpInstructor(student, student.last_jump_date)}</td>
+                    <td>
+                      {moment(student.last_jump_date).format("ddd MMM Do")}
+                      {this.lastJumpInstructor(student, student.last_jump_date)}
+                      <span className={`currency-color ${this.currencyClass(daysSinceLastJump)}`}>{daysSinceLastJump} days</span>
+                    </td>
                     <td>{student.email}</td>
                     <td>{student.phone}</td>
                   </tr>

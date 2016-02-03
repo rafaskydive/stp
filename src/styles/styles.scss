@@ -40,6 +40,18 @@ progress {
   border-bottom: 1px solid $dark-border-color;
   margin-bottom: $padding-less;
 }
+
+span.currency-color {
+  width: 5em;
+  float: right;
+  padding: 0px 5px 0px 5px;
+  background-color: #cfc;
+}
+span.currency-color.yellow { background-color: #ffc; }
+span.currency-color.orange { background-color: #fdb; }
+span.currency-color.red { background-color: #fcc; }
+span.currency-color.uncurrent { background-color: #f88; }
+
 // photon overrides
 
 .toolbar-actions {
