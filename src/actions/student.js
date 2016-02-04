@@ -1,7 +1,7 @@
 const path = require('path')
 import * as types from '../constants'
 import database from '../database'
-import config from '../config'
+import settings from '../../settings'
 import { routeActions } from 'redux-simple-router'
 import { jumpsTemplate } from '../utils'
 import moment from 'moment'
@@ -154,7 +154,7 @@ export function removeJump(student, jump) {
       })
       let video_file = _jump.video_file
       if (video_file) {
-        let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
+        let videoFilePath = path.join(settings.videoFilePath, student._id, video_file)
         fs.unlink(videoFilePath, (err) => {
           if (err) { return console.log(err) }
         })
@@ -180,7 +180,7 @@ export function removeVideo(student, jump) {
     let video_file = student.jumps.find(j => {
       return j.jump_date === jump.jump_date
     }).video_file
-    let videoFilePath = path.join(config.videoFilePath, student._id, video_file)
+    let videoFilePath = path.join(settings.videoFilePath, student._id, video_file)
     console.log('removing video_file', videoFilePath)
     fs.unlink(videoFilePath, (err) => {
       if (err) { return console.log(err) }

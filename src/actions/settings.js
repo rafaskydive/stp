@@ -1,6 +1,5 @@
 import * as types from '../constants'
 import database from '../database'
-import config from '../config'
 import { fixJSON } from '../utils'
 
 export function changeSettingValue(e) {

@@ -1,5 +1,5 @@
 import * as types from '../constants'
-import config from '../config'
+import settings from '../../settings'
 import moment from 'moment'
 const path = require('path')
 
@@ -31,7 +31,7 @@ export function copyVideoFile(student, jump, file, callback, _fs=fs, _mkdirp=mkd
     dispatch(copying())
     let ext = path.extname(file.path)
     let outfile = `DF ${jump.dive_flow} - ${moment(jump.jump_date).format('YYYY-MM-DD')}${ext}`
-    let outdir = path.join(config.videoFilePath, student._id)
+    let outdir = path.join(settings.videoFilePath, student._id)
 
     _mkdirp(outdir, (err) => {
       if (err) {

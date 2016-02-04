@@ -6,7 +6,7 @@ import * as actionCreators from '../actions'
 import moment from 'moment'
 const path = require('path')
 
-import config from '../config'
+import settings from '../../settings'
 
 class VideoDropzone extends Component {
 
@@ -32,7 +32,7 @@ class VideoDropzone extends Component {
     let { videoDropzone } = {...this.props}
     let video_file = this.props.jump.video_file // this || this.props.videoDropzone.video_file
     if (video_file) {
-      let src = path.join(config.videoFilePath, this.props.student._id, video_file)
+      let src = path.join(settings.videoFilePath, this.props.student._id, video_file)
       return (
         <div className="">
           <div className="dropzone">
