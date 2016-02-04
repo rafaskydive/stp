@@ -27,6 +27,5 @@ export default function fixJSON(obj) {
     }
     else { newObj[key] = preParsedObj[key] }
   })
-  console.log('fixJSON returning', newObj)
   return newObj
 }
