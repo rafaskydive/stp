@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-
+export settings from './settings'
 export studentList from './studentList'
 export student from './student'
 export videoDropzone from './videoDropzone'

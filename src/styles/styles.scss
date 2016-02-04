@@ -1,11 +1,15 @@
 
 @import "photon/photon.scss";
 
+.settings-table {
+  font-family: monospace;
+}
+
 .sub-header {
   background-color: $border-color;
   border-bottom: 1px solid $dark-border-color;
   .page-title {
-    // padding-left: 4px;
+    padding-left: $padding;
     font-weight: $font-weight-bold;
   }
   .error {

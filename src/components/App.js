@@ -7,25 +7,8 @@ import Classnames from 'classnames'
 
 class App extends Component {
   render () {
-    // const homeButtonClass = Classnames({
-    //   'btn btn-default': true,
-    //   'active': this.props.location.pathname === '/'
-    // })
     return (
       <div className="window">
-        {/*
-        <header className="toolbar toolbar-header">
-          <div className="toolbar-actions">
-
-            <div className="btn-group">
-              <div className={homeButtonClass} onClick={() => this.props.push('/')}>
-                <span className="icon icon-home"></span>
-              </div>
-            </div>
-
-          </div>
-        </header>
-        */}
         <div className="window-content">
           {this.props.children}
         </div>

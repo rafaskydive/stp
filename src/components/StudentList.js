@@ -72,7 +72,7 @@ class StudentList extends Component {
       <div className="pane-group">
         <div className="pane">
           <header className="sub-header">
-            <div className="toolbar-actions text-center">
+            <div className="toolbar-actions">
 
               <form>
                 <input
@@ -84,13 +84,15 @@ class StudentList extends Component {
                 />
               </form>
 
-              <div className="btn-group pull-right">
-                <button className="btn btn-default" onClick={() => this.addStudent()}>
-                  <span className="icon icon-user-add icon-text"></span>
-                  Add
-                </button>
-              </div>
-              <span className="page-title">Student List</span>
+              <button className="btn btn-default" onClick={() => this.addStudent()}>
+                <span className="icon icon-user-add icon-text"></span>
+                Add
+              </button>
+
+              <button className="btn btn-default pull-right" onClick={e => this.props.push('/settings')}>
+                <span className="icon icon-cog"></span>
+              </button>
+
             </div>
           </header>
           <table className="table-striped">
