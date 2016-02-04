@@ -42,7 +42,7 @@ class InstructorInput extends Component {
           placeholder="Instructor Name"
           className="form-control"
         >
-        {this.state.instructors.map((instructor, i) => {
+        {this.props.settings.instructors.map((instructor, i) => {
           return (
             <option value={instructor} key={i}>{instructor}</option>
           )
@@ -54,7 +54,7 @@ class InstructorInput extends Component {
 }
 
 function mapStateToProps(state) {
-  return Object.assign({}, { student: state.student })
+  return Object.assign({}, { student: state.student, settings: state.settings })
 }
 
 const mapDispatchToProps = Object.assign({}, {
