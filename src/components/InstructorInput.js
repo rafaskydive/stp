@@ -3,17 +3,6 @@ import { connect } from 'react-redux'
 import * as actionCreators from '../actions'
 
 class InstructorInput extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      instructors: [
-        "",
-        "David Rose",
-        "James Englund",
-        "Kevin Purdy"
-      ]
-    }
-  }
 
   setInstructor(e) {
     this.props.onChange(e)
