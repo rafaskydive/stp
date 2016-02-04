@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 
 class SubmitButton extends Component {
@@ -50,7 +51,10 @@ class Settings extends Component {
         <div className="pane">
           <header className="sub-header">
             <div className="toolbar-actions">
-              <div className="page-title">Settings</div>
+              <span className="page-title">Settings</span>
+              <button className="btn btn-default pull-right" onClick={e => this.props.push('/')}>
+                <span className="icon icon-home"></span>
+              </button>
             </div>
           </header>
           <form onSubmit={e => this.saveSettings(e)}>
@@ -93,6 +97,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, {
+  push: routeActions.push,
   changeSettingValue: actionCreators.changeSettingValue,
   saveSettings: actionCreators.saveSettings
 })
