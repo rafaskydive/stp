@@ -66,6 +66,7 @@
     "expect": "^1.13.4",
     "faker": "^3.0.1",
     "file-loader": "0.8.5",
+    "json-loader": "^0.5.4",
     "memdown": "^1.1.2",
     "mocha": "2.3.4",
     "nock": "^5.2.1",

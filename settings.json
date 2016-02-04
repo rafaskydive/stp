@@ -1,0 +1,10 @@
+{
+  "localDatabase": "STP",
+  "remoteDatabase": "http://localhost:5984/my-pouch-db",
+  "videoFilePath": null,
+  "instructors": [
+    "David Rose",
+    "James Englund",
+    "Kevin Purdyy"
+  ]
+}
