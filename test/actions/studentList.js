@@ -46,6 +46,12 @@ describe('sync actions', () => {
     markAsTested('toggleSort')
   })
 
+  describe('filterByName', () => {
+    it('should dispatch FILTER_BY_NAME with payload of str', () => {
+      expect(actions.filterByName('dav')).toEqual({type: types.FILTER_BY_NAME, payload: 'dav'})
+    })
+    markAsTested('filterByName')
+  })
 })
 
 /******************************************************************************/

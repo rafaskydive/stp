@@ -27,7 +27,7 @@ class Settings extends Component {
   saveSettings(e) {
     e.preventDefault()
     const {settings} = {...this.props}
-    this.props.saveSettings(JSON.stringify(settings))
+    this.props.saveSettings(JSON.stringify(settings), mkdirp, fs, storage)
     this.setState({modified: false})
   }
 

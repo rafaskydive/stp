@@ -1,7 +1,6 @@
 const path = require('path')
 import * as types from '../constants'
 import database from '../database'
-import settings from '../../settings'
 import { routeActions } from 'redux-simple-router'
 import { jumpsTemplate } from '../utils'
 import moment from 'moment'
@@ -175,7 +174,7 @@ export function removeNote(student, note) {
   }
 }
 
-export function removeVideo(student, jump) {
+export function removeVideo(student, jump, settings) {
   return dispatch => {
     let video_file = student.jumps.find(j => {
       return j.jump_date === jump.jump_date

@@ -10,7 +10,7 @@ export function changeSettingValue(e) {
   }
 }
 
-export function saveSettings(settings) {
+export function saveSettings(settings, mkdirp, fs, storage) {
   return dispatch => {
     dispatch({
       type: types.REQUEST_SAVE_SETTINGS,
