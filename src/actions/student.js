@@ -174,16 +174,14 @@ export function removeNote(student, note) {
   }
 }
 
-export function removeVideo(student, jump, settings) {
+export function removeVideo(student, jump, settings, fs) {
   return dispatch => {
     let video_file = student.jumps.find(j => {
       return j.jump_date === jump.jump_date
     }).video_file
     let videoFilePath = path.join(settings.videoFilePath, student._id, video_file)
-    console.log('removing video_file', videoFilePath)
     fs.unlink(videoFilePath, (err) => {
       if (err) { return console.log(err) }
-      console.log('removed', videoFilePath)
     })
     delete student.jumps.find(j => {
       return j.jump_date === jump.jump_date

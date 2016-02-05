@@ -20,7 +20,7 @@ class VideoDropzone extends Component {
   }
 
   removeVideo (e) {
-    this.props.removeVideo(this.props.student, this.props.jump, this.props.settings)
+    this.props.removeVideo(this.props.student, this.props.jump, this.props.settings, fs)
   }
 
   render  () {

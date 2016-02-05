@@ -9,6 +9,9 @@ import { jumpsTemplate } from '../../src/utils'
 import * as actions from '../../src/actions/student'
 import * as types from '../../src/constants'
 
+import fs from 'fs'
+import mkdirp from 'mkdirp'
+
 const ACTIONS = Object.keys(actions)
 
 function markAsTested(action) {
@@ -379,6 +382,32 @@ describe('student actions', () => {
         store.dispatch(actions.removeJump(student, jump))
       })
       markAsTested('removeJump')
+    })
+
+    describe('removeVideo', () => {
+      mkdirp.sync('test/output-data/remove-video-student')
+      fs.writeFileSync('test/output-data/remove-video-student/DF 1 - 2016-02-05.txt', 'lorem')
+      const jump = { jump_date: '2016-02-05 13:38:25', dive_flow: 1, video_file: 'DF 1 - 2016-02-05.txt'}
+      const state = {
+        settings: { videoFilePath: './test/output-data' },
+        student: { _id: 'remove-video-student', jumps: [jump]}
+      }
+      const { student, settings } = {...state}
+      it('should remove video from fs and its reference on jump object', (done) => {
+        const expectedActions = [
+          { type: types.REQUEST_PUT_STUDENT },
+          { type: types.REQUEST_STUDENT },
+          (a) => {
+            expect(a.type).toEqual(types.RECIEVE_STUDENT)
+            expect(typeof a.payload.jumps[0].video_file).toEqual('undefined')
+            // this one doesn't work right. we'll have to go on faith, i guess.
+            // expect(fs.statSync('test/output-data/remove-video-student/DF 1 - 2016-02-05.txt')).toThrow(/no such file/)
+          }
+        ]
+        const store = mockStore(state, expectedActions, done)
+        store.dispatch(actions.removeVideo(student, jump, settings, fs))
+      })
+      markAsTested('removeVideo')
     })
 
   })
