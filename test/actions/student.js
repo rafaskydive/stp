@@ -2,16 +2,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import nock from 'nock'
 import expect from 'expect'
-import * as actions from '../src/actions'
-import * as types from '../src/constants'
 import moment from 'moment'
-import fs from 'fs'
-import fse from 'fs-extra'
-import mkdirp from 'mkdirp'
-import path from 'path'
-import { jumpsTemplate } from '../src/utils'
 
-import database from '../src/database'
+import database from '../../src/database'
+import { jumpsTemplate } from '../../src/utils'
+import * as actions from '../../src/actions/student'
+import * as types from '../../src/constants'
 
 const ACTIONS = Object.keys(actions)
 
@@ -19,21 +15,8 @@ function markAsTested(action) {
   ACTIONS.splice(ACTIONS.indexOf(action), 1)
 }
 
-before(() => {
-  database.put({
-    _id: '_design/app',
-    views: {
-      by_name: {
-        map: "function(doc){if(doc.type==='student'){emit(doc)}}"
-      }
-    }
-  },
-  function(err, result) {
-    if(err){console.log(err)}
-  })
-})
 after(() => {
-  console.log('UNTESTED ACTIONS', ACTIONS)
+  console.log('UNTESTED ACTIONS (student)', ACTIONS)
 })
 
 describe('sync actions', () => {
@@ -110,31 +93,6 @@ describe('sync actions', () => {
       expect(actions.editJumpField(student, jump, field, value)).toEqual(expectedAction)
     })
     markAsTested('editJumpField')
-  })
-
-  describe('showStudent', () => {
-    it('should create SHOW_STUDENT with the selected student', () => {
-      const student = {
-        _id: 'test-student'
-      }
-      const expectedAction = {
-        type: types.SHOW_STUDENT,
-        payload: student
-      }
-      expect(actions.showStudent(student)).toEqual(expectedAction)
-    })
-    markAsTested('showStudent')
-  })
-
-  describe('toggleSort', () => {
-    it('should dispatch TOGGLE_SORT with payload of sortBy ', () => {
-      const expectedAction = {
-        type: types.TOGGLE_SORT,
-        payload: { sortBy: 'name' }
-      }
-      expect(actions.toggleSort('name')).toEqual(expectedAction)
-    })
-    markAsTested('toggleSort')
   })
 
 })
@@ -356,50 +314,6 @@ describe('async actions', () => {
     markAsTested('fetchStudent')
   })
 
-  describe('fetchStudents', () => {
-    it('should return RECIEVE_STUDENTS and an array of docs', (done) => {
-
-      const expectedActions = [
-        {
-          type: types.REQUEST_STUDENTS
-        },
-        (a) => {
-          expect(a.payload).toBeAn(Array)
-        }
-      ]
-      const store = mockStore({ studentList: [] }, expectedActions, done)
-      store.dispatch(actions.fetchStudents())
-    })
-    markAsTested('fetchStudents')
-  })
-
-  describe('copyVideoFile', () => {
-    it('dispatches COPY_IN_PROGRESS and COPY_COMPLETE', (done) => {
-      let shouldExist = path.join('.', 'public', 'videos', 'test-case', 'DF 1 - 2016-01-23.test')
-      const expectedActions = [
-        { type: types.COPY_PROGRESS, payload: { percent: 0 } },
-        { type: types.COPY_COMPLETE, payload: shouldExist}
-      ]
-      const store = mockStore({path:'./hello.testfile'}, expectedActions, done())
-
-      fs.rmdir(path.dirname(shouldExist), () => {
-        store.dispatch(actions.copyVideoFile(
-          {_id: 'test-case'},
-          {dive_flow: 1, date: '2016-01-23T16:19:12-05:00'},
-          {path: './test/test-file.test'},
-          fse
-        ))
-        // expect(fs.statSync(shouldExist).size).toEqual(32)
-        fs.stat(shouldExist, (err, stats) => {
-          if(err){console.log(err)}
-          expect(stats.size).toEqual(44)
-        })
-
-      })
-    })
-    markAsTested('copyVideoFile')
-  })
-
   describe('createNextJump', function () {
     it('should start with 1 jump', function (done) {
       const student = { _id: 'test-student' }
@@ -465,4 +379,5 @@ describe('async actions', () => {
     })
     markAsTested('removeJump')
   })
+
 })

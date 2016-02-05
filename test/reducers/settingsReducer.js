@@ -1,6 +1,6 @@
 import expect from 'expect'
-import reducer from '../src/reducers/settings'
-import * as types from '../src/constants'
+import reducer from '../../src/reducers/settings'
+import * as types from '../../src/constants'
 
 describe('settings reducer', () => {
   const state = {

@@ -1,6 +1,6 @@
 import expect from 'expect'
-import reducer from '../src/reducers/studentList'
-import * as types from '../src/constants'
+import reducer from '../../src/reducers/studentList'
+import * as types from '../../src/constants'
 
 describe('studentList reducer', () => {
   describe('TOGGLE_SORT', () => {
