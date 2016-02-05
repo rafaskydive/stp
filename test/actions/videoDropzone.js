@@ -41,17 +41,18 @@ describe('videoDropzone actions', () => {
           videoDropzone: { files: [], copy_in_progress: false, percent: 0, video_file: null },
           student: { _id: 'test-student' },
           jump: { dive_flow: 1, jump_date: '2016-02-06 12:52:30' },
-          file: { path: './test/test-file.test' },
+          file: { path: './test/mocks/copyVideoFileTest.txt' },
           settings: { videoFilePath: './test/output-data' }
         }
         const { videoDropzone, student, jump, file, settings } = {...state}
         const expectedActions = [
           { type: types.COPY_PROGRESS, payload: {percent: 0}},
           { type: types.COPY_PROGRESS, payload: {percent: 100}},
-          { type: types.COPY_COMPLETE, payload: 'test/output-data/test-student/DF 1 - 2016-02-06.test' }
+          { type: types.COPY_COMPLETE, payload: 'test/output-data/test-student/DF 1 - 2016-02-06.txt' }
         ]
         const callback = (outfile) => {
           expect(fs.statSync(`test/output-data/test-student/${outfile}`).size).toEqual(fs.statSync(file.path).size)
+          fs.unlinkSync(`test/output-data/test-student/${outfile}`)
           done()
         }
         const store = mockStore(videoDropzone, expectedActions)

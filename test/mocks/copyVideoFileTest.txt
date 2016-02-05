@@ -1,0 +1,1 @@
+This file is meant to test src/actions/videoDropzone.copyVideoFile
