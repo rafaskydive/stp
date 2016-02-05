@@ -44,6 +44,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = Object.assign({}, {
   push: routeActions.push,
+  newStudent: actionCreators.newStudent,
   fetchStudent: actionCreators.fetchStudent,
   editStudentField: actionCreators.editStudentField,
   enableStudentEditForm: actionCreators.enableStudentEditForm,
