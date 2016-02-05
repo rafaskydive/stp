@@ -39,7 +39,7 @@ export default function studentList (state=initialState, action) {
         })
       }
       if(sortBy === "last_jump_date") {
-        if (!sortDesc) { sortedDates.reverse() }
+        if (sortDesc) { sortedDates.reverse() }
         sortedDates.map(date => {
           sortedStudents.push(students.find(student => { return student.last_jump_date === date }))
         })

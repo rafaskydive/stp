@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { Link } from 'react-router'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
 import moment from 'moment'
@@ -12,127 +10,138 @@ class StudentList extends Component {
   componentDidMount() {
     this.props.fetchStudents()
   }
-
-  addStudent() {
-    this.props.newStudent()
-    this.props.push(`/student/new`)
-  }
-
-  showStudent(student) {
-    this.props.showStudent(student)
-    this.props.push(`/student/${student._id}`)
-  }
-
-  lastJumpInfo(student, jump_date) {
-    let jump = null
-    try {
-      jump = Object.keys(student.jumps)
-      .map(key=>{return student.jumps[key]})
-      .find(jump=>{return jump.jump_date===jump_date})
-    }
-    catch (e) {
-      console.log(`${student._id}: ${e}`)
-    }
-    return jump ? ` DF${jump.dive_flow} ${jump.instructor.match(/\b\w/g).join('')}` : ""
-  }
-
-  toggleSort(attr) {
-    this.props.toggleSort(attr)
-  }
-
-  currencyClass(daysSinceLastJump) {
-    if(daysSinceLastJump > 30) { return "uncurrent" }
-    if(daysSinceLastJump > 21) { return "red" }
-    if(daysSinceLastJump > 14) { return "orange" }
-    if(daysSinceLastJump > 7 ) { return "yellow" }
-    return ""
-  }
-
-  filterByName(e) {
-    this.props.filterByName(e.target.value)
-  }
-
-  render () {
-    let nameSortClass = Classnames({
-      'icon pull-right': true,
-      'icon-arrow-combo': this.props.studentList.sortBy !== "name",
-      'icon-down-dir': this.props.studentList.sortDesc === true && this.props.studentList.sortBy === "name",
-      'icon-up-dir': this.props.studentList.sortDesc === false && this.props.studentList.sortBy === "name"
-    })
-    let dateSortClass = Classnames({
-      'icon pull-right': true,
-      'icon-arrow-combo': this.props.studentList.sortBy !== "last_jump_date",
-      'icon-down-dir': this.props.studentList.sortDesc === true && this.props.studentList.sortBy === "last_jump_date",
-      'icon-up-dir': this.props.studentList.sortDesc === false && this.props.studentList.sortBy === "last_jump_date"
-    })
-
-    let { studentList, push } = {...this.props}
-
+  render() {
     return (
       <div className="pane-group">
         <div className="pane">
-          <header className="sub-header">
-            <div className="toolbar-actions">
-
-              <form>
-                <input
-                  autoFocus={true}
-                  onChange={e => this.filterByName(e)}
-                  placeholder="Filter by Name"
-                  className="student-list-filter pull-left"
-                  value={this.props.nameFilter}
-                />
-              </form>
-
-              <button className="btn btn-default" onClick={() => this.addStudent()}>
-                <span className="icon icon-user-add icon-text"></span>
-                Add
-              </button>
-
-              <button className="btn btn-default pull-right" onClick={e => this.props.push('/settings')}>
-                <span className="icon icon-cog"></span>
-              </button>
-
-            </div>
-          </header>
-          <table className="table-striped">
-            <thead>
-              <tr>
-                <th onClick={() => this.toggleSort('name')}>
-                  Name
-                  <span className={nameSortClass}></span>
-                </th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th onClick={() => this.toggleSort('last_jump_date')}>
-                  Last Jump
-                  <span className={dateSortClass}></span>
-                </th>
-                <th>Last Dive Flow</th>
-              </tr>
-            </thead>
-            <tbody>
-              {studentList.filteredStudents.map(student => {
-                let daysSinceLastJump = moment(student.last_jump_date).twix().count('days') - 1
-                return (
-                  <tr key={student._id} onClick={e => this.showStudent(student)}>
-                    <td>{student.name}</td>
-                    <td>{student.phone}</td>
-                    <td>{student.email}</td>
-                    <td>
-                      {moment(student.last_jump_date).format("ddd MMM Do")}
-                      <span className={`currency-color ${this.currencyClass(daysSinceLastJump)}`}>{daysSinceLastJump} days</span>
-                    </td>
-                    <td>{this.lastJumpInfo(student, student.last_jump_date)}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <Header {...this.props}/>
+          <ListTable {...this.props}/>
         </div>
       </div>
     )
   }
+}
+
+const Header = props => (
+  <header className="sub-header">
+    <div className="toolbar-actions">
+      <NameFilterForm {...props}/>
+      <AddStudentButton newStudent={props.newStudent} push={props.push}/>
+      <SettingsButton push={props.push}/>
+    </div>
+  </header>
+)
+
+const NameFilterForm = ({filterByName, nameFilter}) => (
+  <form>
+    <input
+      autoFocus={true}
+      placeholder="Filter by Name"
+      className="student-list-filter pull-left"
+      onChange={e => filterByName(e.target.value)}
+      value={nameFilter}
+    />
+  </form>
+)
+
+const AddStudentButton = ({newStudent, push}) => (
+  <button className="btn btn-default" onClick={() => { newStudent(); push('/student/new') } }>
+    <span className="icon icon-user-add icon-text"></span>
+    Add
+  </button>
+)
+
+const SettingsButton = ({push}) => (
+  <button className="btn btn-default pull-right" onClick={() => push('/settings')}>
+    <span className="icon icon-cog"></span>
+  </button>
+)
+
+const ListTable = props => (
+  <table className="table-striped">
+    <ListTableHead {...props}/>
+    <ListTableBody {...props}/>
+  </table>
+)
+
+const ListTableHead = ({toggleSort, studentList}) => (
+  <thead>
+    <tr>
+      <th onClick={() => toggleSort('name')}>
+        Name
+        <span className={ColumnSortClass("name", studentList.sortBy, studentList.sortDesc)}></span>
+      </th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th onClick={() => toggleSort('last_jump_date')}>
+        Last Jump
+        <span className={ColumnSortClass("last_jump_date", studentList.sortBy, studentList.sortDesc)}></span>
+      </th>
+      <th>Last Dive Flow</th>
+    </tr>
+  </thead>
+)
+
+const ListTableBody = ({studentList, showStudent, push}) => {
+  const studentRows = renderStudentRows(studentList.filteredStudents, showStudent, push)
+  return (
+    <tbody>
+      { studentRows }
+    </tbody>
+  )
+}
+
+const renderStudentRows = (students, showStudent, push) => (
+  students.map(student => renderStudentRow(student, showStudent, push))
+)
+
+const renderStudentRow = (student, showStudent, push) => {
+  let {_id, name, email, phone, last_jump_date} = {...student}
+  let daysSinceLastJump = moment(last_jump_date).twix().count('days') - 1
+  return (
+    <tr key={_id} onClick={e => { showStudent(student); push(`/student/${student._id}`)}}>
+      <td>{name}</td>
+      <td>{email}</td>
+      <td>{phone}</td>
+      <td>
+        {moment(last_jump_date).format("ddd MMM Do")}
+        <span className={`currency-color ${currencyClass(daysSinceLastJump)}`}>{daysSinceLastJump} days</span>
+      </td>
+      <td>
+        {lastJumpInfo(student, student.last_jump_date)}
+      </td>
+    </tr>
+  )
+}
+
+const ColumnSortClass = (column, sortBy, sortDesc) => {
+  return Classnames({
+    'icon pull-right': true,
+    'icon-arrow-combo': sortBy !== column,
+    'icon-down-dir': sortBy === column && sortDesc,
+    'icon-up-dir': sortBy === column && !sortDesc
+  })
+}
+
+const currencyClass = daysSinceLastJump => {
+  if(daysSinceLastJump > 30) { return "uncurrent" }
+  if(daysSinceLastJump > 21) { return "red" }
+  if(daysSinceLastJump > 14) { return "orange" }
+  if(daysSinceLastJump > 7 ) { return "yellow" }
+  return ""
+}
+
+const lastJumpInfo = (student, last_jump_date) => {
+  let jump = null
+  try {
+    jump = Object.keys(student.jumps)
+    .map(key=>{return student.jumps[key]})
+    .find(jump=>{return jump.jump_date===last_jump_date})
+  }
+  catch (e) {
+    console.log(`${student._id}: ${e}`)
+  }
+  return jump ? ` DF${jump.dive_flow} ${jump.instructor.match(/\b\w/g).join('')}` : ""
 }
 
 function mapStateToProps(state) {
