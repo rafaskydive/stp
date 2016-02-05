@@ -6,8 +6,6 @@ import * as actionCreators from '../actions'
 import moment from 'moment'
 const path = require('path')
 
-import settings from '../../settings'
-
 class VideoDropzone extends Component {
 
   onDrop (files) {
@@ -27,6 +25,9 @@ class VideoDropzone extends Component {
 
   render  () {
     let { videoDropzone, settings } = {...this.props}
+    if(!settings.videoFilePath) {
+      return <strong style={{color: 'white'}}>Please set <code>videoFilePath</code> in Settings.</strong>
+    }
     let video_file = this.props.jump.video_file // this || this.props.videoDropzone.video_file
     if (video_file) {
       let src = path.join(settings.videoFilePath, this.props.student._id, video_file)
