@@ -1,5 +1,4 @@
 import * as types from '../constants'
-import settings from '../../settings'
 import moment from 'moment'
 const path = require('path')
 
@@ -24,8 +23,14 @@ function copy_progress(percent) {
   }
 }
 
-export function copyVideoFile(student, jump, file, callback, _fs=fs, _mkdirp=mkdirp) {
+export function copyVideoFile(student, jump, file, settings, callback, _fs=fs, _mkdirp=mkdirp) {
   return dispatch => {
+    if(!settings.videoFilePath) {
+      return dispatch({
+        type: types.SAVE_STUDENT_ERROR,
+        payload: { errors: ["videoFilePath must be set in Settings"]}
+      })
+    }
     let start = moment().unix()
 
     dispatch(copying())

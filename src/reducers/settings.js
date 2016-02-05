@@ -1,8 +1,24 @@
 import * as types from '../constants'
 import { fixJSON } from '../utils'
+const path = require('path')
 
-const initialState = require('../../settings')
+let initialState
 
+try {
+  initialState = JSON.parse(
+    fs.readFileSync(
+      path.join(storage.userConfig(), 'settings.json')
+    )
+  )
+} catch (e) {
+  console.log(e)
+  initialState = {
+    localDatabase: 'STP',
+    remoteDatabase: null,
+    videoFilePath: null,
+    instructors: ["Please Edit","Your Instructor List", "In Settings"]
+  }
+}
 export default function settings (state=initialState, action) {
   switch (action.type) {
 

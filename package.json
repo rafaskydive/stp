@@ -33,6 +33,7 @@
   ],
   "keywords": [],
   "dependencies": {
+    "appdirectory": "^0.1.0",
     "classnames": "^2.2.3",
     "fs-extra": "^0.26.4",
     "moment": "^2.11.1",
