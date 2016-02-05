@@ -8,7 +8,6 @@ class InstructorInput extends Component {
     this.props.onChange(e)
     if (this.props.student.jumps.length === 1) {
       this.props.setInstructorOnFirstJump(this.props.student, e.target.value)
-      this.props.saveStudent(this.props.student)
     }
   }
 
