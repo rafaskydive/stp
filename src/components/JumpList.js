@@ -20,7 +20,6 @@ class JumpList extends Component {
 
   createNextJump() {
     this.props.createNextJump(this.props.student)
-    this.render()
   }
 
   removeJump(jump) {
