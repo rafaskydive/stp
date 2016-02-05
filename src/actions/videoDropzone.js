@@ -44,7 +44,6 @@ export function copyVideoFile(student, jump, file, settings, callback, _fs=fs, _
       }
       let dest = path.join(outdir, outfile)
       let stat = _fs.statSync(file.path)
-      console.log('size:', stat.size)
       const streamOpts = {highWaterMark: Math.pow(2,24)}
       const rd = _fs.createReadStream(file.path, streamOpts)
       const wr = _fs.createWriteStream(dest, streamOpts);
