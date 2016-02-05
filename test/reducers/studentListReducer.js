@@ -159,14 +159,14 @@ describe('studentList reducer', () => {
         ]
 
         expect(
-          reducer(state, {
+          reducer(Object.assign({}, state, {sortDesc:true}), {
             type: types.TOGGLE_SORT,
             payload: { sortBy: "last_jump_date" }
           })
         ).toEqual(
           {
             sortBy: "last_jump_date",
-            sortDesc: true,
+            sortDesc: false,
             students: expectedStudents,
             filteredStudents: expectedStudents
           }
@@ -213,14 +213,14 @@ describe('studentList reducer', () => {
           }
         ]
         expect(
-          reducer(Object.assign({}, state, {sortDesc:true}), {
+          reducer(Object.assign({}, state, {sortDesc:false}), {
             type: types.TOGGLE_SORT,
             payload: { sortBy: "last_jump_date" }
           })
         ).toEqual(
           {
             sortBy: "last_jump_date",
-            sortDesc: false,
+            sortDesc: true,
             students: expectedStudents,
             filteredStudents: expectedStudents
           }
