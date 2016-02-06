@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Dropzone from 'react-dropzone'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
@@ -12,6 +13,26 @@ class SubmitButton extends Component {
           Save Settings
         </button>
       </div>
+    )
+  }
+}
+
+class DropzoneElement extends Component {
+  onDrop(files) {
+    this.props.changeSettingValue({name: 'videoFilePath', value: files[0].path})
+  }
+  
+  render () {
+    return (
+      <Dropzone
+        className="inline-dropzone"
+        multiple={false}
+        onDrop={(files) => this.onDrop(files)}
+        >
+        <div className="drop-zone-text">
+          Drag Folder Here To Set
+        </div>
+      </Dropzone>
     )
   }
 }
@@ -43,6 +64,21 @@ class Settings extends Component {
     this.setState({modified: modObj})
   }
 
+  inputEl(key, value) {
+    if(key === "videoFilePath") {
+      return (
+        <span>{value}</span>
+      )
+    }
+    return (
+      <input
+        name={key}
+        defaultValue={value}
+        onChange={e => this.changeValue(e)}
+        className="form-control"
+      />
+    )
+  }
   render() {
     let submitButton = this.state.modified ? <SubmitButton/> : <div></div>
     let settings = {...this.props.settings}
@@ -67,17 +103,14 @@ class Settings extends Component {
               </thead>
               <tbody>
                 {Object.keys(settings).map(key => {
+                  let dropzoneElementContent = key === "videoFilePath" ? <DropzoneElement changeSettingValue={this.props.changeSettingValue} changeValue={this.props.changeValue}/> : ""
                   let value = JSON.stringify(settings[key])
                   return (
                     <tr key={key}>
                       <td>{key}</td>
                       <td>
-                        <input
-                          name={key}
-                          defaultValue={value}
-                          onChange={e => this.changeValue(e)}
-                          className="form-control"
-                        />
+                        {this.inputEl(key, value)}
+                        <span className="pull-right">{dropzoneElementContent}</span>
                       </td>
                     </tr>
                   )

@@ -59,6 +59,10 @@ span.currency-color.uncurrent { background-color: #f88; }
 .student-list-filter {
   margin-left: $padding;
 }
+
+.inline-dropzone {
+  display: inline-block;
+}
 // photon overrides
 
 .toolbar-actions {
