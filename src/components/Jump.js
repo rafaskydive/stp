@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
-import VideoDropzone from './VideoDropzone'
+import VideoPane from './VideoPane'
 import ConditionalInput from './ConditionalInput'
 import InstructorInput from './InstructorInput'
 import { jumpsTemplate } from '../utils'
@@ -58,7 +58,7 @@ class Jump extends Component {
   render () {
     let { student } = {...this.props}
     let jump = this.jump()
-    let videoDropZoneEl = this.props.student._id === 'new' ? <div></div> : <VideoDropzone jump={jump}/>
+    let VideoPaneContent = this.props.student._id === 'new' ? <div></div> : <VideoPane jump={jump}/>
     return (
       <div className="sub-pane-group">
         <div className="pane pane-sm sidebar padded">
@@ -118,7 +118,7 @@ class Jump extends Component {
           </form>
         </div>
         <div className="pane padded video-page">
-          {videoDropZoneEl}
+          {VideoPaneContent}
         </div>
       </div>
     )

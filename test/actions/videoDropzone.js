@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import database from '../../src/database'
 import { jumpsTemplate } from '../../src/utils'
-import * as actions from '../../src/actions/videoDropzone'
+import * as actions from '../../src/actions/video'
 import * as types from '../../src/constants'
 
 import fs from 'fs'
@@ -19,10 +19,10 @@ function markAsTested(action) {
 }
 
 after(() => {
-  console.log('UNTESTED ACTIONS (videoDropzone)', ACTIONS)
+  console.log('UNTESTED ACTIONS (video)', ACTIONS)
 })
 
-describe('videoDropzone actions', () => {
+describe('video actions', () => {
   describe('sync actions', () => {
 
   })
@@ -38,13 +38,13 @@ describe('videoDropzone actions', () => {
     describe('copyVideoFile', () => {
       it('copies video while reporting progress, then returns the video file name via callback', (done) => {
         const state = {
-          videoDropzone: { files: [], copy_in_progress: false, percent: 0, video_file: null },
+          video: { files: [], copy_in_progress: false, percent: 0, video_file: null },
           student: { _id: 'test-student' },
           jump: { dive_flow: 1, jump_date: '2016-02-06 12:52:30' },
           file: { path: './test/mocks/copyVideoFileTest.txt' },
           settings: { videoFilePath: './test/output-data' }
         }
-        const { videoDropzone, student, jump, file, settings } = {...state}
+        const { video, student, jump, file, settings } = {...state}
         const expectedActions = [
           { type: types.COPY_PROGRESS, payload: {percent: 0}},
           { type: types.COPY_PROGRESS, payload: {percent: 100}},
@@ -55,7 +55,7 @@ describe('videoDropzone actions', () => {
           fs.unlinkSync(`test/output-data/test-student/${outfile}`)
           done()
         }
-        const store = mockStore(videoDropzone, expectedActions)
+        const store = mockStore(video, expectedActions)
         store.dispatch(actions.copyVideoFile(student, jump, file, settings, callback, fs, mkdirp))
       })
       markAsTested('copyVideoFile')

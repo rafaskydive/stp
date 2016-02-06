@@ -6,7 +6,7 @@ import * as actionCreators from '../actions'
 import moment from 'moment'
 const path = require('path')
 
-class VideoDropzone extends Component {
+class VideoPane extends Component {
 
   onDrop (files) {
     let file = files[0]
@@ -24,11 +24,11 @@ class VideoDropzone extends Component {
   }
 
   render  () {
-    let { videoDropzone, settings } = {...this.props}
+    let { video, settings } = {...this.props}
     if(!settings.videoFilePath) {
       return <strong style={{color: 'white'}}>Please set <code>videoFilePath</code> in Settings.</strong>
     }
-    let video_file = this.props.jump.video_file // this || this.props.videoDropzone.video_file
+    let video_file = this.props.jump.video_file // this || this.props.video.video_file
     if (video_file) {
       let src = path.join(settings.videoFilePath, this.props.student._id, video_file)
       return (
@@ -50,11 +50,11 @@ class VideoDropzone extends Component {
         </div>
       )
     }
-    if (this.props.videoDropzone.percent > 0) {
+    if (this.props.video.percent > 0) {
       return (
         <div className="dropzone">
-          <span className="drop-zone-text">Copying: {this.props.videoDropzone.percent} %</span>
-          <progress value={this.props.videoDropzone.percent} max={100}></progress>
+          <span className="drop-zone-text">Copying: {this.props.video.percent} %</span>
+          <progress value={this.props.video.percent} max={100}></progress>
         </div>
       )
     }
@@ -83,4 +83,4 @@ function mapStateToProps(state) {
 const mapDispatchToProps = Object.assign({}, actionCreators, {
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(VideoDropzone)
+export default connect(mapStateToProps, mapDispatchToProps)(VideoPane)

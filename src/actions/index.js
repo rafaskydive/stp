@@ -2,6 +2,6 @@ export * from './studentList'
 
 export * from './student'
 
-export * from './videoDropzone'
+export * from './video'
 
 export * from './settings'

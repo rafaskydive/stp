@@ -7,7 +7,7 @@ const initialState = {
   video_file: null
 }
 
-export default function videoDropzone (state=initialState, action) {
+export default function video (state=initialState, action) {
   switch (action.type) {
     case types.COPY_PROGRESS:
       return Object.assign({}, state, {
