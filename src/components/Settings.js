@@ -21,7 +21,7 @@ class DropzoneElement extends Component {
   onDrop(files) {
     this.props.changeSettingValue({name: 'videoFilePath', value: files[0].path})
   }
-  
+
   render () {
     return (
       <Dropzone
@@ -80,7 +80,8 @@ class Settings extends Component {
     )
   }
   render() {
-    let submitButton = this.state.modified ? <SubmitButton/> : <div></div>
+    // let submitButton = this.state.modified ? <SubmitButton/> : <div></div>
+    let submitButton = <SubmitButton/>
     let settings = {...this.props.settings}
     return (
       <div className="pane-group">
