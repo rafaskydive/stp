@@ -46,6 +46,11 @@ class Student extends Component {
     if (!this.props.student.modified) {
       return {}
     }
+    // a little easter egg... set the email attribute to _deleted, and we'll
+    // fork off and delete the student.
+    if(this.props.student.email === '_delete@me') {
+      return this.props.deleteStudent(this.props.student, this.props.push, this.props.settings, rimraf)
+    }
     this.props.saveStudent(this.props.student)
   }
 
@@ -147,7 +152,7 @@ class Student extends Component {
 }
 
 function mapStateToProps(state) {
-  return { student: state.student }
+  return { student: state.student, settings: state.settings }
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {

@@ -189,3 +189,20 @@ export function removeVideo(student, jump, settings, fs) {
     dispatch(saveStudent(student))
   }
 }
+
+export function deleteStudent(student, push, settings, rimraf) {
+  console.log(settings)
+  return dispatch => {
+    let studentVideoDir = path.join(settings.videoFilePath, student._id)
+    rimraf(studentVideoDir, function (err, result) {
+      if (err) { console.log (err) }
+      console.log(`removed ${studentVideoDir}`)
+      student._deleted = true
+      database.put(student, function(err, response) {
+        if (err) { console.log (err) }
+        console.log(`removed student ${student._id}`)
+        push('/')
+      })
+    })
+  }
+}
