@@ -6,7 +6,7 @@ import moment from 'moment'
 import twix from 'twix'
 import Classnames from 'classnames'
 
-class StudentList extends Component {
+export class StudentList extends Component {
   componentDidMount() {
     this.props.fetchStudents()
   }
@@ -20,22 +20,21 @@ class StudentList extends Component {
   }
 }
 
-const Header = props => (
+export const Header = props => (
   <header className="toolbar toolbar-header">
     <Toolbar {...props}/>
   </header>
 )
 
-const Toolbar = props => (
+export const Toolbar = props => (
   <div className="toolbar-actions">
     <NameFilterForm {...props}/>
     <AddStudentButton newStudent={props.newStudent} push={props.push}/>
     <SettingsButton push={props.push}/>
   </div>
-
 )
 
-const NameFilterForm = ({filterByName, nameFilter}) => (
+export const NameFilterForm = ({filterByName, nameFilter}) => (
   <form>
     <input
       autoFocus={true}
@@ -47,63 +46,72 @@ const NameFilterForm = ({filterByName, nameFilter}) => (
   </form>
 )
 
-const AddStudentButton = ({newStudent, push}) => (
+export const AddStudentButton = ({newStudent, push}) => (
   <button className="btn btn-default" onClick={() => { newStudent(); push('/student/new') } }>
     <span className="icon icon-user-add icon-text"></span>
     Add
   </button>
 )
 
-const SettingsButton = ({push}) => (
+export const SettingsButton = ({push}) => (
   <button className="btn btn-default pull-right" onClick={() => push('/settings')}>
     <span className="icon icon-cog"></span>
   </button>
 )
 
-const ListTable = props => (
+export const ListTable = props => (
   <table className="table-striped">
     <ListTableHead {...props}/>
     <ListTableBody {...props}/>
   </table>
 )
 
-const WindowContent = props => (
+export const WindowContent = props => (
   <div className="window-content">
     <PaneGroup {...props}/>
   </div>
 )
 
-const PaneGroup = props => (
+export const PaneGroup = props => (
   <div className="pane-group">
     <Pane {...props}/>
   </div>
 )
 
-const Pane = props => (
+export const Pane = props => (
   <div className="pane">
     <ListTable {...props}/>
   </div>
 )
 
-const ListTableHead = ({toggleSort, studentList}) => (
+export const ListTableHead = props => (
   <thead>
-    <tr>
-      <th onClick={() => toggleSort('name')}>
-        Name
-        <span className={ColumnSortClass("name", studentList.sortBy, studentList.sortDesc)}></span>
-      </th>
-      <th>Email</th>
-      <th>Phone</th>
-      <th onClick={() => toggleSort('last_jump_date')}>
-        Last Jump
-        <span className={ColumnSortClass("last_jump_date", studentList.sortBy, studentList.sortDesc)}></span>
-      </th>
-      <th>Last Dive Flow</th>
-    </tr>
+    <ListTableHeadRow {...props}/>
   </thead>
 )
 
-const ListTableBody = ({studentList, showStudent, push}) => {
+export const ListTableHeadRow = ({toggleSort, studentList}) => (
+  <tr>
+    <Th name="Name" onClick={e => toggleSort('name')} sortField="name" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>
+    <Th name="Email"/>
+    <Th name="Phone"/>
+    <Th name="Last Jump" onClick={e => toggleSort('last_jump_date')} sortField="last_jump_date" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>
+    <Th name="Last Jump Date"/>
+  </tr>
+)
+
+export const Th = props => {
+  let SortIndicator = props.sortField ? <span className={ColumnSortClass(props.sortField, props.sortBy, props.sortDesc)}></span> : ""
+
+  return (
+    <th onClick={props.onClick}>
+      {props.name}
+      {SortIndicator}
+    </th>
+  )
+}
+
+export const ListTableBody = ({studentList, showStudent, push}) => {
   const studentRows = renderStudentRows(studentList.filteredStudents, showStudent, push)
   return (
     <tbody>
@@ -112,11 +120,11 @@ const ListTableBody = ({studentList, showStudent, push}) => {
   )
 }
 
-const renderStudentRows = (students, showStudent, push) => (
+export const renderStudentRows = (students, showStudent, push) => (
   students.map(student => renderStudentRow(student, showStudent, push))
 )
 
-const renderStudentRow = (student, showStudent, push) => {
+export const renderStudentRow = (student, showStudent, push) => {
   let {_id, name, email, phone, last_jump_date} = {...student}
   let daysSinceLastJump = moment(last_jump_date).twix().count('days') - 1
   return (
@@ -135,7 +143,7 @@ const renderStudentRow = (student, showStudent, push) => {
   )
 }
 
-const ColumnSortClass = (column, sortBy, sortDesc) => {
+export const ColumnSortClass = (column, sortBy, sortDesc) => {
   return Classnames({
     'icon pull-right': true,
     'icon-arrow-combo': sortBy !== column,
@@ -144,7 +152,7 @@ const ColumnSortClass = (column, sortBy, sortDesc) => {
   })
 }
 
-const currencyClass = daysSinceLastJump => {
+export const currencyClass = daysSinceLastJump => {
   if(daysSinceLastJump > 30) { return "uncurrent" }
   if(daysSinceLastJump > 21) { return "red" }
   if(daysSinceLastJump > 14) { return "orange" }
@@ -152,7 +160,7 @@ const currencyClass = daysSinceLastJump => {
   return ""
 }
 
-const lastJumpInfo = (student, last_jump_date) => {
+export const lastJumpInfo = (student, last_jump_date) => {
   let jump = null
   try {
     jump = Object.keys(student.jumps)
