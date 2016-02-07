@@ -40,6 +40,7 @@
     "pouchdb": "^5.2.0",
     "progress-stream": "^1.2.0",
     "react": "0.14.3",
+    "react-datepicker": "^0.20.0",
     "react-dom": "0.14.3",
     "react-dropzone": "^3.3.2",
     "react-inline-confirm": "^2.0.0",
@@ -48,7 +49,8 @@
     "redux": "3.0.4",
     "redux-simple-router": "^2.0.4",
     "redux-thunk": "1.0.0",
-    "twix": "^0.9.0"
+    "twix": "^0.9.0",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "babel-core": "6.2.1",

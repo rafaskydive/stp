@@ -5,8 +5,10 @@ import { routeActions } from 'redux-simple-router'
 import { jumpsTemplate } from '../utils'
 import moment from 'moment'
 
-export function newStudent(callback) {
-  let payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format())] }
+export function newStudent(testUUID) {
+  // testUUID should only be used by tests. It sets a specified UUID on
+  // the generated Jump
+  let payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format(), testUUID)] }
   return {
     type: types.NEW_STUDENT,
     payload
@@ -97,9 +99,9 @@ export function editStudentField(student, field, value) {
 }
 
 export function editJumpField(student, jump, field, value) {
-  value = value.match(/(\d+)/) ? Number(value) : value
+  if(field === 'dive_flow' || field === 'jump_number') { value = Number(value)}
   let _jump = student.jumps.find(j => {
-    return j.jump_date == jump.jump_date
+    return j.id == jump.id
   })
   _jump[field] = value
   return {
@@ -149,7 +151,7 @@ export function removeJump(student, jump) {
         return dispatch(reportErrors(student))
       }
       let _jump = student.jumps.find(j => {
-        return j.jump_date === jump.jump_date
+        return j.id === jump.id
       })
       let video_file = _jump.video_file
       if (video_file) {
@@ -177,14 +179,14 @@ export function removeNote(student, note) {
 export function removeVideo(student, jump, settings, fs) {
   return dispatch => {
     let video_file = student.jumps.find(j => {
-      return j.jump_date === jump.jump_date
+      return j.id === jump.id
     }).video_file
     let videoFilePath = path.join(settings.videoFilePath, student._id, video_file)
     fs.unlink(videoFilePath, (err) => {
       if (err) { return console.log(err) }
     })
     delete student.jumps.find(j => {
-      return j.jump_date === jump.jump_date
+      return j.id === jump.id
     }).video_file
     dispatch(saveStudent(student))
   }

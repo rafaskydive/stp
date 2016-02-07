@@ -27,12 +27,12 @@ describe('student actions', () => {
 
     describe('newStudent', () => {
       it('should create an action to set student to new state', () => {
-        const payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format())] }
+        const payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format(), 'newStudentTestUUID')] }
         const expectedAction = {
           type: types.NEW_STUDENT,
           payload
         }
-        expect(actions.newStudent()).toEqual(expectedAction)
+        expect(actions.newStudent('newStudentTestUUID')).toEqual(expectedAction)
       })
       markAsTested('newStudent')
     })
@@ -78,10 +78,11 @@ describe('student actions', () => {
 
       it('should create EDIT_STUDENT_FIELD and modify a number field', () => {
         const jump_date = '2016-01-28T08:51:43-05:00'
-        const jump = jumpsTemplate(jump_date)
+        const testUUID = 'testEDIT_STUDENT_FIELD_UUID'
+        const jump = jumpsTemplate(jump_date, testUUID)
         const student = {
           name: 'Test Student',
-          jumps: [jumpsTemplate(jump_date)]
+          jumps: [jumpsTemplate(jump_date, testUUID)]
         }
         const field = "jump_number"
         const value = "10"
@@ -122,7 +123,8 @@ describe('student actions', () => {
 
       it('creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
         const jump_date = '2016-01-28 11:57:51'
-        const jumps = [jumpsTemplate(jump_date)]
+        const testUUID = 'testRemoveJumpUUID'
+        const jumps = [jumpsTemplate(jump_date, testUUID)]
         const newStudent = {
           type: 'student',
           subtype: 'test-student',
@@ -367,7 +369,8 @@ describe('student actions', () => {
 
       it('should remove specified jump and video, then save student', (done) => {
         const jump_date = '2016-01-28 11:57:51'
-        const jump = jumpsTemplate(jump_date)
+        const testUUID = 'testRemoveJumpUUID'
+        const jump = jumpsTemplate(jump_date, testUUID)
         const student = {_id: 'test-student'}
         const expectedActions = [
           { type: types.REQUEST_PUT_STUDENT },

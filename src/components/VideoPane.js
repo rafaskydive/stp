@@ -13,7 +13,7 @@ class VideoPane extends Component {
     let { student, jump, settings } = {...this.props}
     this.props.copyVideoFile(student, jump, file, settings, (video_file) => {
       student.jumps.find(j => {
-        return j.jump_date === jump.jump_date
+        return j.id === jump.id
       }).video_file = video_file
       this.props.saveStudent(student)
     })

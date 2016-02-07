@@ -19,13 +19,13 @@ function createMainWindow() {
   const win = new BrowserWindow({
     width: 960,
     height: 600,
-    'auto-hide-menu-bar': true
+    'auto-hide-menu-bar': false
   });
 
   // Remove 'public' part when deploying
   // win.loadURL(`file://${__dirname}/index.html`);
   win.loadURL(`file://${__dirname}/public/index.html`);
-  // win.openDevTools();
+  win.openDevTools();
   win.on('closed', onClosed);
 
   return win;

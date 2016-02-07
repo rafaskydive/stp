@@ -15,7 +15,7 @@ class JumpList extends Component {
 
   showStudentJump(student, jump) {
     if (student._id === 'new') { return alert("Please save student first.") }
-    this.props.push(`/student/${student._id}/jump/${jump.jump_date}`)
+    this.props.push(`/student/${student._id}/jump/${jump.id}`)
   }
 
   createNextJump() {

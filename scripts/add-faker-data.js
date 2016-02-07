@@ -1,5 +1,6 @@
 var faker = require('faker')
 var moment = require('moment')
+var uuid = require('uuid')
 var PouchDB = require('pouchdb')
 
 database = new PouchDB('http://localhost:5984/my-pouch-db')
@@ -15,6 +16,7 @@ var fakeStudent = function() {
 
   for(var x = 1; x <= Math.floor(Math.random()*18); x++) {
     var jump = {
+      id: uuid.v4(),
       jump_date: moment(faker.date.recent(90)).format(),
       instructor: faker.random.arrayElement(instructors)
     }

@@ -3,6 +3,7 @@ import Dropzone from 'react-dropzone'
 import VideoPane from './VideoPane'
 import ConditionalInput from './ConditionalInput'
 import InstructorInput from './InstructorInput'
+import DatePicker from 'react-datepicker'
 import { jumpsTemplate } from '../utils'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
@@ -26,7 +27,7 @@ class Jump extends Component {
       this.props.student._id === 'new' ?
       jumpsTemplate :
       this.props.student.jumps.find(j => {
-        return j.jump_date === this.props.params.jump_id
+        return j.id === this.props.params.jump_id
       })
     )
   }
@@ -92,6 +93,16 @@ class Jump extends Component {
               disabled={!student.modified}
               value={jump.instructor}
               onChange={e => this.handleEditField(e)}/>
+            <ConditionalInput
+              label="Jump Date"
+              onChange={e => this.handleEditField(e)}
+              value={moment(jump.jump_date).format('YYYY-MM-DD')}
+              disabled={!student.modified}
+              ref="jump_date"
+              name="jump_date"
+              type="date"
+              className="form-control"
+            />
             <div className="form-actions">
               {(() => { if(this.props.student.modified) {
                 return (
@@ -116,6 +127,7 @@ class Jump extends Component {
               }})()}
             </div>
           </form>
+          {jump.id}
         </div>
         <div className="pane padded video-page">
           {VideoPaneContent}
