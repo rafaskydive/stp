@@ -12,24 +12,27 @@ class StudentList extends Component {
   }
   render() {
     return (
-      <div className="pane-group">
-        <div className="pane">
-          <Header {...this.props}/>
-          <ListTable {...this.props}/>
-        </div>
+      <div className="window">
+        <Header {...this.props}/>
+        <WindowContent {...this.props}/>
       </div>
     )
   }
 }
 
 const Header = props => (
-  <header className="sub-header">
-    <div className="toolbar-actions">
-      <NameFilterForm {...props}/>
-      <AddStudentButton newStudent={props.newStudent} push={props.push}/>
-      <SettingsButton push={props.push}/>
-    </div>
+  <header className="toolbar toolbar-header">
+    <Toolbar {...props}/>
   </header>
+)
+
+const Toolbar = props => (
+  <div className="toolbar-actions">
+    <NameFilterForm {...props}/>
+    <AddStudentButton newStudent={props.newStudent} push={props.push}/>
+    <SettingsButton push={props.push}/>
+  </div>
+
 )
 
 const NameFilterForm = ({filterByName, nameFilter}) => (
@@ -62,6 +65,24 @@ const ListTable = props => (
     <ListTableHead {...props}/>
     <ListTableBody {...props}/>
   </table>
+)
+
+const WindowContent = props => (
+  <div className="window-content">
+    <PaneGroup {...props}/>
+  </div>
+)
+
+const PaneGroup = props => (
+  <div className="pane-group">
+    <Pane {...props}/>
+  </div>
+)
+
+const Pane = props => (
+  <div className="pane">
+    <ListTable {...props}/>
+  </div>
 )
 
 const ListTableHead = ({toggleSort, studentList}) => (

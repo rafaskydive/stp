@@ -6,15 +6,7 @@ import * as actionCreators from '../actions'
 import Classnames from 'classnames'
 
 class App extends Component {
-  render () {
-    return (
-      <div className="window">
-        <div className="window-content">
-          {this.props.children}
-        </div>
-      </div>
-    )
-  }
+  render () { return this.props.children }
 };
 
 function mapStateToProps(state) {
