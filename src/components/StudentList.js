@@ -128,7 +128,7 @@ export const renderStudentRow = (student, showStudent, push) => {
   let {_id, name, email, phone, last_jump_date} = {...student}
   let daysSinceLastJump = moment(last_jump_date).twix().count('days') - 1
   return (
-    <tr key={_id} onClick={e => { showStudent(student); push(`/student/${student._id}`)}}>
+    <tr key={_id} onClick={e => { showStudent(student); push(`/student/${student._id}?tab=jumps`)}}>
       <td>{name}</td>
       <td>{email}</td>
       <td>{phone}</td>

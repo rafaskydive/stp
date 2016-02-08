@@ -33,49 +33,39 @@ export const StudentInfoPane = props => (
   </div>
 )
 
-export const StudentTabsPane = props => (
-  <div className="pane">
-    <StudentTabs {...props}/>
+export const StudentTabsPane = props => {
+  let { student, location } = {...props}
+  let TabComponent = activeTab(location) === 'jumps' ? JumpList : Notes
+  return (
+    <div className="pane">
+      <Tabs {...props}/>
+      <TabComponent student={student} {...props}/>
+    </div>
+  )
+}
+
+export const Tabs = ({location, push}) => (
+  <div className="tab-group">
+    <div className={activeTab(location) === "jumps" ? "tab-item active" : "tab-item"}
+      onClick={() => setActiveTab('jumps', location, push)}>
+      Jumps
+    </div>
+    <div className={activeTab(location) === "notes" ? "tab-item active" : "tab-item"}
+      onClick={() => setActiveTab('notes', location, push)}>
+      Notes
+    </div>
   </div>
 )
 
-export class StudentTabs extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { activeTab: 'jumps' }
-  }
-  componentDidMount() {
-    console.log(this.props.location.query.tab)
-    if(this.props.location.query.tab) {
-      this.setState({activeTab: this.props.location.query.tab})
-    }
-  }
-  setActiveTab(tab) {
-    let tabPath = `${this.props.location.pathname}?tab=${tab}`
-    this.props.push(tabPath)
-    this.setState( {activeTab: tab} )
-  }
+const activeTab = (location) => {
+  if ( location.query.tab && location.query.tab === 'notes') { return 'notes' }
+  return 'jumps'
+}
 
-  render() {
-    let { student } = {...this.props}
-    let TabComponent = this.state.activeTab === 'jumps' ? JumpList : Notes
-    // TODO: try to factor this down to flatter components
-    return (
-      <div>
-        <div className="tab-group">
-          <div className={this.state.activeTab === 'jumps' ? 'tab-item active' : 'tab-item'}
-            onClick={() => this.setActiveTab('jumps') }>
-            Jumps
-          </div>
-          <div className={this.state.activeTab === 'notes' ? 'tab-item active' : 'tab-item'}
-            onClick={() => this.setActiveTab('notes') }>
-            Notes
-          </div>
-        </div>
-        <TabComponent student={student} {...this.props}/>
-      </div>
-    )
-  }
+export const setActiveTab = (tab, location, push) => {
+  let path = `${location.pathname}?tab=${tab}`
+  console.log(path)
+  push(path)
 }
 
 function mapStateToProps(state) {
