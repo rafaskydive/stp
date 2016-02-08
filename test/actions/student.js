@@ -247,18 +247,20 @@ describe('student actions', () => {
 
     describe('saveNote', () => {
       it('should save note', (done) => {
+        let new_note = { text: 'test note', date: '1-2-3'}
         const student = {
           type: 'student',
           name: 'Save Note Student',
           jumps: [jumpsTemplate('w-h-a-t e-v-e-r')],
-          notes: []
+          notes: [],
+          new_note: new_note
         }
         const expectedActions = [
           { type: types.REQUEST_PUT_STUDENT },
           { type: types.REQUEST_STUDENT },
           (a) => {
             expect(a.type).toEqual(types.RECIEVE_STUDENT)
-            expect(a.payload.notes[0].text).toEqual('success')
+            expect(a.payload.notes[0].text).toEqual('test note')
           }
         ]
         const store = mockStore(student, expectedActions, done)
@@ -266,14 +268,15 @@ describe('student actions', () => {
       })
 
       it('with errors, should not save note', (done) => {
+        let new_note = { text: '', date: 'y-m-d' }
         const expectedActions = [
           {
             type: types.SAVE_STUDENT_ERROR,
-            payload: { errors: [ 'Note text may not be blank' ], student: { notes: [] } }
+            payload: { errors: [ 'Note text may not be blank' ], notes: [], new_note: new_note }
           }
         ]
         const store = mockStore({student:{notes:[]}}, expectedActions, done)
-        store.dispatch(actions.saveNote({student:{notes:[]}}, {date: 'x', text: ''}))
+        store.dispatch(actions.saveNote( { notes:[], new_note: new_note } ))
       })
       markAsTested('saveNote')
     })
