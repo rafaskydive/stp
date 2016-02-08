@@ -3,12 +3,9 @@ import StudentInfoForm from './StudentInfoForm'
 import JumpList from './JumpList'
 import Notes from './Notes'
 import ErrorStatus from './ErrorStatus'
-import ConditionalInput from './ConditionalInput'
-import InstructorInput from './InstructorInput'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
-import moment from 'moment'
 
 class Student extends Component {
   render() {
