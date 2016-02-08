@@ -21,6 +21,7 @@ class StudentWrapper extends Component {
       <div className="window">
         <Header {...this.props}/>
         {this.props.children}
+        <Footer {...this.props}/>
       </div>
     )
   }
@@ -41,8 +42,13 @@ export const Toolbar = ({student, location, push}) => (
       <span className="icon icon-left-open"></span>
     </button>
     <span className="page-title">{student.name || "New Student"}</span>
-    <ErrorStatus errors={student.errors}/>
   </div>
+)
+
+export const Footer = ({student}) => (
+  <footer className="toolbar toolbar-footer">
+    <ErrorStatus errors={student.errors}/>
+  </footer>
 )
 
 function mapStateToProps(state) {

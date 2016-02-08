@@ -15,6 +15,7 @@ export class StudentList extends Component {
       <div className="window">
         <Header {...this.props}/>
         <WindowContent {...this.props}/>
+        <Footer {...this.props}/>
       </div>
     )
   }
@@ -142,6 +143,12 @@ export const renderStudentRow = (student, showStudent, push) => {
     </tr>
   )
 }
+
+export const Footer = props => (
+  <footer className="toolbar toolbar-footer">
+    <h1 className="title">Footer</h1>
+  </footer>
+)
 
 export const ColumnSortClass = (column, sortBy, sortDesc) => {
   return Classnames({

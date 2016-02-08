@@ -50,16 +50,16 @@ export function saveStudent(student) {
     if(! student._id || student._id === "new") {
       student._id = student.name.replace(/ /g, '-').toLowerCase()
     }
-    delete(student.modified)
-    delete(student.new)
-    delete(student.errros)
     student.last_jump_date = Object.keys(student.jumps).map(key => {
       return student.jumps[key].jump_date
     }).sort((a, b) => {
       return a > b
     }).pop() || ""
-    dispatch({ type: types.REQUEST_PUT_STUDENT})
     if ( student.email === "_delete@me" ) { student._deleted = true }
+    delete(student.modified)
+    delete(student.new)
+    delete(student.errors)
+    delete(student.new_note)
     database.put(student, function (err, response) {
       if (err) { console.log(err) }
       return dispatch(fetchStudent(response.id))
@@ -73,6 +73,7 @@ export function createNote (student) {
 
 export function cancelNote (student) {
   delete student.new_note
+  delete student.errors
   return { type: types.CANCEL_NOTE, payload: student }
 }
 
@@ -86,11 +87,12 @@ export function saveNote(student) {
     if( !student.new_note.text || student.new_note.text.trim() === "") {
       Object.assign(student, {errors: ['Note text may not be blank']})
       return dispatch(reportErrors(student))
+    } else {
+      student.new_note.date = moment().format()
+      student.notes.push(student.new_note)
+      delete student.new_note
+      return dispatch(saveStudent(student))
     }
-    student.new_note.date = moment().format()
-    student.notes.push(student.new_note)
-    delete student.new_note
-    return dispatch(saveStudent(student))
   }
 }
 

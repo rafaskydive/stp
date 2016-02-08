@@ -121,7 +121,7 @@ describe('student actions', () => {
 
     describe('saveStudent', () => {
 
-      it('creates REQUEST_PUT_STUDENT, saves student, then creates fetchStudent stuff', (done) => {
+      it('creates saves student, then creates fetchStudent stuff', (done) => {
         const jump_date = '2016-01-28 11:57:51'
         const testUUID = 'testRemoveJumpUUID'
         const jumps = [jumpsTemplate(jump_date, testUUID)]
@@ -135,7 +135,6 @@ describe('student actions', () => {
           notes: []
         }
         const expectedActions = [
-          { type: types.REQUEST_PUT_STUDENT },
           { type: types.REQUEST_STUDENT },
           (a) => {
             expect(a.type).toEqual('RECIEVE_STUDENT')
@@ -160,7 +159,6 @@ describe('student actions', () => {
           notes: []
         }
         const expectedActions = [
-          { type: types.REQUEST_PUT_STUDENT },
           { type: types.REQUEST_STUDENT },
           (a) => {
             expect(a.type).toEqual('RECIEVE_STUDENT')
@@ -185,7 +183,6 @@ describe('student actions', () => {
           notes: []
         }
         const expectedActions = [
-          { type: types.REQUEST_PUT_STUDENT },
           { type: types.REQUEST_STUDENT },
           (a) => {
             expect(a.type).toEqual('RECIEVE_STUDENT')
@@ -256,7 +253,6 @@ describe('student actions', () => {
           new_note: new_note
         }
         const expectedActions = [
-          { type: types.REQUEST_PUT_STUDENT },
           { type: types.REQUEST_STUDENT },
           (a) => {
             expect(a.type).toEqual(types.RECIEVE_STUDENT)
@@ -291,7 +287,6 @@ describe('student actions', () => {
           notes: [{date:'x',text:'keep'},{date:'y',text:'remove'}]
         }
         const expectedActions = [
-          { type: types.REQUEST_PUT_STUDENT },
           { type: types.REQUEST_STUDENT },
           (a) => {
             expect(a.type).toEqual(types.RECIEVE_STUDENT)
@@ -341,7 +336,6 @@ describe('student actions', () => {
         const student = { _id: 'test-student' }
         const expectedActions = [
           { type: types.CREATE_NEXT_JUMP },
-          { type: types.REQUEST_PUT_STUDENT },
           (a) => {
             expect(a.type).toEqual('REQUEST_STUDENT')
           },
@@ -376,7 +370,6 @@ describe('student actions', () => {
         const jump = jumpsTemplate(jump_date, testUUID)
         const student = {_id: 'test-student'}
         const expectedActions = [
-          { type: types.REQUEST_PUT_STUDENT },
           { type: types.REQUEST_STUDENT },
           (incomingAction) => {
             expect(incomingAction.type).toEqual(types.RECIEVE_STUDENT)
@@ -401,7 +394,6 @@ describe('student actions', () => {
       const { student, settings } = {...state}
       it('should remove video from fs and its reference on jump object', (done) => {
         const expectedActions = [
-          { type: types.REQUEST_PUT_STUDENT },
           { type: types.REQUEST_STUDENT },
           (a) => {
             expect(a.type).toEqual(types.RECIEVE_STUDENT)

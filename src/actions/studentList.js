@@ -31,12 +31,6 @@ export function fetchStudents() {
   }
 }
 
-function requestPutStudent() {
-  return {
-    type: types.REQUEST_PUT_STUDENT
-  }
-}
-
 export function showStudent(student) {
   return {
     type: types.SHOW_STUDENT,

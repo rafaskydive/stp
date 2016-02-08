@@ -31,7 +31,7 @@ export default function student (state=initialState, action) {
     case types.CHANGE_NOTE_FIELD:
       return Object.assign({}, state, action.payload)
     case types.SAVE_STUDENT_ERROR:
-      return Object.assign({}, state, { errors: action.payload.errors, modified: false })
+      return Object.assign({}, state, { errors: action.payload.errors })
     case types.CREATE_NOTE:
       return Object.assign({}, state, { new_note: {} })
     default:
