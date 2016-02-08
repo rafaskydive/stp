@@ -1,90 +1,77 @@
 import React, { Component } from 'react'
-import moment from 'moment'
 import InlineConfirmButton from 'react-inline-confirm'
-import { connect } from 'react-redux'
-import * as actionCreators from '../actions'
-import { routeActions } from 'redux-simple-router'
+import moment from 'moment'
 
-class JumpList extends Component {
-
-  _sortedJumps() {
-    return this.props.student.jumps.sort((a, b) => {
-      return a.jump_date > b.jump_date
-    })
-  }
-
-  showStudentJump(student, jump) {
-    if (student._id === 'new') { return alert("Please save student first.") }
-    this.props.push(`/student/${student._id}/jump/${jump.id}`)
-  }
-
-  createNextJump() {
-    this.props.createNextJump(this.props.student)
-  }
-
-  removeJump(jump) {
-    this.props.removeJump(this.props.student, jump)
-  }
-
-  render() {
-    let { student } = {...this.props}
+export default class JumpList extends Component {
+  render () {
     return (
       <ul className="list-group">
-        {(() => { if (!student.new && this.props.student.modified) {
-          return (
-            <li className="list-group-header">
-              <button className="btn btn-default" onClick={e => this.createNextJump(e)}>
-                <span className="icon icon-list-add icon-text"></span>
-                Add New Jump
-              </button>
-            </li>
-          )
-        }})()}
-        {this._sortedJumps().map(jump => {
-          return (
-            <li className="list-group-item" key={jump.id}>
-              <div className="media-body pull-left"
-                  onClick={e => this.showStudentJump(student, jump)}>
-                <strong>
-                  Dive Flow {jump.dive_flow} -
-                  Jump {jump.jump_number} -
-                  Instructor {jump.instructor}
-                </strong>
-                <p>Date: {moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</p>
-                <p>Video: {jump.video_file}</p>
-              </div>
-              {(() => { if(this.props.student.modified) {
-                return (
-                  <span className="pull-right">
-                    <InlineConfirmButton
-                      className="btn btn-default"
-                      textValues={["Remove Jump", "Are you sure?", "Removing..."]}
-                      showTimer={true}
-                      isExecuting={false}
-                      onClick={e => this.removeJump(jump)}
-                      >
-                      <span className="icon icon-trash icon-text"></span>
-                    </InlineConfirmButton>
-                  </span>
-                )
-              }})()}
-            </li>
-          )
-        })}
+        <ListGroupHeader {...this.props}/>
+        {renderSortedJumpList(this.props)}
       </ul>
     )
   }
 }
 
-function mapStateToProps(state) {
-  return {}
+export const ListGroupHeader = ({student, createNextJump}) => {
+  if (!student.new && student.modified) {
+    return (
+      <li className="list-group-header">
+        <button className="btn btn-default" onClick={() => createNextJump(student)}>
+          <span className="icon icon-list-add icon-text"></span>
+          Add New Jump
+        </button>
+      </li>
+    )
+  }
+  return <span></span>
 }
 
-const mapDispatchToProps = Object.assign({}, {
-  push: routeActions.push,
-  removeJump: actionCreators.removeJump,
-  createNextJump: actionCreators.createNextJump
+export const renderSortedJumpList = ({student, push, removeJump}) => {
+  return (
+    student.jumps.sort((a, b) => {
+      return a.jumps_date > b.jumps_date
+    }).map(jump => renderJumpListItem(student, jump, push, removeJump))
+  )
+}
+export const renderJumpListItem = (student, jump, push, removeJump) => (
+  <li className="list-group-item" key={jump.id}>
+    <JumpListItem student={student} jump={jump} push={push} removeJump={removeJump}/>
+  </li>
+)
 
-})
+export const JumpListItem = ({student, jump, push, removeJump}) => (
+  <div>
+    <div className="media-body pull-left"
+      onClick={() => {
+        if (student._id === 'new') { return alert("Please save student first")}
+        push(`/student/${student._id}/jump/${jump.id}`)
+      }}>
+      <strong>
+        Dive Flow {jump.dive_flow} -
+        Jump {jump.jump_number} -
+        Instructor {jump.instructor}
+      </strong>
+      <p>Date: {moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</p>
+      <p>Video: {jump.video_file}</p>
+    </div>
+    <RemoveJumpButton student={student} jump={jump} removeJump={removeJump}/>
+  </div>
+)
 
-export default connect(mapStateToProps, mapDispatchToProps)(JumpList)
+export const RemoveJumpButton = ({student, jump, removeJump}) => {
+  if (!student.modified) { return <span></span> }
+  return (
+    <span className="pull-right">
+      <InlineConfirmButton
+        className="btn btn-default"
+        textValues={["Remove Jump", "Are you sure?", "Removing..."]}
+        showTimer={true}
+        isExecuting={false}
+        onClick={e => removeJump(student, jump)}
+        >
+        <span className="icon icon-trash icon-text"></span>
+      </InlineConfirmButton>
+    </span>
+  )
+}
