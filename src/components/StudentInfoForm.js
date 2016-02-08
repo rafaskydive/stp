@@ -11,9 +11,10 @@ export default class StudentInfoForm extends Component {
   }
 }
 
-export const Form = ({student, editStudentField, enableStudentEditForm, disableStudentEditForm, saveStudent}) => (
+export const Form = ({student, editStudentField, enableStudentEditForm, disableStudentEditForm, saveStudent, deleteStudent, settings, push}) => (
   <form onSubmit={e => {
       e.preventDefault()
+      if ( student.email === "_delete@me" ) return deleteStudent(student, settings, push)
       return student.modified ? saveStudent(student) : {}
     }}>
     <ConditionalInput required

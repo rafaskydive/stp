@@ -62,8 +62,7 @@ export function saveStudent(student) {
     if ( student.email === "_delete@me" ) { student._deleted = true }
     database.put(student, function (err, response) {
       if (err) { console.log(err) }
-      let testUUID
-      return student._deleted ? dispatch(newStudent(testUUID)) : dispatch(fetchStudent(response.id))
+      return dispatch(fetchStudent(response.id))
     })
   }
 }
@@ -210,17 +209,15 @@ export function removeVideo(student, jump, settings, fs) {
   }
 }
 
-export function deleteStudent(student, push, settings, rimraf) {
-  console.log(settings)
+export function deleteStudent(student, settings, push) {
   return dispatch => {
+    dispatch({type: types.DELETE_STUDENT})
     let studentVideoDir = path.join(settings.videoFilePath, student._id)
     rimraf(studentVideoDir, function (err, result) {
       if (err) { console.log (err) }
-      console.log(`removed ${studentVideoDir}`)
       student._deleted = true
       database.put(student, function(err, response) {
         if (err) { console.log (err) }
-        console.log(`removed student ${student._id}`)
         push('/')
       })
     })
