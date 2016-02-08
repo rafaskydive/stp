@@ -17,26 +17,33 @@ class StudentWrapper extends Component {
   }
 
   render() {
-    let { student } = {...this.props}
-    let backButton = this.props.location.pathname.match(/\/jump\//) ? `/student/${student._id}` : "/"
     return (
-      <div className="pane-group">
-        <div className="pane">
-          <header className="sub-header">
-            <div className="toolbar-actions text-center">
-              <button className="btn btn-default pull-left" onClick={() => this.props.push(backButton)}>
-                <span className="icon icon-left-open"></span>
-              </button>
-              <span className="page-title">{student.name || "New Student"}</span>
-              <ErrorStatus errors={student.errors}/>
-            </div>
-          </header>
-          {this.props.children}
-        </div>
+      <div className="window">
+        <Header {...this.props}/>
+        {this.props.children}
       </div>
     )
   }
 }
+
+export const Header = props => (
+  <header className="toolbar toolbar-header">
+    <Toolbar {...props}/>
+  </header>
+)
+
+export const Toolbar = ({student, location, push}) => (
+  <div className="toolbar-actions text-center">
+    <button className="btn btn-default pull-left"
+      onClick={() => {
+        push(location.pathname.match(/\/jump\//) ? `/student/${student._id}` : "/")
+      }}>
+      <span className="icon icon-left-open"></span>
+    </button>
+    <span className="page-title">{student.name || "New Student"}</span>
+    <ErrorStatus errors={student.errors}/>
+  </div>
+)
 
 function mapStateToProps(state) {
   return { student: state.student }
