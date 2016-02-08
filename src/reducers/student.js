@@ -27,9 +27,13 @@ export default function student (state=initialState, action) {
     case types.EDIT_STUDENT_FIELD:
     case types.CREATE_NEXT_JUMP:
     case types.SET_INSTRUCTOR_ON_FIRST_JUMP:
+    case types.CANCEL_NOTE:
+    case types.CHANGE_NOTE_FIELD:
       return Object.assign({}, state, action.payload)
     case types.SAVE_STUDENT_ERROR:
       return Object.assign({}, state, { errors: action.payload.errors, modified: false })
+    case types.CREATE_NOTE:
+      return Object.assign({}, state, { new_note: {} })
     default:
       return state
   }

@@ -41,7 +41,7 @@ export const StudentTabsPane = props => {
   )
 }
 
-export const Tabs = ({location, push}) => (
+export const Tabs = ({student, location, push}) => (
   <div className="tab-group">
     <div className={activeTab(location) === "jumps" ? "tab-item active" : "tab-item"}
       onClick={() => setActiveTab('jumps', location, push)}>
@@ -49,7 +49,7 @@ export const Tabs = ({location, push}) => (
     </div>
     <div className={activeTab(location) === "notes" ? "tab-item active" : "tab-item"}
       onClick={() => setActiveTab('notes', location, push)}>
-      Notes
+      Notes ({student.notes.length})
     </div>
   </div>
 )

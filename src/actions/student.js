@@ -66,14 +66,40 @@ export function saveStudent(student) {
   }
 }
 
-export function saveNote(student, note) {
+export function createNote (student) {
+  return { type: types.CREATE_NOTE }
+}
+
+export function cancelNote (student) {
+  delete student.new_note
+  return { type: types.CANCEL_NOTE, payload: student }
+}
+
+export function changeNoteField(student, field, value) {
+  student.new_note[field] = value
+  return { type: types.CHANGE_NOTE_FIELD, payload: student }
+}
+
+export function saveNote(student) {
   return dispatch => {
-    if(note.text.trim() === "") {
+    if(student.new_note.text.trim() === "") {
       Object.assign(student, {errors: ['Note text may not be blank']})
       return dispatch(reportErrors(student))
     }
-    student.notes.push(note)
+    student.new_note.date = moment().format()
+    student.notes.push(student.new_note)
+    delete student.new_note
     return dispatch(saveStudent(student))
+  }
+}
+
+export function removeNote(student, note) {
+  return dispatch => {
+    let _note = student.notes.find(n => {
+      return n.date === note.date
+    })
+    student.notes.splice(student.notes.indexOf(_note), 1)
+    dispatch(saveStudent(student))
   }
 }
 
@@ -163,16 +189,6 @@ export function removeJump(student, jump) {
       student.jumps.splice(student.jumps.indexOf(_jump), 1)
       dispatch(saveStudent(student))
     })
-  }
-}
-
-export function removeNote(student, note) {
-  return dispatch => {
-    let _note = student.notes.find(n => {
-      return n.date === note.date
-    })
-    student.notes.splice(student.notes.indexOf(_note), 1)
-    dispatch(saveStudent(student))
   }
 }
 
