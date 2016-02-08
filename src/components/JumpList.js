@@ -42,7 +42,7 @@ class JumpList extends Component {
         }})()}
         {this._sortedJumps().map(jump => {
           return (
-            <li className="list-group-item" key={jump.jump_date}>
+            <li className="list-group-item" key={jump.id}>
               <div className="media-body pull-left"
                   onClick={e => this.showStudentJump(student, jump)}>
                 <strong>
