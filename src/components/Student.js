@@ -66,7 +66,7 @@ export const setActiveTab = (tab, location, push) => {
 }
 
 function mapStateToProps(state) {
-  return { student: state.student }
+  return { student: state.student, settings: state.settings }
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {
