@@ -5,7 +5,6 @@ import { jumpsTemplate } from '../utils'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
-const path = require('path')
 
 class Jump extends Component {
   componentWillMount () {
@@ -41,7 +40,15 @@ export const JumpInfoPane = props => (
 
 export const VideoPaneWrapper = props => (
   <div className="pane pane-padded video-page">
-    <VideoPane jump={jump(props.student, props.params)}/>
+    <VideoPane
+      student={props.student}
+      jump={jump(props.student, props.params)}
+      video={props.video}
+      copyVideoFile={props.copyVideoFile}
+      removeVideo={props.removeVideo}
+      saveStudent={props.saveStudent}
+      settings={props.settings}
+      />
   </div>
 )
 
@@ -56,11 +63,18 @@ const jump = (student, params) => {
 }
 
 function mapStateToProps(state) {
-  return { student: state.student }
+  return { student: state.student, settings: state.settings, video: state.video }
 }
 
-const mapDispatchToProps = Object.assign({}, actionCreators, {
-  push: routeActions.push
+const mapDispatchToProps = Object.assign({}, {
+  newStudent: actionCreators.newStudent,
+  fetchStudent: actionCreators.fetchStudent,
+  enableStudentEditForm: actionCreators.enableStudentEditForm,
+  disableStudentEditForm: actionCreators.disableStudentEditForm,
+  editJumpField: actionCreators.editJumpField,
+  copyVideoFile: actionCreators.copyVideoFile,
+  removeVideo: actionCreators.removeVideo,
+  saveStudent: actionCreators.saveStudent
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Jump)
