@@ -82,7 +82,7 @@ export function changeNoteField(student, field, value) {
 
 export function saveNote(student) {
   return dispatch => {
-    if(student.new_note.text.trim() === "") {
+    if( !student.new_note.text || student.new_note.text.trim() === "") {
       Object.assign(student, {errors: ['Note text may not be blank']})
       return dispatch(reportErrors(student))
     }
