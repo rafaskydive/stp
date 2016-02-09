@@ -19,7 +19,7 @@ function createMainWindow() {
   const win = new BrowserWindow({
     width: 960,
     height: 600,
-    'auto-hide-menu-bar': false
+    frame: true
   });
 
   // Remove 'public' part when deploying
