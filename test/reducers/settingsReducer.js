@@ -1,5 +1,5 @@
 import expect from 'expect'
-import reducer from '../../src/reducers/settings'
+import reducer from '../../src/reducers/settingsReducer'
 import * as types from '../../src/constants'
 
 describe('settings reducer', () => {

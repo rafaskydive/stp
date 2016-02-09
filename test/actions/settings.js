@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import database from '../../src/database'
 import { jumpsTemplate } from '../../src/utils'
-import * as actions from '../../src/actions/settings'
+import * as actions from '../../src/actions/settingsActions'
 import * as types from '../../src/constants'
 
 const mkdirp = require('mkdirp')

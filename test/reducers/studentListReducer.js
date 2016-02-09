@@ -1,5 +1,5 @@
 import expect from 'expect'
-import reducer from '../../src/reducers/studentList'
+import reducer from '../../src/reducers/studentListReducer'
 import * as types from '../../src/constants'
 
 describe('studentList reducer', () => {

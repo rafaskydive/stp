@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import database from '../../src/database'
 import { jumpsTemplate } from '../../src/utils'
-import * as actions from '../../src/actions/studentList'
+import * as actions from '../../src/actions/studentListActions'
 import * as types from '../../src/constants'
 
 const ACTIONS = Object.keys(actions)

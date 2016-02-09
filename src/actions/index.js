@@ -1,7 +1,7 @@
-export * from './studentList'
+export * from './studentListActions'
 
-export * from './student'
+export * from './studentActions'
 
-export * from './video'
+export * from './videoActions'
 
-export * from './settings'
+export * from './settingsActions'

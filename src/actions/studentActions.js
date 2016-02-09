@@ -33,6 +33,7 @@ export function fetchStudent(_id) {
   return dispatch => {
     dispatch(requestStudent())
     database.get(_id, function (err, doc) {
+      if (err) { console.log(err) }
       dispatch(receiveStudent(doc))
     })
   }
@@ -56,7 +57,7 @@ export function saveStudent(student) {
       return a > b
     }).pop() || ""
     try {
-      student.next_visit_date = student.notes.sort((a, b) => {
+      student.next_visit_date = Object.assign({},student.notes).sort((a, b) => {
         return a.next_visit_date > b.next_visit_date
       }).pop().next_visit_date
     } catch (e) {}
@@ -64,7 +65,6 @@ export function saveStudent(student) {
     delete(student.modified)
     delete(student.new)
     delete(student.errors)
-    delete(student.new_note)
     database.put(student, function (err, response) {
       if (err) { console.log(err) }
       return dispatch(fetchStudent(response.id))

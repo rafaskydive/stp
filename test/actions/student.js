@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import database from '../../src/database'
 import { jumpsTemplate } from '../../src/utils'
-import * as actions from '../../src/actions/student'
+import * as actions from '../../src/actions/studentActions'
 import * as types from '../../src/constants'
 
 import fs from 'fs'
