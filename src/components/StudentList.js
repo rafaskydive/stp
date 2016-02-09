@@ -145,7 +145,7 @@ export const renderStudentRow = (student, showStudent, push) => {
       <td>{phone}</td>
       <td>
         {moment(last_jump_date).format("ddd MMM Do")}
-        <span className={`currency-color ${currencyClass(daysSinceLastJump)}`}>{daysSinceLastJump} days</span>
+        <span className="currency-color" style={{backgroundColor: currencyColor(daysSinceLastJump)}}>{daysSinceLastJump} days</span>
       </td>
       <td>
         {lastJumpInfo(student, student.last_jump_date)}
@@ -172,13 +172,20 @@ export const ColumnSortClass = (column, sortBy, sortDesc) => {
   })
 }
 
-export const currencyClass = daysSinceLastJump => {
-  if(daysSinceLastJump > 30) { return "uncurrent" }
-  if(daysSinceLastJump > 21) { return "red" }
-  if(daysSinceLastJump > 14) { return "orange" }
-  if(daysSinceLastJump > 7 ) { return "yellow" }
-  return ""
+const currencyColor = daysSinceLastJump => {
+  if (daysSinceLastJump > 30) { return `rgb(255, 0, 0)` }
+  if (daysSinceLastJump > 21) { return `rgb(255, ${192-Math.floor((64/7)*(daysSinceLastJump-21))}, 0)` }
+  if (daysSinceLastJump > 14) { return `rgb(255, ${255-Math.floor((64/7)*(daysSinceLastJump-14))}, 0)` }
+                                return `rgb(${Math.floor(255/14*daysSinceLastJump)}, 255, 0)`
 }
+
+// export const currencyClass = daysSinceLastJump => {
+//   if(daysSinceLastJump > 30) { return "uncurrent" }
+//   if(daysSinceLastJump > 21) { return "red" }
+//   if(daysSinceLastJump > 14) { return "orange" }
+//   if(daysSinceLastJump > 7 ) { return "yellow" }
+//   return ""
+// }
 
 export const lastJumpInfo = (student, last_jump_date) => {
   let jump = null
