@@ -32,6 +32,9 @@ export default function studentList (state=initialState, action) {
       let sortedDates = students.map(student => {
         return student.last_jump_date
       }).sort()
+      let sortedVisitDates = students.map(student => {
+        return student.next_visit_date
+      }).sort()
       if(sortBy === "name") {
         if (!sortDesc) { sortedNames.reverse() }
         sortedNames.map(name => {
@@ -42,6 +45,12 @@ export default function studentList (state=initialState, action) {
         if (sortDesc) { sortedDates.reverse() }
         sortedDates.map(date => {
           sortedStudents.push(students.find(student => { return student.last_jump_date === date }))
+        })
+      }
+      if(sortBy === "next_visit_date") {
+        if (sortDesc) { sortedVisitDates.reverse() }
+        sortedVisitDates.map(date => {
+          sortedStudents.push(students.find(student => { return student.next_visit_date === date }))
         })
       }
       return Object.assign({}, state, {

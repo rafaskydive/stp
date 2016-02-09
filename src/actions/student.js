@@ -55,6 +55,11 @@ export function saveStudent(student) {
     }).sort((a, b) => {
       return a > b
     }).pop() || ""
+    try {
+      student.next_visit_date = student.notes.sort((a, b) => {
+        return a.next_visit_date > b.next_visit_date
+      }).pop().next_visit_date
+    } catch (e) {}
     if ( student.email === "_delete@me" ) { student._deleted = true }
     delete(student.modified)
     delete(student.new)

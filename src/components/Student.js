@@ -61,7 +61,6 @@ const activeTab = (location) => {
 
 export const setActiveTab = (tab, location, push) => {
   let path = `${location.pathname}?tab=${tab}`
-  console.log(path)
   push(path)
 }
 

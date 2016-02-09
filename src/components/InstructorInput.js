@@ -30,6 +30,7 @@ class InstructorInput extends Component {
           placeholder="Instructor Name"
           className="form-control"
         >
+          <option value="" key=""></option>
         {this.props.settings.instructors.map((instructor, i) => {
           return (
             <option value={instructor} key={i}>{instructor}</option>

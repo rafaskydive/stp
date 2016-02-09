@@ -96,8 +96,9 @@ export const ListTableHeadRow = ({toggleSort, studentList}) => (
     <Th name="Name" onClick={e => toggleSort('name')} sortField="name" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>
     <Th name="Email"/>
     <Th name="Phone"/>
-    <Th name="Last Jump" onClick={e => toggleSort('last_jump_date')} sortField="last_jump_date" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>
-    <Th name="Last Jump Date"/>
+    <Th name="Last Jump Date" onClick={e => toggleSort('last_jump_date')} sortField="last_jump_date" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>
+    <Th name="Last Dive Flow"/>
+    <Th name="Next Visit Date" onClick={e => toggleSort('next_visit_date')} sortField="next_visit_date" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>
   </tr>
 )
 
@@ -140,6 +141,9 @@ export const renderStudentRow = (student, showStudent, push) => {
       <td>
         {lastJumpInfo(student, student.last_jump_date)}
       </td>
+      <td>
+        {nextVisitDate(student.next_visit_date)}
+      </td>
     </tr>
   )
 }
@@ -178,6 +182,10 @@ export const lastJumpInfo = (student, last_jump_date) => {
     console.log(`${student._id}: ${e}`)
   }
   return jump ? ` DF${jump.dive_flow} ${jump.instructor.match(/\b\w/g).join('')}` : ""
+}
+
+const nextVisitDate = (next_visit_date) => {
+  return !next_visit_date ? <span></span> : <span>{moment(next_visit_date).format('ddd MMM Do')}</span>
 }
 
 function mapStateToProps(state) {
