@@ -13,7 +13,7 @@ class InstructorInput extends Component {
 
   render() {
     let { label } = {...this.props}
-    return this.props.disabled ?
+    return this.props.disabled && !this.props.unconditional ?
     (
       <div className="conditional-input">{label}<br/>{this.props.value}</div>
     ) :

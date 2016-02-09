@@ -67,7 +67,14 @@ span.currency-color.uncurrent { background-color: #f88; }
   border-color: $warning-color;
 }
 
+.form-group-small {
+  display: inline-block;
+  margin-right: $padding;
+  width: 20%;
+}
+
 .form-control-small {
+  box-sizing: border-box;  
   display: block;
   width: 25%;
 }

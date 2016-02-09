@@ -17,47 +17,42 @@ export const Form = ({student, jump, editJumpField, enableStudentEditForm, disab
       e.preventDefault()
       return student.modified ? saveStudent(student) : {}
     }}>
-    <ConditionalInput
-      label="Dive Flow"
-      onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}
-      value={jump.dive_flow}
-      disabled={!student.modified}
-      name="dive_flow"
-      type="number"
-      min={1}
-      max={18}
-      className="form-control"
-    />
-    <ConditionalInput
-      label="Jump Number"
-      onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}
-      value={jump.jump_number}
-      disabled={!student.modified}
-      name="jump_number"
-      type="number"
-      min={1}
-      max={100}
-      className="form-control"
-    />
-    <InstructorInput
-      label="Instructor"
-      disabled={!student.modified}
-      value={jump.instructor}
-      onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}
-    />
-    <ConditionalInput
-      label="Jump Date"
-      onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}
-      value={moment(jump.jump_date).format('YYYY-MM-DD')}
-      disabled={!student.modified}
-      name="jump_date"
-      type="date"
-      className="form-control"
-    />
-    {(
+    <div className="form-group">
+      <label>Dive Flow</label>
+      <input name="dive_flow" type="number" className="form-control"
+        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}
+        value={jump.dive_flow}
+        disabled={!student.modified}
+        min={1}
+        max={18}/>
+    </div>
+    <div className="form-group">
+      <label>Jump Number</label>
+      <input name="jump_number" type="number" className="form-control"
+        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}
+        value={jump.jump_number}
+        disabled={!student.modified}
+        min={1}
+        max={100}/>
+    </div>
+    <div className="form-group">
+      <label>Instructor</label>
+      <InstructorInput unconditional={true}
+        disabled={!student.modified}
+        value={jump.instructor}
+        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}/>
+    </div>
+    <div className="form-group">
+      <label>Jump Date</label>
+      <input name="jump_date" type="date" className="form-control"
+        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}
+        value={moment(jump.jump_date).format('YYYY-MM-DD')}
+        disabled={!student.modified}/>
+    </div>
+    {/*(
       student.modified ?
       <SaveAndCancelButtons student={student} disableStudentEditForm={disableStudentEditForm}/> :
       <EnableFormButton enableStudentEditForm={enableStudentEditForm}/>
-    )}
+    )*/}
   </form>
 )

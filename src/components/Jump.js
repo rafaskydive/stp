@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import VideoPane from './VideoPane'
 import JumpInfoForm from './JumpInfoForm'
+import LogEntryForm from './LogEntryForm'
 import { jumpsTemplate } from '../utils'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
@@ -28,9 +29,43 @@ class Jump extends Component {
 export const PaneGroup = props => (
   <div className="pane-group">
     <JumpInfoPane {...props}/>
-    <VideoPaneWrapper {...props}/>
+    <JumpTabsPane {...props}/>
   </div>
 )
+
+export const JumpTabsPane = props => {
+  let { student, location, params } = {...props}
+  let TabComponent = activeTab(location) === 'video' ? VideoPaneWrapper : LogEntryForm
+  return (
+    <div className="pane">
+      <Tabs {...props}/>
+      <TabComponent student={student} jump={jump(student, params)} {...props}/>
+    </div>
+  )
+}
+
+export const Tabs = ({student, location, push}) => (
+  <div className="tab-group">
+    <div className={activeTab(location) === "video" ? "tab-item active" : "tab-item"}
+      onClick={() => setActiveTab('video', location, push)}>
+      Video
+    </div>
+    <div className={activeTab(location) === "log_entry" ? "tab-item active" : "tab-item"}
+      onClick={() => setActiveTab('log_entry', location, push)}>
+      Log Entry
+    </div>
+  </div>
+)
+
+const activeTab = (location) => {
+  if ( location.query.tab && location.query.tab === 'log_entry') { return 'log_entry' }
+  return 'video'
+}
+
+export const setActiveTab = (tab, location, push) => {
+  let path = `${location.pathname}?tab=${tab}`
+  push(path)
+}
 
 export const JumpInfoPane = props => (
   <div className="pane pane-sm sidebar padded">
@@ -74,7 +109,8 @@ const mapDispatchToProps = Object.assign({}, {
   editJumpField: actionCreators.editJumpField,
   copyVideoFile: actionCreators.copyVideoFile,
   removeVideo: actionCreators.removeVideo,
-  saveStudent: actionCreators.saveStudent
+  saveStudent: actionCreators.saveStudent,
+  push: routeActions.push
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Jump)
