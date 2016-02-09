@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import LoadingThing from './LoadingThing'
 import { connect } from 'react-redux'
 import { routeActions } from 'redux-simple-router'
 import * as actionCreators from '../actions'
@@ -11,6 +12,7 @@ export class StudentList extends Component {
     this.props.fetchStudents()
   }
   render() {
+    let WindowContent = this.props.studentList.loading ? LoadingThing : ListWindowContent
     return (
       <div className="window">
         <Header {...this.props}/>
@@ -32,6 +34,7 @@ export const Toolbar = props => (
     <NameFilterForm {...props}/>
     <AddStudentButton newStudent={props.newStudent} push={props.push}/>
     <SettingsButton push={props.push}/>
+    <ReportButton push={props.push}/>
   </div>
 )
 
@@ -60,6 +63,12 @@ export const SettingsButton = ({push}) => (
   </button>
 )
 
+export const ReportButton = ({push}) => (
+  <button className="btn btn-default pull-right" onClick={() => push('/report')}>
+    <span className="icon icon-newspaper"></span>
+  </button>
+)
+
 export const ListTable = props => (
   <table className="table-striped">
     <ListTableHead {...props}/>
@@ -67,7 +76,7 @@ export const ListTable = props => (
   </table>
 )
 
-export const WindowContent = props => (
+export const ListWindowContent = props => (
   <div className="window-content">
     <PaneGroup {...props}/>
   </div>

@@ -21,7 +21,7 @@ export function fetchStudents() {
         emit(doc.last_jump_date)
       }
     }
-}
+  }
   return dispatch => {
     dispatch(requestStudents())
     database.query(query, { include_docs: true, descending: true }, (err, response) => {

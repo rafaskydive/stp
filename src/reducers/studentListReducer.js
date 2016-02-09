@@ -1,6 +1,7 @@
 import * as types from '../constants'
 
 const initialState = {
+  loading: true,
   students: [],
   filteredStudents: [],
   sortBy: null,
@@ -10,10 +11,15 @@ const initialState = {
 
 export default function studentList (state=initialState, action) {
   switch (action.type) {
+    case types.REQUEST_STUDENTS:
+      return Object.assign({}, state, {
+        loading: true
+      })
     case types.RECIEVE_STUDENTS:
       return Object.assign({}, state, {
         students: [...action.payload],
-        filteredStudents: [...action.payload]
+        filteredStudents: [...action.payload],
+        loading: false
       })
     case types.FILTER_BY_NAME:
       let re = RegExp(`${action.payload}`, 'i')
