@@ -71,10 +71,13 @@ span.currency-color.uncurrent { background-color: #f88; }
   display: inline-block;
   margin-right: $padding;
   width: 20%;
+  label {
+    display: block;
+  }
 }
 
 .form-control-small {
-  box-sizing: border-box;  
+  box-sizing: border-box;
   display: block;
   width: 25%;
 }
