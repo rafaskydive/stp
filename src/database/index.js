@@ -1,7 +1,7 @@
 var PouchDB = require('pouchdb')
 var path = require('path')
 
-const development = process.env['NODE_ENV'] === 'development'
+const test = process.env['NODE_ENV'] === 'test'
 
 let settings
 
@@ -21,11 +21,11 @@ try {
   }
 }
 
-var database = development ?
+var database = test ?
   new PouchDB('test', {db: require('memdown')}) :
   new PouchDB(settings.localDatabase, {adapter: 'idb'})
 
-if(!development && settings.remoteDatabase) {
+if(!test && settings.remoteDatabase) {
   const sync = PouchDB.sync(settings.localDatabase, settings.remoteDatabase, {
     live: true,
     retry: true
