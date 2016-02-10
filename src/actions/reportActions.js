@@ -14,7 +14,7 @@ export function jumpsByMonth() {
   }
   return dispatch => {
     dispatch({ type: types.REQUEST_REPORT_DATA })
-    database.query(query, {group_level: 2}, (err, response) => {
+    database.query('students/jumps_by_month', {group_level: 2}, (err, response) => {
       if (err) { console.log(err) }
       dispatch(
         {

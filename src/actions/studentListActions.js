@@ -24,7 +24,7 @@ export function fetchStudents() {
   }
   return dispatch => {
     dispatch(requestStudents())
-    database.query(query, { include_docs: true, descending: true }, (err, response) => {
+    database.query('students/last_jump_date', { include_docs: true, descending: true }, (err, response) => {
       if (err) { console.log(err) }
       return dispatch(receiveStudents(response))
     })
