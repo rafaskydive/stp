@@ -31,7 +31,7 @@ class InstructorInput extends Component {
           className="form-control"
         >
           <option value="" key=""></option>
-        {this.props.settings.instructors.map((instructor, i) => {
+        {this.props.settings.configuration.instructors.map((instructor, i) => {
           return (
             <option value={instructor} key={i}>{instructor}</option>
           )
