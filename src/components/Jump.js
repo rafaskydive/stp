@@ -4,7 +4,7 @@ import JumpInfoForm from './JumpInfoForm'
 import LogEntryForm from './LogEntryForm'
 import { jumpsTemplate } from '../utils'
 import { connect } from 'react-redux'
-import { routeActions } from 'redux-simple-router'
+import { routeActions } from 'react-router-redux'
 import * as actionCreators from '../actions'
 
 class Jump extends Component {

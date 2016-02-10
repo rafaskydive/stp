@@ -1,7 +1,7 @@
 const path = require('path')
 import * as types from '../constants'
 import database from '../database'
-import { routeActions } from 'redux-simple-router'
+import { routeActions } from 'react-router-redux'
 import { jumpsTemplate } from '../utils'
 import moment from 'moment'
 

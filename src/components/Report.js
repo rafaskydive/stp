@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LoadingThing from './LoadingThing'
 import { connect } from 'react-redux'
-import { routeActions } from 'redux-simple-router'
+import { routeActions } from 'react-router-redux'
 import * as actionCreators from '../actions'
 import moment from 'moment'
 

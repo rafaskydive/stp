@@ -2,9 +2,10 @@ import * as types from '../constants'
 
 const initialState = {
   loggedIn: false,
+  error: null,
   user: {
-    username: 'doppler',
-    password: 'doppler'
+    username: '',
+    password: ''
   }
 }
 
@@ -22,11 +23,18 @@ export default function auth (state=initialState, action) {
         loggedIn: action.loggedIn
       })
 
+    case types.AUTH_ERROR:
+      return Object.assign({}, state, {
+        error: action.error
+      })
+
     case types.AUTH_LOG_OUT:
       return Object.assign({}, state, {
-        loggedIn: false
+        loggedIn: false,
+        error: null,
+        user: {username:'',password:''}
       })
-      
+
     default:
       return state
   }

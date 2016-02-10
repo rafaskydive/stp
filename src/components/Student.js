@@ -4,7 +4,7 @@ import JumpList from './JumpList'
 import Notes from './Notes'
 import ErrorStatus from './ErrorStatus'
 import { connect } from 'react-redux'
-import { routeActions } from 'redux-simple-router'
+import { routeActions } from 'react-router-redux'
 import * as actionCreators from '../actions'
 
 class Student extends Component {

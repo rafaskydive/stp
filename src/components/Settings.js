@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import { connect } from 'react-redux'
-import { routeActions } from 'redux-simple-router'
+import { routeActions } from 'react-router-redux'
 import * as actionCreators from '../actions'
 
 class Settings extends Component {
