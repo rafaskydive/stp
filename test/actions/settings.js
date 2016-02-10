@@ -56,7 +56,7 @@ describe('settings actions', () => {
           name: 'value'
         }
         const expectedActions = [
-          { type: types.REQUEST_SAVE_SETTINGS, payload: {settings: '{"name":"value"}'} },
+          { type: types.REQUEST_SAVE_SETTINGS, payload: {configuration: '{"name":"value"}'} },
           { type: types.SETTINGS_SAVED, payload: {name:"value"} }
         ]
         const store = mockStore({settings: settings}, expectedActions, done)
