@@ -22,7 +22,9 @@ export default function studentList (state=initialState, action) {
         loading: false
       })
     case types.FILTER_BY_NAME:
-      let re = RegExp(`${action.payload}`, 'i')
+      // sanitize input
+      let input = action.payload.replace(/[^\w\-' ]+/, '')
+      let re = RegExp(input, 'i')
       let filteredStudents = state.students.map(student => {
         if (student.name.match(re)) { return student }
       }).filter(n => { return n })
