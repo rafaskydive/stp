@@ -43,16 +43,22 @@ progress {
   margin-bottom: $padding-less;
 }
 
-span.currency-color {
-  width: 5em;
+span.currency {
+  // width: 5em;
   float: right;
-  padding: 0px 5px 0px 5px;
-  background-color: #cfc;
+  // padding: 0px 5px 0px 5px;
 }
-span.currency-color.yellow { background-color: #ffc; }
-span.currency-color.orange { background-color: #fdb; }
-span.currency-color.red { background-color: #fcc; }
-span.currency-color.uncurrent { background-color: #f88; }
+
+span.currency-color {
+  float: right;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  margin-top: 4px;
+  margin-left: $padding-less;
+}
 
 .student-list-filter {
   margin-left: $padding;

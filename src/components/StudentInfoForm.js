@@ -57,7 +57,7 @@ export const Form = ({student, editStudentField, enableStudentEditForm, disableS
     />
     {(
       student.modified ?
-      <SaveAndCancelButtons student={student} disableStudentEditForm={disableStudentEditForm}/> :
+      <SaveAndCancelButtons student={student} disableStudentEditForm={disableStudentEditForm} push={push}/> :
       <EnableFormButton enableStudentEditForm={enableStudentEditForm}/>
     )}
   </form>

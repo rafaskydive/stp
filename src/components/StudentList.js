@@ -145,7 +145,8 @@ export const renderStudentRow = (student, showStudent, push) => {
       <td>{phone}</td>
       <td>
         {moment(last_jump_date).format("ddd MMM Do")}
-        <span className="currency-color" style={{backgroundColor: currencyColor(daysSinceLastJump)}}>{daysSinceLastJump} days</span>
+        <span className="currency-color"  style={{backgroundColor: `${currencyColor(daysSinceLastJump)}`}}></span>
+        <span className="currency">{daysSinceLastJump} days</span>
       </td>
       <td>
         {lastJumpInfo(student, student.last_jump_date)}
