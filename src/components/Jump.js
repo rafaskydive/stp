@@ -82,7 +82,7 @@ export const VideoPaneWrapper = props => (
       copyVideoFile={props.copyVideoFile}
       removeVideo={props.removeVideo}
       saveStudent={props.saveStudent}
-      settings={props.settings}
+      settings={props.settings.configuration}
       />
   </div>
 )
