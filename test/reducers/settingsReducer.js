@@ -1,13 +1,17 @@
 import expect from 'expect'
 import reducer from '../../src/reducers/settingsReducer'
 import * as types from '../../src/constants'
+import { fixJSON } from '../../src/utils'
 
 describe('settings reducer', () => {
   const state = {
-    localDatabase: "test-db",
-    remoteDatabase: "http://localhost:5984/test-db",
-    videoFilePath: "",
-    instructors: ["Alice", "Bob"]
+    modified: false,
+    configuration: {
+      localDatabase: "test-db",
+      remoteDatabase: "http://localhost:5984/test-db",
+      videoFilePath: "",
+      instructors: ["Alice", "Bob"]
+    }
   }
 
   describe('CHANGE_SETTING_VALUE', () => {
@@ -18,41 +22,46 @@ describe('settings reducer', () => {
           type: types.CHANGE_SETTING_VALUE,
           payload: { name: "instructors", value: '["Alice", "Bob", "Chuck"]'}
         })
-      ).toEqual(
-        {
+      ).toEqual({
+        modified: true,
+        configuration: {
           localDatabase: "test-db",
           remoteDatabase: "http://localhost:5984/test-db",
           videoFilePath: "",
           instructors: "[\"Alice\", \"Bob\", \"Chuck\"]"
         }
-      )
+      })
     })
 
   })
 
   describe('REQUEST_SAVE_SETTINGS', () => {
     const settings = {
-      localDatabase: "test-db",
-      remoteDatabase: "http://localhost:5984/test-db",
-      videoFilePath: "",
-      instructors: ["Foo"]
+      modified: true,
+      configuration: {
+        localDatabase: "test-db",
+        remoteDatabase: "http://localhost:5984/test-db",
+        videoFilePath: "",
+        instructors: ["Foo"]
+      }
     }
-    const stringifiedSettings = JSON.stringify(settings)
+    const { configuration } = {...settings}
+    const stringifiedConfiguration = JSON.stringify(configuration)
     it('should return JSON', () => {
       expect(
         reducer(state, {
           type: types.REQUEST_SAVE_SETTINGS,
-          payload: { settings: stringifiedSettings }
+          payload: { configuration: stringifiedConfiguration }
         })
-      ).toEqual(
-        {
+      ).toEqual({
+        modified: false,
+        configuration: {
           localDatabase: "test-db",
           remoteDatabase: "http://localhost:5984/test-db",
           videoFilePath: "",
           instructors: ["Foo"]
         }
-
-      )
+      })
     })
 
   })
