@@ -4,7 +4,7 @@ import TestUtils from 'react-addons-test-utils'
 import ConnectedStudentList, {
   StudentList,
   Header,
-  WindowContent,
+  ListWindowContent,
   Toolbar,
   NameFilterForm,
   AddStudentButton,
@@ -39,15 +39,17 @@ describe('components', () => {
 
   describe('StudentList', () => {
     it('should render correctly', () => {
-      const { output } = setup(StudentList)
+      const { output } = setup(StudentList, {
+        studentList: { loading: false }
+      })
 
       expect(output.type).toBe('div')
       expect(output.props.className).toBe('window')
 
-      let [ _Header, _WindowContent ] = output.props.children
+      let [ _Header, _WindowContent, _Footer ] = output.props.children
 
       expect(_Header.type).toBe(Header)
-      expect(_WindowContent.type).toBe(WindowContent)
+      expect(_WindowContent.type).toBe(ListWindowContent)
     })
   })
 
