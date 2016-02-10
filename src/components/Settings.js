@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { HeaderButtons } from './HeaderButtons'
 import Dropzone from 'react-dropzone'
 import { connect } from 'react-redux'
 import { routeActions } from 'react-router-redux'
@@ -22,13 +23,9 @@ const Header = props => (
   </header>
 )
 
-const Toolbar = ({push}) => (
+const Toolbar = props => (
   <div className="toolbar-actions text-center">
-    <span className="page-title">Settings</span>
-    <button className="btn btn-default pull-left"
-      onClick={() => push("/")}>
-      <span className="icon icon-home"></span>
-    </button>
+    <HeaderButtons {...props}/>
   </div>
 )
 
@@ -116,7 +113,7 @@ const Footer = props => (
 )
 
 function mapStateToProps(state) {
-  return { settings: state.settings }
+  return { settings: state.settings, auth: state.auth }
 }
 
 const mapDispatchToProps = Object.assign({}, {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import LoadingThing from './LoadingThing'
+import { HeaderButtons } from './HeaderButtons'
 import { connect } from 'react-redux'
 import { routeActions } from 'react-router-redux'
 import * as actionCreators from '../actions'
@@ -29,12 +30,9 @@ const Header = props => (
   </header>
 )
 
-const Toolbar = ({push}) => (
+const Toolbar = props => (
   <div className="toolbar-actions text-center">
-    <span className="page-title">Report</span>
-    <button className="btn btn-default pull-left" onClick={e => push('/')}>
-      <span className="icon icon-home"></span>
-    </button>
+    <HeaderButtons {...props}/>
   </div>
 )
 
@@ -75,7 +73,7 @@ const renderRow = (row, i) => (
   </tr>
 )
 function mapStateToProps(state) {
-  return { report: state.report }
+  return { report: state.report, auth: state.auth }
 }
 
 const mapDispatchToProps = Object.assign({}, {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import LoadingThing from './LoadingThing'
+import { HeaderButtons } from './HeaderButtons'
 import { connect } from 'react-redux'
 import { routeActions } from 'react-router-redux'
 import * as actionCreators from '../actions'
@@ -33,47 +34,8 @@ export const Toolbar = props => (
   <div className="toolbar-actions">
     <NameFilterForm {...props}/>
     <AddStudentButton newStudent={props.newStudent} push={props.push}/>
-    <AuthenticatedButtons {...props}/>
+    <HeaderButtons {...props}/>
   </div>
-)
-
-const AuthenticatedButtons = props => (
-  <div className="btn-group pull-right">
-    <SettingsButton push={props.push}/>
-    <ReportButton push={props.push}/>
-    <AuthInfo auth={props.auth} push={props.push} logout={props.logout}/>
-  </div>
-)
-
-const AuthInfo = ({auth, push, logout}) => {
-  if (auth.loggedIn) {
-    return (
-      <button className="btn btn-default" onClick={() => logout()}>
-        <span className="icon icon-logout icon-text"></span>
-        Log Out {auth.loggedIn}
-      </button>
-    )
-  }
-  return (
-    <button className="btn btn-default" onClick={() => push('/login')}>
-      <span className="icon icon-login icon-text"></span>
-      Log In
-    </button>
-  )
-}
-
-export const SettingsButton = ({push}) => (
-  <button className="btn btn-default" onClick={() => push('/settings')}>
-    <span className="icon icon-cog icon-text"></span>
-    Settings
-  </button>
-)
-
-export const ReportButton = ({push}) => (
-  <button className="btn btn-default" onClick={() => push('/report')}>
-    <span className="icon icon-newspaper icon-text"></span>
-    Report
-  </button>
 )
 
 export const NameFilterForm = ({filterByName, nameFilter}) => (
