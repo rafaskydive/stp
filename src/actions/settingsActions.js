@@ -3,27 +3,31 @@ import database from '../database'
 import { fixJSON } from '../utils'
 const path = require('path')
 
-export function changeSettingValue(e) {
+export function changeSettingValue(field) {
   return {
     type: types.CHANGE_SETTING_VALUE,
-    payload: {name: e.name, value: e.value}
+    payload: {name: field.name, value: field.value}
   }
 }
 
-export function saveSettings(settings, mkdirp, fs, storage) {
+export function saveSettings(configuration, mkdirp, fs, storage) {
   return dispatch => {
     dispatch({
       type: types.REQUEST_SAVE_SETTINGS,
-      payload: {settings: settings}
+      payload: {configuration: configuration}
     })
-    let properSettingsObj = fixJSON(settings)
+    let properConfiguration = fixJSON(configuration)
     mkdirp(storage.userConfig(), (err) => {
       if (err) { return console.log(err) }
-      fs.writeFileSync(path.join(storage.userConfig(), 'settings.json'), JSON.stringify(properSettingsObj, null, 2))
+      fs.writeFileSync(path.join(storage.userConfig(), 'settings.json'), JSON.stringify(properConfiguration, null, 2))
       dispatch({
         type: types.SETTINGS_SAVED,
-        payload: properSettingsObj
+        payload: properConfiguration
       })
     })
   }
+}
+
+export function cancelSaveSettings() {
+  return { type: types.CANCEL_SAVE_SETTINGS }
 }

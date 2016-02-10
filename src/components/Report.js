@@ -32,7 +32,7 @@ const Header = props => (
 const Toolbar = ({push}) => (
   <div className="toolbar-actions text-center">
     <span className="page-title">Report</span>
-    <button className="btn btn-default pull-right" onClick={e => push('/')}>
+    <button className="btn btn-default pull-left" onClick={e => push('/')}>
       <span className="icon icon-home"></span>
     </button>
   </div>
