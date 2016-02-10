@@ -35,6 +35,13 @@ export const Toolbar = props => (
     <AddStudentButton newStudent={props.newStudent} push={props.push}/>
     <SettingsButton push={props.push}/>
     <ReportButton push={props.push}/>
+    <AuthInfo auth={props.auth}/>
+  </div>
+)
+
+const AuthInfo = ({auth}) => (
+  <div className="pull-right">
+    <span className="auth-logged-in-as">{auth.loggedIn}</span>
   </div>
 )
 
@@ -206,7 +213,7 @@ const nextVisitDate = (next_visit_date) => {
 }
 
 function mapStateToProps(state) {
-  return { studentList: state.studentList, student: state.student }
+  return { studentList: state.studentList, student: state.student, auth: state.auth }
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {

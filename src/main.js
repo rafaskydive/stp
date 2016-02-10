@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 import { syncHistory, routeReducer } from 'redux-simple-router'
 import * as reducers from './reducers'
-import { Settings, StudentList, StudentWrapper, Student, Jump, Report } from './components'
+import { Settings, StudentList, StudentWrapper, Student, Jump, Report, Auth } from './components'
 
 const middleware = syncHistory(hashHistory);
 
@@ -35,6 +35,18 @@ const store = finalCreateStore(reducer);
 
 middleware.listenForReplays(store);
 
+const auth = {
+  loggedIn: () => (false)
+}
+const requireAuth = (nextState, replace) => {
+  if ( ! store.getState().auth.loggedIn ) {
+    replace({
+      pathname: '/login',
+      state: { nextPathName: nextState.location.pathname }
+    })
+  }
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <div>
@@ -45,8 +57,9 @@ ReactDOM.render(
             <IndexRoute component={Student}/>
             <Route path="jump/:jump_id" component={Jump}/>
           </Route>
-          <Route path="settings" component={Settings}/>
-          <Route path="report" component={Report}/>
+          <Route path="settings" component={Settings} onEnter={requireAuth}/>
+          <Route path="report" component={Report} onEnter={requireAuth}/>
+          <Route path="login" component={Auth}/>
         </Route>
       </Router>
       <DevTools />

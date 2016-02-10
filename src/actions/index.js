@@ -7,3 +7,5 @@ export * from './videoActions'
 export * from './settingsActions'
 
 export * from './reportActions'
+
+export * from './authActions'

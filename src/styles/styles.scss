@@ -1,6 +1,10 @@
 
 @import "photon/photon.scss";
 
+html, body, div#app>div {
+  height: 100%;
+}
+
 th {
   font-weight: $font-weight-bold;
   background-color: darken($chrome-color, 10%);
