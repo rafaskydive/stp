@@ -9,7 +9,7 @@ export const EnableFormButton = ({enableStudentEditForm}) => (
   </div>
 )
 
-export const SaveAndCancelButtons = ({student, disableStudentEditForm}) => (
+export const SaveAndCancelButtons = ({student, disableStudentEditForm, push}) => (
   <div className="form-actions">
     <button type="submit" className="btn btn-primary">
       <span className="icon icon-install icon-text"></span>
