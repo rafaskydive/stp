@@ -22,6 +22,11 @@ export default function auth (state=initialState, action) {
         loggedIn: action.loggedIn
       })
 
+    case types.AUTH_LOG_OUT:
+      return Object.assign({}, state, {
+        loggedIn: false
+      })
+      
     default:
       return state
   }

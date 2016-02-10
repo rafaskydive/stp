@@ -18,3 +18,7 @@ export function login (user, push) {
     loggedIn: loggedIn
   }
 }
+
+export function logout () {
+  return { type: types.AUTH_LOG_OUT }
+}

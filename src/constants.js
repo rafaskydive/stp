@@ -44,3 +44,4 @@ export const RECIEVE_JUMPS_BY_DATE = 'RECIEVE_JUMPS_BY_DATE'
 
 export const EDIT_AUTH_FIELD = 'EDIT_AUTH_FIELD'
 export const AUTH_LOGGED_IN  = 'AUTH_LOGGED_IN'
+export const AUTH_LOG_OUT    = 'AUTH_LOG_OUT'

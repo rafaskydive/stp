@@ -33,16 +33,47 @@ export const Toolbar = props => (
   <div className="toolbar-actions">
     <NameFilterForm {...props}/>
     <AddStudentButton newStudent={props.newStudent} push={props.push}/>
-    <SettingsButton push={props.push}/>
-    <ReportButton push={props.push}/>
-    <AuthInfo auth={props.auth}/>
+    <AuthenticatedButtons {...props}/>
   </div>
 )
 
-const AuthInfo = ({auth}) => (
-  <div className="pull-right">
-    <span className="auth-logged-in-as">{auth.loggedIn}</span>
+const AuthenticatedButtons = props => (
+  <div className="btn-group pull-right">
+    <SettingsButton push={props.push}/>
+    <ReportButton push={props.push}/>
+    <AuthInfo auth={props.auth} push={props.push} logout={props.logout}/>
   </div>
+)
+
+const AuthInfo = ({auth, push, logout}) => {
+  if (auth.loggedIn) {
+    return (
+      <button className="btn btn-default" onClick={() => logout()}>
+        <span className="icon icon-logout icon-text"></span>
+        Log Out {auth.loggedIn}
+      </button>
+    )
+  }
+  return (
+    <button className="btn btn-default" onClick={() => push('/login')}>
+      <span className="icon icon-login icon-text"></span>
+      Log In
+    </button>
+  )
+}
+
+export const SettingsButton = ({push}) => (
+  <button className="btn btn-default" onClick={() => push('/settings')}>
+    <span className="icon icon-cog icon-text"></span>
+    Settings
+  </button>
+)
+
+export const ReportButton = ({push}) => (
+  <button className="btn btn-default" onClick={() => push('/report')}>
+    <span className="icon icon-newspaper icon-text"></span>
+    Report
+  </button>
 )
 
 export const NameFilterForm = ({filterByName, nameFilter}) => (
@@ -61,18 +92,6 @@ export const AddStudentButton = ({newStudent, push}) => (
   <button className="btn btn-default" onClick={() => { newStudent(); push('/student/new') } }>
     <span className="icon icon-user-add icon-text"></span>
     Add
-  </button>
-)
-
-export const SettingsButton = ({push}) => (
-  <button className="btn btn-default pull-right" onClick={() => push('/settings')}>
-    <span className="icon icon-cog"></span>
-  </button>
-)
-
-export const ReportButton = ({push}) => (
-  <button className="btn btn-default pull-right" onClick={() => push('/report')}>
-    <span className="icon icon-newspaper"></span>
   </button>
 )
 
