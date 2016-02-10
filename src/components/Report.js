@@ -38,7 +38,6 @@ const Toolbar = props => (
 
 const Footer = props => (
   <div className="toolbar toolbar-footer">
-    Footer
   </div>
 )
 
