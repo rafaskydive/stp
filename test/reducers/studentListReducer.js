@@ -20,6 +20,7 @@ describe('studentList reducer', () => {
         expect(
           reducer(undefined, {})
         ).toEqual({
+          loading: true,
           students: [],
           filteredStudents: [],
           sortBy: null,
