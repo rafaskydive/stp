@@ -7,9 +7,7 @@ class Auth extends Component {
   render () {
     return (
       <div className="window">
-        <Header {...this.props}/>
         <Body {...this.props}/>
-        <Footer {...this.props}/>
       </div>
     )
   }
@@ -54,8 +52,12 @@ const Body = ({auth, editField, login, location, push, replace}) => (
           <div style={{padding: 10, backgroundColor: '#eee', borderTop: '1px solid #ccc', borderRadius: '0px 0px 10px 10px'}}>
             <div className="form-actions">
               <button type="submit" className="btn btn-primary">
-                <span className="icon icon-login icon-text"></span>
+                <span className="icon icon-login icon-text" style={{color: 'white'}}></span>
                 Log In
+              </button>
+              <button className="btn btn-default" onClick={() => push('/')}>
+                <span className="icon icon-ccw icon-text"></span>
+                Cancel
               </button>
             </div>
           </div>
@@ -73,11 +75,6 @@ const Header = props => (
 
 const Toolbar = ({push}) => (
   <div className="toolbar-actions text-center">
-    <span className="page-title">Authenticate</span>
-    <button className="btn btn-default pull-left"
-      onClick={() => push("/")}>
-      <span className="icon icon-home"></span>
-    </button>
   </div>
 )
 

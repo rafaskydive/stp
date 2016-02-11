@@ -77,6 +77,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = Object.assign({}, {
   push: routeActions.push,
-  jumpsByMonth: actionCreators.jumpsByMonth
+  jumpsByMonth: actionCreators.jumpsByMonth,
+  logout: actionCreators.logout
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Report)

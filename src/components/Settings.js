@@ -120,7 +120,8 @@ const mapDispatchToProps = Object.assign({}, {
   push: routeActions.push,
   changeSettingValue: actionCreators.changeSettingValue,
   cancelSaveSettings: actionCreators.cancelSaveSettings,
-  saveSettings: actionCreators.saveSettings
+  saveSettings: actionCreators.saveSettings,
+  logout: actionCreators.logout
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings)
