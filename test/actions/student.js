@@ -29,7 +29,7 @@ describe('student actions', () => {
       it('should create an action to set student to new state', () => {
         const payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format(), 'newStudentTestUUID')] }
         const expectedAction = {
-          type: types.NEW_STUDENT,
+          type: types.STUDENT_NEW,
           payload
         }
         expect(actions.newStudent('newStudentTestUUID')).toEqual(expectedAction)
@@ -40,7 +40,7 @@ describe('student actions', () => {
     describe('editStudentField', () => {
       it('should return an object with field name and value', () => {
         const expected = {
-          type: types.EDIT_STUDENT_FIELD,
+          type: types.STUDENT_EDIT_FIELD,
           payload: { email: "f" }
         }
         expect(actions.editStudentField({email:""},"email","f")).toEqual(expected)
@@ -49,14 +49,14 @@ describe('student actions', () => {
     })
 
     describe('enableStudentEditForm', () => {
-      it('should return type ENABLE_STUDENT_EDIT_FORM', () => {
-        expect(actions.enableStudentEditForm().type).toEqual(types.ENABLE_STUDENT_EDIT_FORM)
+      it('should return type STUDENT_ENABLE_FORM', () => {
+        expect(actions.enableStudentEditForm().type).toEqual(types.STUDENT_ENABLE_FORM)
       })
       markAsTested('enableStudentEditForm')
     })
 
     describe('editJumpField', () => {
-      it('should create EDIT_STUDENT_FIELD and modify a text field', () => {
+      it('should create STUDENT_EDIT_FIELD and modify a text field', () => {
         const jump_date = '2016-01-28T08:51:43-05:00'
         const jump = jumpsTemplate(jump_date)
         const student = {
@@ -68,7 +68,7 @@ describe('student actions', () => {
         const expectedJumps = [jump]
         expectedJumps[0].instructor = "Test Instructor"
         const expectedAction = {
-          type: types.EDIT_STUDENT_FIELD,
+          type: types.STUDENT_EDIT_FIELD,
           payload: {
             name: "Test Student",
             jumps: expectedJumps
@@ -76,7 +76,7 @@ describe('student actions', () => {
         }
       })
 
-      it('should create EDIT_STUDENT_FIELD and modify a number field', () => {
+      it('should create STUDENT_EDIT_FIELD and modify a number field', () => {
         const jump_date = '2016-01-28T08:51:43-05:00'
         const testUUID = 'testEDIT_STUDENT_FIELD_UUID'
         const jump = jumpsTemplate(jump_date, testUUID)
@@ -89,7 +89,7 @@ describe('student actions', () => {
         const expectedJumps = [jump]
         expectedJumps[0].jump_number = 10
         const expectedAction = {
-          type: types.EDIT_STUDENT_FIELD,
+          type: types.STUDENT_EDIT_FIELD,
           payload: {
             name: "Test Student",
             jumps: expectedJumps
@@ -135,9 +135,9 @@ describe('student actions', () => {
           notes: []
         }
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (a) => {
-            expect(a.type).toEqual('RECIEVE_STUDENT')
+            expect(a.type).toEqual('STUDENT_RECIEVE')
             expect(a.payload._id).toEqual('test-student')
             expect(a.payload._rev).toNotEqual(undefined)
           }
@@ -159,9 +159,9 @@ describe('student actions', () => {
           notes: []
         }
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (a) => {
-            expect(a.type).toEqual('RECIEVE_STUDENT')
+            expect(a.type).toEqual('STUDENT_RECIEVE')
             expect(a.payload._id).toEqual('test-student-two')
             expect(a.payload._rev).toNotEqual(undefined)
           }
@@ -183,9 +183,9 @@ describe('student actions', () => {
           notes: []
         }
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (a) => {
-            expect(a.type).toEqual('RECIEVE_STUDENT')
+            expect(a.type).toEqual('STUDENT_RECIEVE')
             expect(a.payload._id).toEqual('test-student-three')
             expect(a.payload._rev).toNotEqual(undefined)
             expect(a.payload.last_jump_date).toEqual(jump_date)
@@ -213,7 +213,7 @@ describe('student actions', () => {
         }
         const expectedActions = [
           (a) => {
-            expect(a.type).toEqual(types.SET_INSTRUCTOR_ON_FIRST_JUMP)
+            expect(a.type).toEqual(types.STUDENT_SET_INSTRUCTOR_ON_FIRST_JUMP)
             expect(a.payload.jumps[0].instructor).toEqual(newStudent.instructor)
           }
         ]
@@ -224,15 +224,15 @@ describe('student actions', () => {
     })
 
     describe('disableStudentEditForm', () => {
-      it('should return type DISABLE_STUDENT_EDIT_FORM', (done) => {
+      it('should return type STUDENT_DISABLE_FORM', (done) => {
         const student = {
           _id: 'test-student-two'
         }
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
-          { type: types.DISABLE_STUDENT_EDIT_FORM },
+          { type: types.STUDENT_REQUEST },
+          { type: types.STUDENT_DISABLE_FORM },
           (a) => {
-            expect(a.type).toEqual(types.RECIEVE_STUDENT)
+            expect(a.type).toEqual(types.STUDENT_RECIEVE)
             expect(a.payload._id).toEqual('test-student-two')
           }
         ]
@@ -253,9 +253,9 @@ describe('student actions', () => {
           new_note: new_note
         }
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (a) => {
-            expect(a.type).toEqual(types.RECIEVE_STUDENT)
+            expect(a.type).toEqual(types.STUDENT_RECIEVE)
             expect(a.payload.notes[0].text).toEqual('test note')
           }
         ]
@@ -267,7 +267,7 @@ describe('student actions', () => {
         let new_note = { text: '', date: 'y-m-d' }
         const expectedActions = [
           {
-            type: types.SAVE_STUDENT_ERROR,
+            type: types.STUDENT_SAVE_ERROR,
             payload: { errors: [ 'Note text may not be blank' ], notes: [], new_note: new_note }
           }
         ]
@@ -287,9 +287,9 @@ describe('student actions', () => {
           notes: [{date:'x',text:'keep'},{date:'y',text:'remove'}]
         }
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (a) => {
-            expect(a.type).toEqual(types.RECIEVE_STUDENT)
+            expect(a.type).toEqual(types.STUDENT_RECIEVE)
             expect(a.payload.notes.length).toEqual(1)
             expect(a.payload.notes[0].text).toEqual('keep')
           }
@@ -301,12 +301,12 @@ describe('student actions', () => {
     })
 
     describe('fetchStudent', () => {
-      it('fetchStudent creates RECIEVE_STUDENT after fetching students', (done) => {
+      it('fetchStudent creates STUDENT_RECIEVE after fetching students', (done) => {
 
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (a) => {
-            expect(a.type).toEqual('RECIEVE_STUDENT')
+            expect(a.type).toEqual('STUDENT_RECIEVE')
             expect(a.payload._id).toEqual('test-student-two')
             expect(a.payload._rev).toNotEqual(undefined)
           }
@@ -322,9 +322,9 @@ describe('student actions', () => {
       it('should start with 1 jump', function (done) {
         const student = { _id: 'test-student' }
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (a) => {
-            expect(a.type).toEqual('RECIEVE_STUDENT')
+            expect(a.type).toEqual('STUDENT_RECIEVE')
             expect(Object.keys(a.payload.jumps).length).toEqual(1)
           }
         ]
@@ -335,12 +335,12 @@ describe('student actions', () => {
       it('after run, should have two jumps', function (done) {
         const student = { _id: 'test-student' }
         const expectedActions = [
-          { type: types.CREATE_NEXT_JUMP },
+          { type: types.STUDENT_CREATE_NEXT_JUMP },
           (a) => {
-            expect(a.type).toEqual('REQUEST_STUDENT')
+            expect(a.type).toEqual('STUDENT_REQUEST')
           },
           (a) => {
-            expect(a.type).toEqual('RECIEVE_STUDENT')
+            expect(a.type).toEqual('STUDENT_RECIEVE')
             expect(Object.keys(a.payload.jumps).length).toEqual(2)
           }
         ]
@@ -354,9 +354,9 @@ describe('student actions', () => {
       it('should start with two jumps', function (done) {
         const student = { _id: 'test-student' }
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (incomingAction) => {
-            expect(incomingAction.type).toEqual(types.RECIEVE_STUDENT)
+            expect(incomingAction.type).toEqual(types.STUDENT_RECIEVE)
             expect(Object.keys(incomingAction.payload.jumps).length).toEqual(2)
           }
         ]
@@ -370,9 +370,9 @@ describe('student actions', () => {
         const jump = jumpsTemplate(jump_date, testUUID)
         const student = {_id: 'test-student'}
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (incomingAction) => {
-            expect(incomingAction.type).toEqual(types.RECIEVE_STUDENT)
+            expect(incomingAction.type).toEqual(types.STUDENT_RECIEVE)
             expect(Object.keys(incomingAction.payload.jumps).length).toEqual(1)
             expect(incomingAction.payload.jumps[jump_date]).toBe(undefined)
           }
@@ -394,9 +394,9 @@ describe('student actions', () => {
       const { student, settings } = {...state}
       it('should remove video from fs and its reference on jump object', (done) => {
         const expectedActions = [
-          { type: types.REQUEST_STUDENT },
+          { type: types.STUDENT_REQUEST },
           (a) => {
-            expect(a.type).toEqual(types.RECIEVE_STUDENT)
+            expect(a.type).toEqual(types.STUDENT_RECIEVE)
             expect(typeof a.payload.jumps[0].video_file).toEqual('undefined')
             // this one doesn't work right. we'll have to go on faith, i guess.
             // expect(fs.statSync('test/output-data/remove-video-student/DF 1 - 2016-02-05.txt')).toThrow(/no such file/)

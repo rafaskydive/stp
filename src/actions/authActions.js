@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt-nodejs'
 
 export function editField (target) {
   return {
-    type: types.EDIT_AUTH_FIELD,
+    type: types.AUTH_EDIT_FIELD,
     payload: { field: target.name, value: target.value }
   }
 }

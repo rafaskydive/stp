@@ -9,12 +9,12 @@ const initialState = {
 
 export default function video (state=initialState, action) {
   switch (action.type) {
-    case types.COPY_PROGRESS:
+    case types.VIDEO_COPY_PROGRESS:
       return Object.assign({}, state, {
         copy_in_progress: true,
         percent: action.payload.percent,
       })
-    case types.COPY_COMPLETE:
+    case types.VIDEO_COPY_COMPLETE:
       return Object.assign({}, state, {
         copy_in_progress: false,
         percent: 0,

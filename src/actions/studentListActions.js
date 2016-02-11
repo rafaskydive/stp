@@ -3,13 +3,13 @@ import database from '../database'
 
 function requestStudents() {
   return {
-    type: types.REQUEST_STUDENTS,
+    type: types.LIST_REQUEST_STUDENTS,
   }
 }
 
 function receiveStudents(response) {
   return {
-    type: types.RECIEVE_STUDENTS,
+    type: types.LIST_RECIEVE_STUDENTS,
     payload: response.rows.map(row => row.doc)
   }
 }
@@ -34,21 +34,21 @@ export function fetchStudents() {
 
 export function showStudent(student) {
   return {
-    type: types.SHOW_STUDENT,
+    type: types.STUDENT_SHOW,
     payload: student
   }
 }
 
 export function toggleSort(attr) {
   return {
-    type: types.TOGGLE_SORT,
+    type: types.LIST_TOGGLE_SORT,
     payload: { sortBy: attr }
   }
 }
 
 export function filterByName(str) {
   return {
-    type: types.FILTER_BY_NAME,
+    type: types.LIST_FILTER_BY_NAME,
     payload: str
   }
 }

@@ -11,17 +11,17 @@ const initialState = {
 
 export default function studentList (state=initialState, action) {
   switch (action.type) {
-    case types.REQUEST_STUDENTS:
+    case types.LIST_REQUEST_STUDENTS:
       return Object.assign({}, state, {
         loading: true
       })
-    case types.RECIEVE_STUDENTS:
+    case types.LIST_RECIEVE_STUDENTS:
       return Object.assign({}, state, {
         students: [...action.payload],
         filteredStudents: [...action.payload],
         loading: false
       })
-    case types.FILTER_BY_NAME:
+    case types.LIST_FILTER_BY_NAME:
       // sanitize input
       let input = action.payload.replace(/[^\w\-' ]+/, '')
       let re = RegExp(input, 'i')
@@ -29,7 +29,7 @@ export default function studentList (state=initialState, action) {
         if (student.name.match(re)) { return student }
       }).filter(n => { return n })
       return Object.assign({}, state, {nameFilter: action.payload.nameFilter, filteredStudents: filteredStudents})
-    case types.TOGGLE_SORT:
+    case types.LIST_TOGGLE_SORT:
       let students = state.students
       const sortedStudents = []
       let sortBy = action.payload.sortBy

@@ -10,20 +10,20 @@ export function newStudent(testUUID) {
   // the generated Jump
   let payload = { new: true, type: 'student', jumps: [jumpsTemplate(moment().format(), testUUID)] }
   return {
-    type: types.NEW_STUDENT,
+    type: types.STUDENT_NEW,
     payload
   }
 }
 
 function requestStudent() {
   return {
-    type: types.REQUEST_STUDENT,
+    type: types.STUDENT_REQUEST,
   }
 }
 
 function receiveStudent(json) {
   return {
-    type: types.RECIEVE_STUDENT,
+    type: types.STUDENT_RECIEVE,
     payload: json
   }
 }
@@ -41,7 +41,7 @@ export function fetchStudent(_id) {
 
 function reportErrors(student) {
   return {
-    type: types.SAVE_STUDENT_ERROR,
+    type: types.STUDENT_SAVE_ERROR,
     payload: student
   }
 }
@@ -73,18 +73,18 @@ export function saveStudent(student) {
 }
 
 export function createNote (student) {
-  return { type: types.CREATE_NOTE }
+  return { type: types.STUDENT_CREATE_NOTE }
 }
 
 export function cancelNote (student) {
   delete student.new_note
   delete student.errors
-  return { type: types.CANCEL_NOTE, payload: student }
+  return { type: types.STUDENT_CANCEL_NOTE, payload: student }
 }
 
 export function changeNoteField(student, field, value) {
   student.new_note[field] = value
-  return { type: types.CHANGE_NOTE_FIELD, payload: student }
+  return { type: types.STUDENT_CHANGE_NOTE, payload: student }
 }
 
 export function saveNote(student) {
@@ -113,21 +113,21 @@ export function removeNote(student, note) {
 
 export function enableStudentEditForm() {
   return {
-    type: types.ENABLE_STUDENT_EDIT_FORM,
+    type: types.STUDENT_ENABLE_FORM,
   }
 }
 
 export function disableStudentEditForm(student) {
   return dispatch => {
     dispatch(fetchStudent(student._id))
-    dispatch( { type: types.DISABLE_STUDENT_EDIT_FORM } )
+    dispatch( { type: types.STUDENT_DISABLE_FORM } )
   }
 }
 
 export function editStudentField(student, field, value) {
   student[field] = value
   return {
-    type: types.EDIT_STUDENT_FIELD,
+    type: types.STUDENT_EDIT_FIELD,
     payload: student
   }
 }
@@ -139,7 +139,7 @@ export function editJumpField(student, jump, field, value) {
   })
   _jump[field] = value
   return {
-    type: types.EDIT_STUDENT_FIELD,
+    type: types.STUDENT_EDIT_FIELD,
     payload: student
   }
 }
@@ -147,7 +147,7 @@ export function editJumpField(student, jump, field, value) {
 export function setInstructorOnFirstJump(student, instructor) {
   student.jumps[0].instructor = instructor
   return {
-    type: types.SET_INSTRUCTOR_ON_FIRST_JUMP,
+    type: types.STUDENT_SET_INSTRUCTOR_ON_FIRST_JUMP,
     payload: student
   }
 }
@@ -168,7 +168,7 @@ export function createNextJump(student) {
       }
       student.jumps.push(newJump)
       dispatch({
-        type: types.CREATE_NEXT_JUMP
+        type: types.STUDENT_CREATE_NEXT_JUMP
       })
       dispatch(saveStudent(student))
     })
@@ -218,7 +218,7 @@ export function removeVideo(student, jump, settings, fs) {
 
 export function deleteStudent(student, settings, push) {
   return dispatch => {
-    dispatch({type: types.DELETE_STUDENT})
+    dispatch({type: types.STUDENT_DELETE})
     let studentVideoDir = path.join(settings.videoFilePath, student._id)
     rimraf(studentVideoDir, function (err, result) {
       if (err) { console.log (err) }

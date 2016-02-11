@@ -4,21 +4,21 @@ const path = require('path')
 
 function copying() {
   return {
-    type: types.COPY_PROGRESS,
+    type: types.VIDEO_COPY_PROGRESS,
     payload: { percent: 0 }
   }
 }
 
 function complete(dest) {
   return {
-    type: types.COPY_COMPLETE,
+    type: types.VIDEO_COPY_COMPLETE,
     payload: dest
   }
 }
 
 function copy_progress(percent) {
   return {
-    type: types.COPY_PROGRESS,
+    type: types.VIDEO_COPY_PROGRESS,
     payload: { percent: percent }
   }
 }
@@ -27,7 +27,7 @@ export function copyVideoFile(student, jump, file, settings, callback, _fs=fs, _
   return dispatch => {
     if(!settings.videoFilePath) {
       return dispatch({
-        type: types.SAVE_STUDENT_ERROR,
+        type: types.STUDENT_SAVE_ERROR,
         payload: { errors: ["videoFilePath must be set in Settings"]}
       })
     }

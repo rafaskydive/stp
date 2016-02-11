@@ -13,12 +13,12 @@ export function jumpsByMonth() {
     reduce: "_count"
   }
   return dispatch => {
-    dispatch({ type: types.REQUEST_REPORT_DATA })
+    dispatch({ type: types.REPORT_REQUEST_DATA })
     database.query('students/jumps_by_month', {group_level: 2}, (err, response) => {
       if (err) { console.log(err) }
       dispatch(
         {
-          type: types.RECIEVE_JUMPS_BY_DATE,
+          type: types.REPORT_RECIEVE_DATA,
           payload: response.rows
         }
       )

@@ -11,7 +11,7 @@ const initialState = {
 
 export default function auth (state=initialState, action) {
   switch (action.type) {
-    case types.EDIT_AUTH_FIELD:
+    case types.AUTH_EDIT_FIELD:
       let { user } = {...state}
       user[action.payload.field] = action.payload.value
       return Object.assign({}, state, {

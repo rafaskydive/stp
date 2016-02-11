@@ -3,7 +3,7 @@ import reducer from '../../src/reducers/studentListReducer'
 import * as types from '../../src/constants'
 
 describe('studentList reducer', () => {
-  describe('TOGGLE_SORT', () => {
+  describe('LIST_TOGGLE_SORT', () => {
     describe("with names", () => {
       const state = {
         sortBy: null,
@@ -16,19 +16,6 @@ describe('studentList reducer', () => {
         ]
       }
 
-      it('should return the initial state', () => {
-        expect(
-          reducer(undefined, {})
-        ).toEqual({
-          loading: true,
-          students: [],
-          filteredStudents: [],
-          sortBy: null,
-          sortDesc: true,
-          nameFilter: null
-        })
-      })
-
       it('should sort by name descending by default', () => {
         let expectedStudents = [
           { name: "A" },
@@ -38,7 +25,7 @@ describe('studentList reducer', () => {
         ]
         expect(
           reducer(state, {
-            type: types.TOGGLE_SORT,
+            type: types.LIST_TOGGLE_SORT,
             payload: { sortBy: "name" }
           })
         ).toEqual(
@@ -60,7 +47,7 @@ describe('studentList reducer', () => {
         ]
         expect(
           reducer(Object.assign({}, state, {sortDesc:true}), {
-            type: types.TOGGLE_SORT,
+            type: types.LIST_TOGGLE_SORT,
             payload: { sortBy: "name" }
           })
         ).toEqual(
@@ -161,7 +148,7 @@ describe('studentList reducer', () => {
 
         expect(
           reducer(Object.assign({}, state, {sortDesc:true}), {
-            type: types.TOGGLE_SORT,
+            type: types.LIST_TOGGLE_SORT,
             payload: { sortBy: "last_jump_date" }
           })
         ).toEqual(
@@ -215,7 +202,7 @@ describe('studentList reducer', () => {
         ]
         expect(
           reducer(Object.assign({}, state, {sortDesc:false}), {
-            type: types.TOGGLE_SORT,
+            type: types.LIST_TOGGLE_SORT,
             payload: { sortBy: "last_jump_date" }
           })
         ).toEqual(

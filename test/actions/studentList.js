@@ -24,12 +24,12 @@ describe('studentList actions', () => {
   describe('sync actions', () => {
 
     describe('showStudent', () => {
-      it('should create SHOW_STUDENT with the selected student', () => {
+      it('should create STUDENT_SHOW with the selected student', () => {
         const student = {
           _id: 'test-student'
         }
         const expectedAction = {
-          type: types.SHOW_STUDENT,
+          type: types.STUDENT_SHOW,
           payload: student
         }
         expect(actions.showStudent(student)).toEqual(expectedAction)
@@ -38,9 +38,9 @@ describe('studentList actions', () => {
     })
 
     describe('toggleSort', () => {
-      it('should dispatch TOGGLE_SORT with payload of sortBy ', () => {
+      it('should dispatch LIST_TOGGLE_SORT with payload of sortBy ', () => {
         const expectedAction = {
-          type: types.TOGGLE_SORT,
+          type: types.LIST_TOGGLE_SORT,
           payload: { sortBy: 'name' }
         }
         expect(actions.toggleSort('name')).toEqual(expectedAction)
@@ -49,8 +49,8 @@ describe('studentList actions', () => {
     })
 
     describe('filterByName', () => {
-      it('should dispatch FILTER_BY_NAME with payload of str', () => {
-        expect(actions.filterByName('dav')).toEqual({type: types.FILTER_BY_NAME, payload: 'dav'})
+      it('should dispatch LIST_FILTER_BY_NAME with payload of str', () => {
+        expect(actions.filterByName('dav')).toEqual({type: types.LIST_FILTER_BY_NAME, payload: 'dav'})
       })
       markAsTested('filterByName')
     })
@@ -74,11 +74,11 @@ describe('studentList actions', () => {
     })
 
     describe('fetchStudents', () => {
-      it('should return RECIEVE_STUDENTS and an array of docs', (done) => {
+      it('should return LIST_RECIEVE_STUDENTS and an array of docs', (done) => {
 
         const expectedActions = [
           {
-            type: types.REQUEST_STUDENTS
+            type: types.LIST_REQUEST_STUDENTS
           },
           (a) => {
             expect(a.payload).toBeAn(Array)

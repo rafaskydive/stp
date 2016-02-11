@@ -46,9 +46,9 @@ describe('video actions', () => {
         }
         const { video, student, jump, file, settings } = {...state}
         const expectedActions = [
-          { type: types.COPY_PROGRESS, payload: {percent: 0}},
-          { type: types.COPY_PROGRESS, payload: {percent: 100}},
-          { type: types.COPY_COMPLETE, payload: 'test/output-data/test-student/DF 1 - 2016-02-06.txt' }
+          { type: types.VIDEO_COPY_PROGRESS, payload: {percent: 0}},
+          { type: types.VIDEO_COPY_PROGRESS, payload: {percent: 100}},
+          { type: types.VIDEO_COPY_COMPLETE, payload: 'test/output-data/test-student/DF 1 - 2016-02-06.txt' }
         ]
         const callback = (outfile) => {
           expect(fs.statSync(`test/output-data/test-student/${outfile}`).size).toEqual(fs.statSync(file.path).size)
