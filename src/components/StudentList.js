@@ -3,10 +3,11 @@ import LoadingThing from './LoadingThing'
 import { HeaderButtons } from './HeaderButtons'
 import { connect } from 'react-redux'
 import { routeActions } from 'react-router-redux'
-import * as actionCreators from '../actions'
 import moment from 'moment'
 import twix from 'twix'
 import Classnames from 'classnames'
+
+import * as actionCreators from '../actions'
 
 export class StudentList extends Component {
   componentDidMount() {

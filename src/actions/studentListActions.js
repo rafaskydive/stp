@@ -9,7 +9,7 @@ function requestStudents() {
 
 function receiveStudents(response) {
   return {
-    type: types.LIST_RECIEVE_STUDENTS,
+    type: types.LIST_RECEIVE_STUDENTS,
     payload: response.rows.map(row => row.doc)
   }
 }

@@ -15,7 +15,7 @@ export default function studentList (state=initialState, action) {
       return Object.assign({}, state, {
         loading: true
       })
-    case types.LIST_RECIEVE_STUDENTS:
+    case types.LIST_RECEIVE_STUDENTS:
       return Object.assign({}, state, {
         students: [...action.payload],
         filteredStudents: [...action.payload],

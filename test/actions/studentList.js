@@ -74,7 +74,7 @@ describe('studentList actions', () => {
     })
 
     describe('fetchStudents', () => {
-      it('should return LIST_RECIEVE_STUDENTS and an array of docs', (done) => {
+      it('should return LIST_RECEIVE_STUDENTS and an array of docs', (done) => {
 
         const expectedActions = [
           {
