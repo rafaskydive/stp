@@ -1,4 +1,4 @@
-import * as types from '../constants'
+import * as types from '../constants/authConstants'
 import database from '../database'
 import bcrypt from 'bcrypt-nodejs'
 

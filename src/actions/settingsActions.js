@@ -1,5 +1,4 @@
-import * as types from '../constants'
-import database from '../database'
+import * as types from '../constants/settingsConstants'
 import { fixJSON } from '../utils'
 const path = require('path')
 

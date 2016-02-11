@@ -23,20 +23,6 @@ describe('studentList actions', () => {
 
   describe('sync actions', () => {
 
-    describe('showStudent', () => {
-      it('should create STUDENT_SHOW with the selected student', () => {
-        const student = {
-          _id: 'test-student'
-        }
-        const expectedAction = {
-          type: types.STUDENT_SHOW,
-          payload: student
-        }
-        expect(actions.showStudent(student)).toEqual(expectedAction)
-      })
-      markAsTested('showStudent')
-    })
-
     describe('toggleSort', () => {
       it('should dispatch LIST_TOGGLE_SORT with payload of sortBy ', () => {
         const expectedAction = {

@@ -1,4 +1,4 @@
-import * as types from '../constants'
+import * as types from '../constants/studentListConstants.js'
 import database from '../database'
 
 function requestStudents() {
@@ -29,13 +29,6 @@ export function fetchStudents() {
       if (err) { console.log(err) }
       return dispatch(receiveStudents(response))
     })
-  }
-}
-
-export function showStudent(student) {
-  return {
-    type: types.STUDENT_SHOW,
-    payload: student
   }
 }
 
