@@ -10,13 +10,22 @@ export function editField (target) {
 }
 
 export function login (user, callback) {
+  let loggedIn
   return dispatch => {
     database.get('users', (err, users) => {
       if (err && err.status == 404) {
-        return dispatch({
+        dispatch({
           type: types.AUTH_ERROR,
           error: "Users doc not found in DB"
         })
+        // go ahead and log in anyway...
+        // for now.
+        loggedIn = "guest"
+        return dispatch({
+          type: types.AUTH_LOGGED_IN,
+          loggedIn: loggedIn
+        })
+
       }
       let foundUser = users[user.username]
       if (! foundUser ) {
@@ -25,7 +34,7 @@ export function login (user, callback) {
           error: `User '${user.username}' Not Found`
         })
       }
-      let loggedIn = bcrypt.compareSync(user.password, foundUser.hashed_password) ? user.username : false
+      loggedIn = bcrypt.compareSync(user.password, foundUser.hashed_password) ? user.username : false
       if (! loggedIn ) {
         return dispatch({
           type: types.AUTH_ERROR,
