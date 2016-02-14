@@ -1,5 +1,6 @@
 import * as types from '../constants/studentListConstants.js'
 import database from '../database'
+import designDocs from '../utils/designDocs'
 
 function requestStudents() {
   return {
@@ -26,7 +27,10 @@ export function fetchStudents() {
     const functionOrView = process.env['NODE_ENV'] === 'test' ? query : 'students/last_jump_date'
     dispatch(requestStudents())
     database.query(functionOrView, { include_docs: true, descending: true }, (err, response) => {
-      if (err) { console.log(err) }
+      if (err) {
+        console.log(err)
+        designDocs.create(database)
+      }
       return dispatch(receiveStudents(response))
     })
   }
