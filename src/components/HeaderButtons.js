@@ -1,13 +1,17 @@
 import React from 'react'
 
-export const HeaderButtons = props => (
-  <div className="btn-group pull-right">
-    <StudentListButton {...props}/>
-    <ReportButton {...props}/>
-    <SettingsButton {...props}/>
-    <AuthInfo {...props}/>
-  </div>
-)
+export const HeaderButtons = props => {
+  const reportButton = props.auth.loggedIn ? <ReportButton {...props}/> : ""
+  const settingsButton = props.auth.loggedIn ? <SettingsButton {...props}/> : ""
+  return (
+    <div className="btn-group pull-right">
+      <StudentListButton {...props}/>
+      { reportButton }
+      { settingsButton }
+      <AuthInfo {...props}/>
+    </div>
+  )
+}
 
 const StudentListButton = ({push, location}) => (
   <button className={`btn btn-default ${location.pathname === '/' ? "active" : ""}`} onClick={() => push('/')}>
