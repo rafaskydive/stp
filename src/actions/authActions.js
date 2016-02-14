@@ -18,14 +18,7 @@ export function login (user, callback) {
           type: types.AUTH_ERROR,
           error: "Users doc not found in DB"
         })
-        // go ahead and log in anyway...
-        // for now.
-        loggedIn = "guest"
-        return dispatch({
-          type: types.AUTH_LOGGED_IN,
-          loggedIn: loggedIn
-        })
-
+        return dispatch(createUser(user, dispatch, callback))
       }
       let foundUser = users[user.username]
       if (! foundUser ) {
@@ -52,4 +45,18 @@ export function login (user, callback) {
 
 export function logout () {
   return { type: types.AUTH_LOG_OUT }
+}
+
+function createUser(user, dispatch, callback) {
+  let doc = { _id: "users", type: "users" }
+  doc[user.username] = { "hashed_password" : bcrypt.hashSync(user.password) }
+  database.put(doc, (err, result) => {
+    if (err) { console.log(err) }
+    dispatch({
+      type: types.AUTH_LOGGED_IN,
+      loggedIn: user.username
+    })
+    callback(user.username)
+  })
+
 }
