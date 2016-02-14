@@ -16,7 +16,10 @@ export default class Notes extends Component {
 const NotesHeader = ({student, createNote, cancelNote, changeNoteField, saveNote}) => {
   if (student.modified && student.new_note) { return (
     <li className="list-group-header">
-      <form>
+      <form onSubmit={e => {
+          e.preventDefault()
+          saveNote(student)
+        }}>
         <div className="form-group">
           <label>Note</label>
           <textarea
@@ -36,7 +39,7 @@ const NotesHeader = ({student, createNote, cancelNote, changeNoteField, saveNote
             />
         </div>
         <div className="form-actions">
-          <button type="submit" className="btn btn-primary" onClick={e => saveNote(student)}>
+          <button type="submit" className="btn btn-primary">
             <span className="icon icon-install icon-text"></span>
             Save Note
           </button>
