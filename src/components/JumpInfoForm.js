@@ -49,10 +49,10 @@ export const Form = ({student, jump, editJumpField, enableStudentEditForm, disab
         value={moment(jump.jump_date).format('YYYY-MM-DD')}
         disabled={!student.modified}/>
     </div>
-    {/*(
+    {(
       student.modified ?
       <SaveAndCancelButtons student={student} disableStudentEditForm={disableStudentEditForm}/> :
       <EnableFormButton enableStudentEditForm={enableStudentEditForm}/>
-    )*/}
+    )}
   </form>
 )

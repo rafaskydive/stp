@@ -81,11 +81,11 @@ const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStude
         disabled={!student.modified}
         onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}/>
     </div>
-    {(
+    {/*(
       student.modified ?
       <SaveAndCancelButtons student={student} disableStudentEditForm={disableStudentEditForm}/> :
       <EnableFormButton enableStudentEditForm={enableStudentEditForm}/>
-    )}
+    )*/}
   </form>
 )
 
