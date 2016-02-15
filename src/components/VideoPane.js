@@ -16,9 +16,9 @@ export default class VideoPane extends Component {
   }
   render () {
     let { student, jump, video, removeVideo, settings } = this.props
+    if (student._id === "new") { return <div></div> } // on app reload, student hasn't been loaded on first render
     if ( ! settings.videoFilePath ) return <FilePathNotSet/>
     if ( video.copy_in_progress ) return <ProgressBar percent={video.percent}/>
-    console.log(settings.videoFilePath, student.original_name, jump)
     let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
     let exists
     try {

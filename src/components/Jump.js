@@ -8,7 +8,7 @@ import { routeActions } from 'react-router-redux'
 import * as actionCreators from '../actions'
 
 class Jump extends Component {
-  componentWillMount () {
+  componentDidReceiveProps () {
     if (this.props.student._id !== this.props.params.id) {
       this.props.fetchStudent(this.props.params.id)
     }
@@ -18,6 +18,7 @@ class Jump extends Component {
   }
 
   render () {
+    if (this.props.student._id === "new") { return <div></div> }
     return (
       <div className="window-content">
         <PaneGroup {...this.props}/>
