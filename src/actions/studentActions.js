@@ -155,9 +155,7 @@ export function createNextJump(student) {
     database.get(student._id, function (err, student) {
       if (err) { return console.log(err) }
       let newJump = jumpsTemplate(moment().format())
-      let lastJump = student.jumps.sort((a, b) => {
-        return a.jump_date < b.jump_date
-      })[0]
+      let lastJump = student.jumps[student.jumps.length-1]
       if ( ! lastJump ) { lastJump = newJump }
       else {
         newJump.dive_flow = lastJump.dive_flow + 1
