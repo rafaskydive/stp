@@ -179,7 +179,7 @@ const currencyColor = daysSinceLastJump => {
 
 export const lastJumpInfo = (student, last_jump_date) => {
   if (student.jumps.length === 0) { return "" }
-  let jump = student.jumps.pop()
+  let jump = Object.assign([], student.jumps).pop()
   console.log(student.name, jump)
   return `DF${jump.dive_flow} ${jump.instructor.match(/\b\w/g).join('')}`
 }
