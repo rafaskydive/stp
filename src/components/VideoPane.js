@@ -68,15 +68,19 @@ const Video = ({student, jump, src, removeVideo, settings}) => {
           <source src={src} type="video/mp4"/>
         </video>
       </div>
-      <InlineConfirmButton
-        className='btn btn-warning pull-right'
-        textValues={["Remove Video", "Are you sure?", "Removing..."]}
-        showTimer={true}
-        isExecuting={false}
-        onClick={e => removeVideo(student, jump, settings, fs)}
-        >
-        <span className="icon icon-trash icon-text"></span>
-      </InlineConfirmButton>
+      {(
+        student.modified ?
+        <InlineConfirmButton
+          className='btn btn-warning pull-right'
+          textValues={["Remove Video", "Are you sure?", "Removing..."]}
+          showTimer={true}
+          isExecuting={false}
+          onClick={e => removeVideo(student, jump, settings, fs)}
+          >
+          <span className="icon icon-trash icon-text"></span>
+        </InlineConfirmButton> :
+        ""
+      )}
     </div>
   )
 }
