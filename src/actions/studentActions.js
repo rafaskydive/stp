@@ -50,6 +50,7 @@ export function saveStudent(student) {
   return dispatch => {
     if(! student._id || student._id === "new") {
       student._id = student.name.replace(/ /g, '-').toLowerCase()
+      student.original_name = student.name // this is so we can always reference the video directory even if somone changes the name of the student
     }
     student.last_jump_date = Object.keys(student.jumps).map(key => {
       return student.jumps[key].jump_date

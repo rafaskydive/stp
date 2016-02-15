@@ -36,7 +36,7 @@ export function copyVideoFile(student, jump, file, settings, callback, _fs=fs, _
     dispatch(copying())
     let ext = path.extname(file.path)
     let outfile = `DF ${jump.dive_flow} - ${moment(jump.jump_date).format('YYYY-MM-DD')}${ext}`
-    let outdir = path.join(settings.videoFilePath, student._id)
+    let outdir = path.join(settings.videoFilePath, student.original_name)
 
     _mkdirp(outdir, (err) => {
       if (err) {

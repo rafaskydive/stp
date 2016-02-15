@@ -45,7 +45,7 @@ const ProgressBar = ({percent}) => (
 )
 
 const Video = ({student, jump, removeVideo, settings}) => {
-  let src = path.join(settings.videoFilePath, student._id, jump.video_file)
+  let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
   return (
     <div className="">
       <div className="dropzone">
