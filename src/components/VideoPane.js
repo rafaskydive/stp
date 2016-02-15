@@ -18,7 +18,16 @@ export default class VideoPane extends Component {
     let { student, jump, video, removeVideo, settings } = this.props
     if ( ! settings.videoFilePath ) return <FilePathNotSet/>
     if ( video.copy_in_progress ) return <ProgressBar percent={video.percent}/>
-    if ( jump.video_file ) return <Video student={student} jump={jump} settings={settings} removeVideo={removeVideo}/>
+    console.log(settings.videoFilePath, student.original_name, jump)
+    let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
+    let exists
+    try {
+      exists = fs.statSync(src)
+    } catch (e) {
+      exists = false
+    }
+    if (! exists) { return ( <VideoFileNotFound src={src}/> ) }
+    if ( jump.video_file ) return <Video student={student} jump={jump} src={src} settings={settings} removeVideo={removeVideo}/>
     return (
       <div className="">
         <Dropzone
@@ -37,6 +46,12 @@ export default class VideoPane extends Component {
   }
 }
 
+const VideoFileNotFound = ({src}) => (
+  <div className="dropzone">
+    <span className="drop-zone-text">Could not find video file: {src}</span>
+  </div>
+)
+
 const ProgressBar = ({percent}) => (
   <div className="dropzone">
     <span className="drop-zone-text">Copying: {percent} %</span>
@@ -44,12 +59,12 @@ const ProgressBar = ({percent}) => (
   </div>
 )
 
-const Video = ({student, jump, removeVideo, settings}) => {
-  let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
+const Video = ({student, jump, src, removeVideo, settings}) => {
+  // let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
   return (
     <div className="">
       <div className="dropzone">
-        <video width="100%" controls>
+        <video width="100%" error={e => alert(`Not found: ${src}`)} controls>
           <source src={src} type="video/mp4"/>
         </video>
       </div>
