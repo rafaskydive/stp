@@ -15,12 +15,14 @@ export default function studentList (state=initialState, action) {
       return Object.assign({}, state, {
         loading: true
       })
+
     case types.LIST_RECEIVE_STUDENTS:
       return Object.assign({}, state, {
         students: [...action.payload],
         filteredStudents: [...action.payload],
         loading: false
       })
+
     case types.LIST_FILTER_BY_NAME:
       // sanitize input
       let input = action.payload.replace(/[^\w\-' ]+/, '')
@@ -29,16 +31,14 @@ export default function studentList (state=initialState, action) {
         if (student.name.match(re)) { return student }
       }).filter(n => { return n })
       return Object.assign({}, state, {nameFilter: action.payload.nameFilter, filteredStudents: filteredStudents})
+
     case types.LIST_TOGGLE_SORT:
       let students = state.students
-      const sortedStudents = []
+      let sortedStudents = []
       let sortBy = action.payload.sortBy
       let sortDesc = state.sortDesc ? false : true
       let sortedNames = students.map(student => {
         return student.name
-      }).sort()
-      let sortedDates = students.map(student => {
-        return student.last_jump_date
       }).sort()
       let sortedVisitDates = students.map(student => {
         return student.next_visit_date
@@ -50,10 +50,8 @@ export default function studentList (state=initialState, action) {
         })
       }
       if(sortBy === "last_jump_date") {
-        if (sortDesc) { sortedDates.reverse() }
-        sortedDates.map(date => {
-          sortedStudents.push(students.find(student => { return student.last_jump_date === date }))
-        })
+        if (sortDesc) { sortedStudents = Object.assign([], state.students)  }
+        else { sortedStudents = Object.assign([], state.students).reverse() }
       }
       if(sortBy === "next_visit_date") {
         if (sortDesc) { sortedVisitDates.reverse() }
@@ -64,7 +62,6 @@ export default function studentList (state=initialState, action) {
       return Object.assign({}, state, {
         sortBy: sortBy,
         sortDesc: sortDesc,
-        students: sortedStudents,
         filteredStudents: sortedStudents
       })
     default:
