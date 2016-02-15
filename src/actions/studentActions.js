@@ -1,4 +1,5 @@
 const path = require('path')
+import _ from 'lodash'
 import * as types from '../constants'
 import database from '../database'
 import { routeActions } from 'react-router-redux'
@@ -52,11 +53,7 @@ export function saveStudent(student) {
       student._id = student.name.replace(/ /g, '-').toLowerCase()
       student.original_name = student.name // this is so we can always reference the video directory even if somone changes the name of the student
     }
-    student.last_jump_date = Object.keys(student.jumps).map(key => {
-      return student.jumps[key].jump_date
-    }).sort((a, b) => {
-      return a > b
-    }).pop() || ""
+    student.jumps = _.sortBy(student.jumps, ['jump_date', 'dive_flow'])
     try {
       student.next_visit_date = Object.assign({},student.notes).sort((a, b) => {
         return a.next_visit_date > b.next_visit_date

@@ -178,16 +178,10 @@ const currencyColor = daysSinceLastJump => {
 // }
 
 export const lastJumpInfo = (student, last_jump_date) => {
-  let jump = null
-  try {
-    jump = Object.keys(student.jumps)
-    .map(key=>{return student.jumps[key]})
-    .find(jump=>{return jump.jump_date===last_jump_date})
-  }
-  catch (e) {
-    console.log(`${student._id}: ${e}`)
-  }
-  return jump ? ` DF${jump.dive_flow} ${jump.instructor.match(/\b\w/g).join('')}` : ""
+  if (student.jumps.length === 0) { return "" }
+  let jump = student.jumps.pop()
+  console.log(student.name, jump)
+  return `DF${jump.dive_flow} ${jump.instructor.match(/\b\w/g).join('')}`
 }
 
 const nextVisitDate = (next_visit_date) => {

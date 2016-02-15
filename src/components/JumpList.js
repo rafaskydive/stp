@@ -7,7 +7,7 @@ export default class JumpList extends Component {
     return (
       <ul className="list-group">
         <ListGroupHeader {...this.props}/>
-        {renderSortedJumpList(this.props)}
+        {renderJumpList(this.props)}
       </ul>
     )
   }
@@ -27,10 +27,8 @@ export const ListGroupHeader = ({student, createNextJump}) => {
   return <span></span>
 }
 
-export const renderSortedJumpList = ({student, push, removeJump}) => (
-  student.jumps.sort((a, b) => {
-    return (moment(a.jump_date).format("YYYYMMDD")+a.dive_flow) - (moment(b.jump_date).format("YYYYMMDD")+b.dive_flow)
-  }).map(jump => renderJumpListItem(student, jump, push, removeJump))
+export const renderJumpList = ({student, push, removeJump}) => (
+  student.jumps.map(jump => renderJumpListItem(student, jump, push, removeJump))
 )
 
 export const renderJumpListItem = (student, jump, push, removeJump) => (
