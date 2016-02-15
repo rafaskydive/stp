@@ -29,7 +29,7 @@ export const ListGroupHeader = ({student, createNextJump}) => {
 
 export const renderSortedJumpList = ({student, push, removeJump}) => (
   student.jumps.sort((a, b) => {
-    return a.jump_date > b.jump_date
+    return (moment(a.jump_date).format("YYYYMMDD")+a.dive_flow) - (moment(b.jump_date).format("YYYYMMDD")+b.dive_flow)
   }).map(jump => renderJumpListItem(student, jump, push, removeJump))
 )
 
