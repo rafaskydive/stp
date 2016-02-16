@@ -36,7 +36,7 @@ export const PaneGroup = props => (
 
 export const JumpTabsPane = props => {
   let { student, location, params } = {...props}
-  let TabComponent = activeTab(location) === 'video' ? VideoPaneWrapper : LogEntryForm
+  let TabComponent = activeTab(location) === 'log_entry' ?  LogEntryForm : VideoPaneWrapper
   return (
     <div className="pane">
       <Tabs {...props}/>
@@ -47,20 +47,20 @@ export const JumpTabsPane = props => {
 
 export const Tabs = ({student, location, push}) => (
   <div className="tab-group">
-    <div className={activeTab(location) === "log_entry" ? "tab-item active" : "tab-item"}
-      onClick={() => setActiveTab('log_entry', location, push)}>
-      Log Entry
-    </div>
     <div className={activeTab(location) === "video" ? "tab-item active" : "tab-item"}
       onClick={() => setActiveTab('video', location, push)}>
       Video
+    </div>
+    <div className={activeTab(location) === "log_entry" ? "tab-item active" : "tab-item"}
+      onClick={() => setActiveTab('log_entry', location, push)}>
+      Log Entry
     </div>
   </div>
 )
 
 const activeTab = (location) => {
-  if ( location.query.tab && location.query.tab === 'video') { return 'video' }
-  return 'log_entry'
+  if ( location.query.tab && location.query.tab === 'log_entry') { return 'log_entry' }
+  return 'video'
 }
 
 export const setActiveTab = (tab, location, push) => {
