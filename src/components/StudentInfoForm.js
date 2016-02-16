@@ -49,9 +49,9 @@ export const Form = ({student, editStudentField, enableStudentEditForm, disableS
         disabled={!student.modified}
         name="phone"
         type="tel"
-        pattern="(\d{3})-(\d{3})-(\d{4})"
+        pattern="\((\d{3})\) (\d{3})-(\d{4})"
         title="Must be in format '123-456-7890'"
-        placeholder="123-456-7890"
+        placeholder="(123) 456-7890"
         className="form-control"
       />
     </div>

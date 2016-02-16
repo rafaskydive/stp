@@ -122,7 +122,27 @@ export function disableStudentEditForm(student) {
   }
 }
 
+function manipulatePhoneValue(value) {
+  // TODO: make this smarter so backspace will work past symbols
+  value = value.replace(/[^\d]/g, '')
+  let manipulatedValue
+  if (value.length === 3) { manipulatedValue = `(${value.match(/\d+/)}) `}
+  console.log(value, value.length)
+  if (value.length > 3 && value.length <=5) {
+    let parts = value.match(/(\d{3})(\d+)/)
+    console.log(parts)
+    manipulatedValue = `(${parts[1]}) ${parts[2]}`
+  }
+  if (value.length >= 6) {
+    let parts = value.match(/(\d{3})(\d{3})(\d{0,4})/)
+    console.log(parts)
+    manipulatedValue = `(${parts[1]}) ${parts[2]}-${parts[3]}`
+  }
+  return manipulatedValue
+}
+
 export function editStudentField(student, field, value) {
+  if (field === "phone") { value = manipulatePhoneValue(value) }
   student[field] = value
   return {
     type: types.STUDENT_EDIT_FIELD,
