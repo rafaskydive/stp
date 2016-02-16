@@ -170,30 +170,31 @@ describe('student actions', () => {
         store.dispatch(actions.saveStudent(newStudent))
       })
 
-      it('copies latest jump_date from jump in jumps{} to last_jump_date', (done) => {
-        const jump_date = '2016-01-29 12:00:00'
-        const jumps = [jumpsTemplate(jump_date)]
-        const newStudent = {
-          type: 'student',
-          subtype: 'test-student',
-          name: 'Test Student Three',
-          email: 'test@example.com',
-          phone: '123-456-7890',
-          jumps: jumps,
-          notes: []
-        }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(a.payload._id).toEqual('test-student-three')
-            expect(a.payload._rev).toNotEqual(undefined)
-            expect(a.payload.last_jump_date).toEqual(jump_date)
-          }
-        ]
-        const store = mockStore({ student: newStudent }, expectedActions, done)
-        store.dispatch(actions.saveStudent(newStudent))
-      })
+    // NO LONGER DOING THIS SINCE WE CLEANED UP LAST JUMP RELATED CODE
+    //   it('copies latest jump_date from jump in jumps{} to last_jump_date', (done) => {
+    //     const jump_date = '2016-01-29 12:00:00'
+    //     const jumps = [jumpsTemplate(jump_date)]
+    //     const newStudent = {
+    //       type: 'student',
+    //       subtype: 'test-student',
+    //       name: 'Test Student Three',
+    //       email: 'test@example.com',
+    //       phone: '123-456-7890',
+    //       jumps: jumps,
+    //       notes: []
+    //     }
+    //     const expectedActions = [
+    //       { type: types.STUDENT_REQUEST },
+    //       (a) => {
+    //         expect(a.type).toEqual('STUDENT_RECIEVE')
+    //         expect(a.payload._id).toEqual('test-student-three')
+    //         expect(a.payload._rev).toNotEqual(undefined)
+    //         expect(a.payload.last_jump_date).toEqual(jump_date)
+    //       }
+    //     ]
+    //     const store = mockStore({ student: newStudent }, expectedActions, done)
+    //     store.dispatch(actions.saveStudent(newStudent))
+    //   })
       markAsTested('saveStudent')
     })
 
@@ -384,12 +385,12 @@ describe('student actions', () => {
     })
 
     describe('removeVideo', () => {
-      mkdirp.sync('test/output-data/remove-video-student')
-      fs.writeFileSync('test/output-data/remove-video-student/DF 1 - 2016-02-05.txt', 'lorem')
+      mkdirp.sync('test/output-data/Remove Video Student')
+      fs.writeFileSync('test/output-data/Remove Video Student/DF 1 - 2016-02-05.txt', 'lorem')
       const jump = { jump_date: '2016-02-05 13:38:25', dive_flow: 1, video_file: 'DF 1 - 2016-02-05.txt'}
       const state = {
         settings: { videoFilePath: './test/output-data' },
-        student: { _id: 'remove-video-student', jumps: [jump]}
+        student: { _id: 'remove-video-student', original_name: 'Remove Video Student', jumps: [jump]}
       }
       const { student, settings } = {...state}
       it('should remove video from fs and its reference on jump object', (done) => {
@@ -397,7 +398,7 @@ describe('student actions', () => {
           { type: types.STUDENT_REQUEST },
           (a) => {
             expect(a.type).toEqual(types.STUDENT_RECIEVE)
-            expect(typeof a.payload.jumps[0].video_file).toEqual('undefined')
+            expect(a.payload.jumps[0].video_file).toEqual('')
             // this one doesn't work right. we'll have to go on faith, i guess.
             // expect(fs.statSync('test/output-data/remove-video-student/DF 1 - 2016-02-05.txt')).toThrow(/no such file/)
           }
