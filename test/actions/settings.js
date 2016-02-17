@@ -7,7 +7,7 @@ import moment from 'moment'
 import database from '../../src/database'
 import { jumpsTemplate } from '../../src/utils'
 import * as actions from '../../src/actions/settingsActions'
-import * as types from '../../src/constants'
+import * as types from '../../src/constants/settingsConstants'
 
 const mkdirp = require('mkdirp')
 
@@ -25,14 +25,23 @@ describe('settings actions', () => {
   describe('sync actions', () => {
 
     describe('changeSettingValue', () => {
-      it('should return CHANGE_SETTING_VALUE with a payload of an object containing name and value', () => {
+      it('should return SETTINGS_CHANGE_VALUE with a payload of an object containing name and value', () => {
         let e = {name: 'email', value: 'doppler@'}
         expect(actions.changeSettingValue(e)).toEqual({
-          type: types.CHANGE_SETTING_VALUE,
+          type: types.SETTINGS_CHANGE_VALUE,
           payload: {name: 'email', value: 'doppler@'}
         })
       })
       markAsTested('changeSettingValue')
+    })
+
+    describe('cancelSaveSettings', () => {
+      it('should return SETTINGS_CANCEL_SAVE', () => {
+        expect(actions.cancelSaveSettings()).toEqual({
+          type: types.SETTINGS_CANCEL_SAVE
+        })
+      })
+      markAsTested('cancelSaveSettings')
     })
 
   })
@@ -48,7 +57,7 @@ describe('settings actions', () => {
 
     describe('saveSettings', () => {
 
-      it('should return REQUEST_SAVE_SETTINGS and SETTINGS_SAVED', (done) => {
+      it('should return SETTINGS_REQUEST_SAVE and SETTINGS_SAVED', (done) => {
         const mkdirp = require('mkdirp')
         const fs = require('fs')
         const storage = { userConfig: function(){return './test'}}
@@ -56,7 +65,7 @@ describe('settings actions', () => {
           name: 'value'
         }
         const expectedActions = [
-          { type: types.REQUEST_SAVE_SETTINGS, payload: {configuration: '{"name":"value"}'} },
+          { type: types.SETTINGS_REQUEST_SAVE, payload: {configuration: '{"name":"value"}'} },
           { type: types.SETTINGS_SAVED, payload: {name:"value"} }
         ]
         const store = mockStore({settings: settings}, expectedActions, done)
@@ -64,6 +73,7 @@ describe('settings actions', () => {
       })
       markAsTested('saveSettings')
     })
+
   })
 
 })

@@ -25,7 +25,7 @@ try {
 export default function settings (state=initialState, action) {
   switch (action.type) {
 
-    case types.CHANGE_SETTING_VALUE:
+    case types.SETTINGS_CHANGE_VALUE:
       let newConfiguration = Object.assign({}, state.configuration)
       newConfiguration[action.payload.name] = action.payload.value
       return Object.assign({}, state, {
@@ -33,14 +33,14 @@ export default function settings (state=initialState, action) {
         modified: true
       })
 
-    case types.REQUEST_SAVE_SETTINGS:
+    case types.SETTINGS_REQUEST_SAVE:
       const properConfiguration = fixJSON(action.payload.configuration)
       return Object.assign({}, state, {
         configuration: properConfiguration,
         modified: false
       })
 
-    case types.CANCEL_SAVE_SETTINGS:
+    case types.SETTINGS_CANCEL_SAVE:
       return Object.assign({}, state, {
         modified: false
       })

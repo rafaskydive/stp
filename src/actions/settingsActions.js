@@ -4,7 +4,7 @@ const path = require('path')
 
 export function changeSettingValue(field) {
   return {
-    type: types.CHANGE_SETTING_VALUE,
+    type: types.SETTINGS_CHANGE_VALUE,
     payload: {name: field.name, value: field.value}
   }
 }
@@ -12,7 +12,7 @@ export function changeSettingValue(field) {
 export function saveSettings(configuration, mkdirp, fs, storage) {
   return dispatch => {
     dispatch({
-      type: types.REQUEST_SAVE_SETTINGS,
+      type: types.SETTINGS_REQUEST_SAVE,
       payload: {configuration: configuration}
     })
     let properConfiguration = fixJSON(configuration)
@@ -28,5 +28,5 @@ export function saveSettings(configuration, mkdirp, fs, storage) {
 }
 
 export function cancelSaveSettings() {
-  return { type: types.CANCEL_SAVE_SETTINGS }
+  return { type: types.SETTINGS_CANCEL_SAVE }
 }

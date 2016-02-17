@@ -1,6 +1,6 @@
 import expect from 'expect'
 import reducer from '../../src/reducers/settingsReducer'
-import * as types from '../../src/constants'
+import * as types from '../../src/constants/settingsConstants'
 import { fixJSON } from '../../src/utils'
 
 describe('settings reducer', () => {
@@ -14,12 +14,12 @@ describe('settings reducer', () => {
     }
   }
 
-  describe('CHANGE_SETTING_VALUE', () => {
+  describe('SETTINGS_CHANGE_VALUE', () => {
 
     it('should reassign a specified value in state object', () => {
       expect(
         reducer(state, {
-          type: types.CHANGE_SETTING_VALUE,
+          type: types.SETTINGS_CHANGE_VALUE,
           payload: { name: "instructors", value: '["Alice", "Bob", "Chuck"]'}
         })
       ).toEqual({
@@ -35,7 +35,7 @@ describe('settings reducer', () => {
 
   })
 
-  describe('REQUEST_SAVE_SETTINGS', () => {
+  describe('SETTINGS_REQUEST_SAVE', () => {
     const settings = {
       modified: true,
       configuration: {
@@ -50,7 +50,7 @@ describe('settings reducer', () => {
     it('should return JSON', () => {
       expect(
         reducer(state, {
-          type: types.REQUEST_SAVE_SETTINGS,
+          type: types.SETTINGS_REQUEST_SAVE,
           payload: { configuration: stringifiedConfiguration }
         })
       ).toEqual({
