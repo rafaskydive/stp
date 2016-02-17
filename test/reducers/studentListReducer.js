@@ -32,7 +32,7 @@ describe('studentList reducer', () => {
           {
             sortBy: "name",
             sortDesc: true,
-            students: expectedStudents,
+            students: state.students,
             filteredStudents: expectedStudents
           }
         )
@@ -54,7 +54,7 @@ describe('studentList reducer', () => {
           {
             sortBy: "name",
             sortDesc: false,
-            students: expectedStudents,
+            students: state.students,
             filteredStudents: expectedStudents
           }
         )
@@ -73,8 +73,7 @@ describe('studentList reducer', () => {
               "1": {jump_date: 1},
               "2": {jump_date: 2},
               "3": {jump_date: 4}
-            },
-            last_jump_date: 4
+            }
           },
           {
             name: "B",
@@ -82,8 +81,7 @@ describe('studentList reducer', () => {
               "1": {jump_date: 1},
               "2": {jump_date: 3},
               "3": {jump_date: 7}
-            },
-            last_jump_date: 7
+            }
           },
           {
             name: "C",
@@ -91,8 +89,7 @@ describe('studentList reducer', () => {
               "1": {jump_date: 1},
               "2": {jump_date: 2},
               "3": {jump_date: 3}
-            },
-            last_jump_date: 3
+            }
           },
           {
             name: "D",
@@ -100,52 +97,12 @@ describe('studentList reducer', () => {
               "1": {jump_date: 1},
               "2": {jump_date: 1},
               "3": {jump_date: 1}
-            },
-            last_jump_date: 1
+            }
           }
         ]
       }
 
       it('should sort ascending', () => {
-        let expectedStudents = [
-          {
-            name: "D",
-            jumps: {
-              "1": {jump_date: 1},
-              "2": {jump_date: 1},
-              "3": {jump_date: 1}
-            },
-            last_jump_date: 1
-          },
-          {
-            name: "C",
-            jumps: {
-              "1": {jump_date: 1},
-              "2": {jump_date: 2},
-              "3": {jump_date: 3}
-            },
-            last_jump_date: 3
-          },
-          {
-            name: "A",
-            jumps: {
-              "1": {jump_date: 1},
-              "2": {jump_date: 2},
-              "3": {jump_date: 4}
-            },
-            last_jump_date: 4
-          },
-          {
-            name: "B",
-            jumps: {
-              "1": {jump_date: 1},
-              "2": {jump_date: 3},
-              "3": {jump_date: 7}
-            },
-            last_jump_date: 7
-          }
-        ]
-
         expect(
           reducer(Object.assign({}, state, {sortDesc:true}), {
             type: types.LIST_TOGGLE_SORT,
@@ -155,51 +112,13 @@ describe('studentList reducer', () => {
           {
             sortBy: "last_jump_date",
             sortDesc: false,
-            students: expectedStudents,
-            filteredStudents: expectedStudents
+            students: state.students,
+            filteredStudents: Object.assign([], state.students).reverse()
           }
         )
       })
 
       it('should sort descending', () => {
-        let expectedStudents = [
-          {
-            name: "B",
-            jumps: {
-              "1": {jump_date: 1},
-              "2": {jump_date: 3},
-              "3": {jump_date: 7}
-            },
-            last_jump_date: 7
-          },
-          {
-            name: "A",
-            jumps: {
-              "1": {jump_date: 1},
-              "2": {jump_date: 2},
-              "3": {jump_date: 4}
-            },
-            last_jump_date: 4
-          },
-          {
-            name: "C",
-            jumps: {
-              "1": {jump_date: 1},
-              "2": {jump_date: 2},
-              "3": {jump_date: 3}
-            },
-            last_jump_date: 3
-          },
-          {
-            name: "D",
-            jumps: {
-              "1": {jump_date: 1},
-              "2": {jump_date: 1},
-              "3": {jump_date: 1}
-            },
-            last_jump_date: 1
-          }
-        ]
         expect(
           reducer(Object.assign({}, state, {sortDesc:false}), {
             type: types.LIST_TOGGLE_SORT,
@@ -209,12 +128,11 @@ describe('studentList reducer', () => {
           {
             sortBy: "last_jump_date",
             sortDesc: true,
-            students: expectedStudents,
-            filteredStudents: expectedStudents
+            students: state.students,
+            filteredStudents: state.students
           }
         )
       })
-
 
     })
 
