@@ -18,7 +18,7 @@ export function login (user, callback) {
           type: types.AUTH_ERROR,
           error: "Users doc not found in DB"
         })
-        return dispatch(createUser(user, dispatch, callback))
+        return dispatch(createFirstUser(user, dispatch, callback))
       }
       let foundUser = users[user.username]
       if (! foundUser ) {
@@ -43,11 +43,21 @@ export function login (user, callback) {
   }
 }
 
+export function createNewUser (user, callback) {
+  console.log("createNewUser", user)
+  return dispatch => {
+    dispatch({
+      type: types.AUTH_CREATE_USER
+    })
+    return dispatch(createUser(user, dispatch, callback))
+  }
+}
+
 export function logout () {
   return { type: types.AUTH_LOG_OUT }
 }
 
-function createUser(user, dispatch, callback) {
+function createFirstUser(user, dispatch, callback) {
   let doc = { _id: "users", type: "users" }
   doc[user.username] = { "hashed_password" : bcrypt.hashSync(user.password) }
   database.put(doc, (err, result) => {
@@ -58,5 +68,29 @@ function createUser(user, dispatch, callback) {
     })
     callback(user.username)
   })
+}
 
+function createUser(user, dispatch, callback) {
+  database.get("users", (err, doc) => {
+    if (err) { console.log(err) }
+    doc[user.username] = { "hashed_password" : bcrypt.hashSync(user.password) }
+    database.put(doc, (err, result) => {
+      if (err) { console.log(err) }
+      dispatch({
+        type: types.AUTH_LOGGED_IN,
+        loggedIn: user.username
+      })
+      callback(user.username)
+    })
+  })
+  // let doc = { _id: "users", type: "users" }
+  // doc[user.username] = { "hashed_password" : bcrypt.hashSync(user.password) }
+  // database.put(doc, (err, result) => {
+  //   if (err) { console.log(err) }
+  //   dispatch({
+  //     type: types.AUTH_LOGGED_IN,
+  //     loggedIn: user.username
+  //   })
+  //   callback(user.username)
+  // })
 }

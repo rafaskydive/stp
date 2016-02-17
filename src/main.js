@@ -56,6 +56,7 @@ ReactDOM.render(
           </Route>
           <Route path="settings" component={Settings} onEnter={requireAuth}/>
           <Route path="report" component={Report} onEnter={requireAuth}/>
+          <Route path="new_user" component={Auth} onEnter={requireAuth}/>
           <Route path="login" component={Auth}/>
         </Route>
       </Router>

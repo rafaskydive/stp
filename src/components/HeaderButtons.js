@@ -1,13 +1,16 @@
 import React from 'react'
 
 export const HeaderButtons = props => {
-  const reportButton = props.auth.loggedIn ? <ReportButton {...props}/> : ""
+  const reportButton   = props.auth.loggedIn ? <ReportButton   {...props}/> : ""
   const settingsButton = props.auth.loggedIn ? <SettingsButton {...props}/> : ""
+  const newUserButton  = props.auth.loggedIn ? <NewUserButton  {...props}/> : ""
+
   return (
     <div className="btn-group pull-right">
       <StudentListButton {...props}/>
       { reportButton }
       { settingsButton }
+      { newUserButton }
       <AuthInfo {...props}/>
     </div>
   )
@@ -48,5 +51,12 @@ export const ReportButton = ({push, location}) => (
   <button className={`btn btn-default ${location.pathname === '/report' ? "active" : ""}`} onClick={() => push('/report')}>
     <span className="icon icon-newspaper icon-text"></span>
     Report
+  </button>
+)
+
+export const NewUserButton = ({push, location}) => (
+  <button className={`btn btn-default ${location.pathname === '/new_user' ? "active" : ""}`} onClick={() => push('/new_user')}>
+    <span className="icon icon-user-add icon-text"></span>
+    New User
   </button>
 )
