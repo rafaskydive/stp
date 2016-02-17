@@ -39,7 +39,7 @@ describe('video actions', () => {
       it('copies video while reporting progress, then returns the video file name via callback', (done) => {
         const state = {
           video: { files: [], copy_in_progress: false, percent: 0, video_file: null },
-          student: { _id: 'test-student' },
+          student: { _id: 'test-student', original_name: "Test Student" },
           jump: { dive_flow: 1, jump_date: '2016-02-06 12:52:30' },
           file: { path: './test/mocks/copyVideoFileTest.txt' },
           settings: { videoFilePath: './test/output-data' }
@@ -48,11 +48,11 @@ describe('video actions', () => {
         const expectedActions = [
           { type: types.VIDEO_COPY_PROGRESS, payload: {percent: 0}},
           { type: types.VIDEO_COPY_PROGRESS, payload: {percent: 100}},
-          { type: types.VIDEO_COPY_COMPLETE, payload: 'test/output-data/test-student/DF 1 - 2016-02-06.txt' }
+          { type: types.VIDEO_COPY_COMPLETE, payload: 'test/output-data/Test Student/DF 1 - 2016-02-06.txt' }
         ]
         const callback = (outfile) => {
-          expect(fs.statSync(`test/output-data/test-student/${outfile}`).size).toEqual(fs.statSync(file.path).size)
-          fs.unlinkSync(`test/output-data/test-student/${outfile}`)
+          expect(fs.statSync(`test/output-data/Test Student/${outfile}`).size).toEqual(fs.statSync(file.path).size)
+          fs.unlinkSync(`test/output-data/Test Student/${outfile}`)
           done()
         }
         const store = mockStore(video, expectedActions)
