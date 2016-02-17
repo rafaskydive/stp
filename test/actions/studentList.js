@@ -53,7 +53,7 @@ describe('studentList actions', () => {
     after(function() {
       console.log("DELETING TEST STUDENTS")
       return (
-        database.allDocs({keys:["test-student","test-student-two", "test-student-three", "save-note-student", "remove-note-student"]}).then(response => {
+        database.allDocs({keys:["test-student","test-student-two", "save-note-student", "remove-note-student"]}).then(response => {
           return response.rows.map(row => database.remove(row.key, row.value.rev))
         })
       )

@@ -113,9 +113,10 @@ describe('student actions', () => {
     after(function() {
       console.log("DELETING TEST STUDENTS")
       return (
-        database.allDocs({keys:["test-student","test-student-two", "test-student-three", "save-note-student", "remove-note-student"]}).then(response => {
+        database.allDocs({keys:["test-student","test-student-two", "save-note-student", "remove-note-student"]}).then(response => {
+          console.log(response.rows)
           return response.rows.map(row => database.remove(row.key, row.value.rev))
-        })
+        }).catch(err => console.log(err))
       )
     })
 
