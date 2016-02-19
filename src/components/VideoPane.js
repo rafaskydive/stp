@@ -19,15 +19,8 @@ export default class VideoPane extends Component {
     if (student._id === "new") { return <div></div> } // on app reload, student hasn't been loaded on first render
     if ( ! settings.videoFilePath ) return <FilePathNotSet/>
     if ( video.copy_in_progress ) return <ProgressBar percent={video.percent}/>
-    let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
-    let exists
-    try {
-      exists = fs.statSync(src)
-    } catch (e) {
-      exists = false
-    }
-    if (! exists) { return ( <VideoFileNotFound src={src}/> ) }
-    if ( jump.video_file ) return <Video student={student} jump={jump} src={src} settings={settings} removeVideo={removeVideo}/>
+    if ( jump.video_file ) return <Video student={student} jump={jump} settings={settings} removeVideo={removeVideo}/>
+    // console.log(settings.videoFilePath, student.original_name, jump.video_file)
     return (
       <div className="">
         <Dropzone
@@ -59,8 +52,15 @@ const ProgressBar = ({percent}) => (
   </div>
 )
 
-const Video = ({student, jump, src, removeVideo, settings}) => {
-  // let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
+const Video = ({student, jump, removeVideo, settings}) => {
+  let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
+  let exists
+  try {
+    exists = fs.statSync(src)
+  } catch (e) {
+    exists = false
+  }
+  if (! exists) { return ( <VideoFileNotFound src={src}/> ) }
   return (
     <div className="">
       <div className="dropzone">
