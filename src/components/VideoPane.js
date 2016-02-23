@@ -4,47 +4,41 @@ import InlineConfirmButton from 'react-inline-confirm'
 const path = require('path')
 
 export default class VideoPane extends Component {
-  onDrop (files) {
-    let file = files[0]
-    let { student, jump, settings } = {...this.props}
-    this.props.copyVideoFile(student, jump, file, settings, (video_file) => {
-      student.jumps.find(j => {
-        return j.id === jump.id
-      }).video_file = video_file
-      this.props.saveStudent(student)
-    })
-  }
   render () {
-    let { student, jump, video, removeVideo, settings } = this.props
+    let { student, jump, copyVideoFile, saveStudent, video, removeVideo, settings } = this.props
     if (student._id === "new") { return <div></div> } // on app reload, student hasn't been loaded on first render
     if ( ! settings.videoFilePath ) return <FilePathNotSet/>
     if ( video.copy_in_progress ) return <ProgressBar percent={video.percent}/>
-    let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
-    let exists
-    try {
-      exists = fs.statSync(src)
-    } catch (e) {
-      exists = false
-    }
-    if (! exists) { return ( <VideoFileNotFound src={src}/> ) }
-    if ( jump.video_file ) return <Video student={student} jump={jump} src={src} settings={settings} removeVideo={removeVideo}/>
-    return (
-      <div className="">
-        <Dropzone
-          className='dropzone'
-          multiple={false}
-          accept="video/mp4"
-          onDrop={(files) => this.onDrop(files)}
-          style={{width: '100%', border: '1px solid black', height: '480px'}}
-          >
-          <div className="drop-zone-text text-center">
-            Drop video file here, or click to select file to upload.
-          </div>
-        </Dropzone>
-      </div>
-    )
+    if ( jump.video_file ) return <Video student={student} jump={jump} settings={settings} removeVideo={removeVideo}/>
+    return <VideoDragTarget student={student} jump={jump} copyVideoFile={copyVideoFile} saveStudent={saveStudent} settings={settings} />
   }
 }
+
+const onVideoDragTargetDrop = (copyVideoFile, files, student, jump, saveStudent, settings) => {
+  let file = files[0]
+  copyVideoFile(student, jump, file, settings, (video_file) => {
+    student.jumps.find(j => {
+      return j.id === jump.id
+    }).video_file = video_file
+    saveStudent(student)
+  })
+}
+
+const VideoDragTarget = ({copyVideoFile, saveStudent, student, jump, settings}) => (
+  <div className="">
+    <Dropzone
+      className='dropzone'
+      multiple={false}
+      accept="video/mp4"
+      onDrop={(files) => onVideoDragTargetDrop(copyVideoFile, files, student, jump, saveStudent, settings)}
+      style={{width: '100%', border: '1px solid black', height: '480px'}}
+      >
+      <div className="drop-zone-text text-center">
+        Drop video file here, or click to select file to upload.
+      </div>
+    </Dropzone>
+  </div>
+)
 
 const VideoFileNotFound = ({src}) => (
   <div className="dropzone">
@@ -59,8 +53,15 @@ const ProgressBar = ({percent}) => (
   </div>
 )
 
-const Video = ({student, jump, src, removeVideo, settings}) => {
-  // let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
+const Video = ({student, jump, removeVideo, settings}) => {
+  let src = path.join(settings.videoFilePath, student.original_name, jump.video_file)
+  let exists
+  try {
+    exists = fs.statSync(src)
+  } catch (e) {
+    exists = false
+  }
+  if (! exists) { return ( <VideoFileNotFound src={src}/> ) }
   return (
     <div className="">
       <div className="dropzone">
