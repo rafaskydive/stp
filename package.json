@@ -36,7 +36,7 @@
     "appdirectory": "^0.1.0",
     "bcrypt-nodejs": "0.0.3",
     "classnames": "^2.2.3",
-    "fs-extra": "^0.26.4",
+    "fs-extra": "^0.26.7",
     "moment": "^2.12.0",
     "pouchdb": "^5.3.0",
     "progress-stream": "^1.2.0",
