@@ -4,7 +4,7 @@ import JumpList from './JumpList'
 import Notes from './Notes'
 import ErrorStatus from './ErrorStatus'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { routeActions, push } from 'react-router-redux'
 import * as actionCreators from '../actions'
 
 class Student extends Component {
@@ -69,6 +69,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {
-  push: routeActions.push
+  push: push
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Student)

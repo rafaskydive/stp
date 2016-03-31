@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ErrorStatus from './ErrorStatus'
 import InstructorInput from './InstructorInput'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { routeActions, push } from 'react-router-redux'
 import * as actionCreators from '../actions'
 import Classnames from 'classnames'
 import moment from 'moment'
@@ -56,7 +56,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, {
-  push: routeActions.push,
+  push: push,
   newStudent: actionCreators.newStudent,
   fetchStudent: actionCreators.fetchStudent,
   editStudentField: actionCreators.editStudentField,

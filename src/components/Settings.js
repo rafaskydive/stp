@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { HeaderButtons } from './HeaderButtons'
 import Dropzone from 'react-dropzone'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { routeActions, push } from 'react-router-redux'
 import * as actionCreators from '../actions'
 
 class Settings extends Component {
@@ -117,7 +117,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, {
-  push: routeActions.push,
+  push: push,
   changeSettingValue: actionCreators.changeSettingValue,
   cancelSaveSettings: actionCreators.cancelSaveSettings,
   saveSettings: actionCreators.saveSettings,
