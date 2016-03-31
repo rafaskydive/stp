@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LoadingThing from './LoadingThing'
 import { HeaderButtons } from './HeaderButtons'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { routeActions, push } from 'react-router-redux'
 import moment from 'moment'
 import twix from 'twix'
 import Classnames from 'classnames'
@@ -192,7 +192,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {
-  push: routeActions.push
+  push: push
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudentList)

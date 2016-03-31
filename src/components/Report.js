@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LoadingThing from './LoadingThing'
 import { HeaderButtons } from './HeaderButtons'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { routeActions, push } from 'react-router-redux'
 import * as actionCreators from '../actions'
 import moment from 'moment'
 
@@ -76,7 +76,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, {
-  push: routeActions.push,
+  push: push,
   jumpsByMonth: actionCreators.jumpsByMonth,
   logout: actionCreators.logout
 })
