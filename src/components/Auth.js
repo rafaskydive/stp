@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { routeActions, push, replace } from 'react-router-redux'
 import * as actionCreators from '../actions/authActions'
 
 class Auth extends Component {
@@ -119,8 +119,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = Object.assign({}, actionCreators, {
-  push: routeActions.push,
-  replace: routeActions.replace
+  push: push,
+  replace: replace
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth)
