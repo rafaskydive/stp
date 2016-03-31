@@ -9,14 +9,16 @@ import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
-import { syncHistory, routeReducer } from 'react-router-redux'
+// import { syncHistory, routeReducer } from 'react-router-redux'
+import { routerMiddleware } from 'react-router-redux'
 import * as reducers from './reducers'
 import { Settings, StudentList, StudentWrapper, Student, Jump, Report, Auth } from './components'
 
-const middleware = syncHistory(hashHistory);
+// const middleware = syncHistory(hashHistory);
+const middleware = routerMiddleware(hashHistory)
 
 const reducer = combineReducers(Object.assign({}, reducers, {
-  routing: routeReducer
+  // routing: routeReducer
 }));
 
 const DevTools = createDevTools(
@@ -33,7 +35,7 @@ const finalCreateStore = compose(
 )(createStore);
 const store = finalCreateStore(reducer);
 
-middleware.listenForReplays(store);
+// middleware.listenForReplays(store);
 
 const requireAuth = (nextState, replace) => {
   if ( ! store.getState().auth.loggedIn ) {
