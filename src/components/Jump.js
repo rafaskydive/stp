@@ -4,7 +4,7 @@ import JumpInfoForm from './JumpInfoForm'
 import LogEntryForm from './LogEntryForm'
 import { jumpsTemplate } from '../utils'
 import { connect } from 'react-redux'
-import { routeActions } from 'react-router-redux'
+import { routeActions, push } from 'react-router-redux'
 import * as actionCreators from '../actions'
 
 class Jump extends Component {
@@ -111,7 +111,7 @@ const mapDispatchToProps = Object.assign({}, {
   copyVideoFile: actionCreators.copyVideoFile,
   removeVideo: actionCreators.removeVideo,
   saveStudent: actionCreators.saveStudent,
-  push: routeActions.push
+  push: push
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Jump)
