@@ -1,9 +1,16 @@
+const dbName = process.argv[2]
+
+if(dbName === undefined) {
+  console.log("Please provide a database name.")
+  process.exit()
+}
+
 var faker = require('faker')
 var moment = require('moment')
 var uuid = require('uuid')
 var PouchDB = require('pouchdb')
 
-database = new PouchDB('http://localhost:5984/my-pouch-db')
+database = new PouchDB('http://localhost:5984/' + dbName)
 
 var instructors = ['David Rose', 'Kayla Miller', 'Kevin Purdy', 'Rafael Oliveira']
 
