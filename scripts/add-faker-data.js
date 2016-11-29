@@ -5,7 +5,7 @@ var PouchDB = require('pouchdb')
 
 database = new PouchDB('http://localhost:5984/my-pouch-db')
 
-var instructors = ['David Rose', 'James Englund', 'Kevin Purdy']
+var instructors = ['David Rose', 'Kayla Miller', 'Kevin Purdy', 'Rafael Oliveira']
 
 var fakeStudent = function() {
   var name = faker.name.firstName() + ' ' + faker.name.lastName()
@@ -46,6 +46,7 @@ var fakeStudent = function() {
     _id: _id,
     type: "student",
     name: name,
+    original_name: name,
     email: faker.internet.email(),
     phone: faker.phone.phoneNumberFormat(),
     instructor: instructor,
