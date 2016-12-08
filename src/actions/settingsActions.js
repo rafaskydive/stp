@@ -21,7 +21,7 @@ export function saveSettings(configuration, mkdirpPromise, fs, storage) {
         fs.writeFileSync(path.join(storage.userConfig(), 'settings.json'), JSON.stringify(properConfiguration, null, 2))
         dispatch({ type: types.SETTINGS_SAVED, payload: properConfiguration })
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {throw err} )
   }
 }
 

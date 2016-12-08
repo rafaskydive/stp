@@ -11,16 +11,6 @@ import * as types from '../../src/constants/settingsConstants'
 
 const mkdirpPromise = require('mkdirp-promise')
 
-const ACTIONS = Object.keys(actions)
-
-function markAsTested(action) {
-  ACTIONS.splice(ACTIONS.indexOf(action), 1)
-}
-//
-// after(() => {
-//   console.log('UNTESTED ACTIONS (settings)', ACTIONS)
-// })
-
 describe('settings actions', () => {
   describe('sync actions', () => {
 
@@ -32,7 +22,6 @@ describe('settings actions', () => {
           payload: {name: 'email', value: 'doppler@'}
         })
       })
-      markAsTested('changeSettingValue')
     })
 
     describe('cancelSaveSettings', () => {
@@ -41,7 +30,6 @@ describe('settings actions', () => {
           type: types.SETTINGS_CANCEL_SAVE
         })
       })
-      markAsTested('cancelSaveSettings')
     })
 
   })
@@ -54,16 +42,16 @@ describe('settings actions', () => {
   const mockStore = configureMockStore(middlewares)
 
   describe('async actions', () => {
+    const mkdirp = require('mkdirp')
+    const fs = require('fs')
+    const storage = { userConfig: function(){return './test'}}
+    const settings = {
+      name: 'value'
+    }
 
     describe('saveSettings', () => {
 
-      it('should return SETTINGS_REQUEST_SAVE and SETTINGS_SAVED', () => {
-        const mkdirp = require('mkdirp')
-        const fs = require('fs')
-        const storage = { userConfig: function(){return './test'}}
-        const settings = {
-          name: 'value'
-        }
+      it('should work', () => {
         const store = mockStore({})
         return store.dispatch(actions.saveSettings(JSON.stringify(settings), mkdirpPromise, fs, storage))
           .then(() => {
@@ -73,7 +61,11 @@ describe('settings actions', () => {
             expect(expectedActions[1].payload.name).toEqual("value")
           })
       })
-      markAsTested('saveSettings')
+
+      it('should fail with bad params', () => {
+        const store = mockStore({})
+        expect(store.dispatch(actions.saveSettings(JSON.stringify(settings), mkdirpPromise, null, storage))).toThrow()
+      })
     })
 
   })
