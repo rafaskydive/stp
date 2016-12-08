@@ -183,24 +183,26 @@ export function setInstructorOnFirstJump(student, instructor) {
   }
 }
 
-export function createNextJump(student) {
+export function createNextJump(_student) {
   return dispatch => {
-    database.get(student._id, function (err, student) {
-      if (err) { return console.log(err) }
-      let newJump = jumpsTemplate(moment().format())
-      let lastJump = student.jumps[student.jumps.length-1]
-      if ( ! lastJump ) { lastJump = newJump }
-      else {
-        newJump.dive_flow = lastJump.dive_flow + 1
-        newJump.jump_number = lastJump.jump_number + 1
-        newJump.instructor = lastJump.instructor
-      }
-      student.jumps.push(newJump)
-      dispatch({
-        type: types.STUDENT_CREATE_NEXT_JUMP
+    return database.get(_student._id)
+      .then((student) => {
+        let newJump = jumpsTemplate(moment().format())
+        let lastJump = student.jumps[student.jumps.length-1]
+        if ( ! lastJump ) { lastJump = newJump }
+        else {
+          newJump.dive_flow = lastJump.dive_flow + 1
+          newJump.jump_number = lastJump.jump_number + 1
+          newJump.instructor = lastJump.instructor
+        }
+        student.jumps.push(newJump)
+        dispatch({type: types.STUDENT_CREATE_NEXT_JUMP})
+        return dispatch(saveStudent(student))
       })
-      dispatch(saveStudent(student))
-    })
+      .catch((err) => {
+        student.errors = err
+        dispatch(reportErrors(student))        
+      })
   }
 }
 

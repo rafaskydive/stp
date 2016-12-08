@@ -298,33 +298,24 @@ describe('student actions', () => {
     })
 
     describe('createNextJump', function () {
-      xit('should start with 1 jump', function (done) {
+      it('should start with 1 jump', function () {
         const student = { _id: 'test-student' }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(Object.keys(a.payload.jumps).length).toEqual(1)
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.fetchStudent(student._id))
+        const store = mockStore({})
+        return store.dispatch(actions.fetchStudent(student._id))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[1].payload.jumps.length).toBe(1)
+          })
       })
 
-      xit('after run, should have two jumps', function (done) {
+      it('after run, should have two jumps', function () {
         const student = { _id: 'test-student' }
-        const expectedActions = [
-          { type: types.STUDENT_CREATE_NEXT_JUMP },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_REQUEST')
-          },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(Object.keys(a.payload.jumps).length).toEqual(2)
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.createNextJump(student))
+        const store = mockStore({})
+        return store.dispatch(actions.createNextJump(student))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[2].payload.jumps.length).toBe(2)
+          })
       })
       markAsTested('createNextJump')
     })
