@@ -68,7 +68,6 @@ describe('settings actions', () => {
         return store.dispatch(actions.saveSettings(JSON.stringify(settings), mkdirpPromise, fs, storage))
           .then(() => {
             const expectedActions = store.getActions()
-            console.log(expectedActions)
             expect(expectedActions.length).toBe(2)
             expect(expectedActions[0].type).toEqual(types.SETTINGS_REQUEST_SAVE)
             expect(expectedActions[1].payload.name).toEqual("value")
