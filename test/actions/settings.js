@@ -50,30 +50,30 @@ describe('settings actions', () => {
   /* ASYNC ACTIONS                                                              */
   /******************************************************************************/
 
-  const middlewares = [ thunk ]
-  const mockStore = configureMockStore(middlewares)
-
-  describe('async actions', () => {
-
-    describe('saveSettings', () => {
-
-      it('should return SETTINGS_REQUEST_SAVE and SETTINGS_SAVED', (done) => {
-        const mkdirp = require('mkdirp')
-        const fs = require('fs')
-        const storage = { userConfig: function(){return './test'}}
-        const settings = {
-          name: 'value'
-        }
-        const expectedActions = [
-          { type: types.SETTINGS_REQUEST_SAVE, payload: {configuration: '{"name":"value"}'} },
-          { type: types.SETTINGS_SAVED, payload: {name:"value"} }
-        ]
-        const store = mockStore({settings: settings}, expectedActions, done)
-        store.dispatch(actions.saveSettings(JSON.stringify(settings), mkdirp, fs, storage))
-      })
-      markAsTested('saveSettings')
-    })
-
-  })
+  // const middlewares = [ thunk ]
+  // const mockStore = configureMockStore(middlewares)
+  //
+  // describe('async actions', () => {
+  //
+  //   describe('saveSettings', () => {
+  //
+  //     it('should return SETTINGS_REQUEST_SAVE and SETTINGS_SAVED', (done) => {
+  //       const mkdirp = require('mkdirp')
+  //       const fs = require('fs')
+  //       const storage = { userConfig: function(){return './test'}}
+  //       const settings = {
+  //         name: 'value'
+  //       }
+  //       const expectedActions = [
+  //         { type: types.SETTINGS_REQUEST_SAVE, payload: {configuration: '{"name":"value"}'} },
+  //         { type: types.SETTINGS_SAVED, payload: {name:"value"} }
+  //       ]
+  //       const store = mockStore({settings: settings}, expectedActions, done)
+  //       store.dispatch(actions.saveSettings(JSON.stringify(settings), mkdirp, fs, storage))
+  //     })
+  //     markAsTested('saveSettings')
+  //   })
+  //
+  // })
 
 })

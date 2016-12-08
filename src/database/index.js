@@ -12,7 +12,7 @@ try {
     )
   )
 } catch (e) {
-  console.log("settings reducer could not load settings.json:", e, "Falling back to default initialState.")
+  console.log("settings reducer could not load settings.json:", "Falling back to default initialState.")
   settings = {
     localDatabase: 'STP',
     remoteDatabase: null,

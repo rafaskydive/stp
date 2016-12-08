@@ -33,10 +33,12 @@ export function fetchStudent(_id) {
   if(_id === 'new') { return }
   return dispatch => {
     dispatch(requestStudent())
-    database.get(_id, function (err, doc) {
-      if (err) { console.log(err) }
-      dispatch(receiveStudent(doc))
-    })
+    return database.get(_id)
+      .then((doc) => { dispatch(receiveStudent(doc))})
+      .catch((err) => {
+        student.errors = err
+        dispatch(reportErrors(student))
+      })
   }
 }
 
@@ -54,19 +56,25 @@ export function saveStudent(student) {
       student.original_name = student.name // this is so we can always reference the video directory even if somone changes the name of the student
     }
     student.jumps = _.sortBy(student.jumps, ['jump_date', 'dive_flow'])
-    try {
-      student.next_visit_date = Object.assign({},student.notes).sort((a, b) => {
-        return a.next_visit_date > b.next_visit_date
-      }).pop().next_visit_date
-    } catch (e) {}
+    // try {
+    //   student.next_visit_date = Object.assign({},student.notes).sort((a, b) => {
+    //     return a.next_visit_date > b.next_visit_date
+    //   }).pop().next_visit_date
+    // } catch (e) { console.log(e) }
     if ( student.email === "_delete@me" ) { student._deleted = true }
     delete(student.modified)
     delete(student.new)
     delete(student.errors)
-    database.put(student, function (err, response) {
-      if (err) { console.log(err) }
-      return dispatch(fetchStudent(response.id))
-    })
+    // database.put(student, function (err, response) {
+    //   if (err) { console.log(err) }
+    //   return dispatch(fetchStudent(response.id))
+    // })
+    return database.put(student)
+      .then(response => dispatch(fetchStudent(response.id)))
+      .catch((err) => {
+        student.errors = err
+        dispatch(reportErrors(student))
+      })
   }
 }
 
