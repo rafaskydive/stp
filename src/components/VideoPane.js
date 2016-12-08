@@ -65,7 +65,7 @@ const Video = ({student, jump, removeVideo, settings}) => {
   return (
     <div className="">
       <div className="dropzone">
-        <video width="100%" error={e => alert(`Not found: ${src}`)} controls>
+        <video width="100%" onError={e => alert(`Not found: ${src}`)} controls>
           <source src={src} type="video/mp4"/>
         </video>
       </div>

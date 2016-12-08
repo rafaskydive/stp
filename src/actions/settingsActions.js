@@ -9,21 +9,19 @@ export function changeSettingValue(field) {
   }
 }
 
-export function saveSettings(configuration, mkdirp, fs, storage) {
+export function saveSettings(configuration, mkdirpPromise, fs, storage) {
   return dispatch => {
     dispatch({
       type: types.SETTINGS_REQUEST_SAVE,
       payload: {configuration: configuration}
     })
     let properConfiguration = fixJSON(configuration)
-    mkdirp(storage.userConfig(), (err) => {
-      if (err) { return console.log(err) }
-      fs.writeFileSync(path.join(storage.userConfig(), 'settings.json'), JSON.stringify(properConfiguration, null, 2))
-      dispatch({
-        type: types.SETTINGS_SAVED,
-        payload: properConfiguration
+    return mkdirpPromise(storage.userConfig())
+      .then(() => {
+        fs.writeFileSync(path.join(storage.userConfig(), 'settings.json'), JSON.stringify(properConfiguration, null, 2))
+        dispatch({ type: types.SETTINGS_SAVED, payload: properConfiguration })
       })
-    })
+      .catch((err) => console.log(err))
   }
 }
 

@@ -7,21 +7,29 @@ let initialState = {
   configuration: {}
 }
 
-try {
-  initialState.configuration = JSON.parse(
-    fs.readFileSync(
-      path.join(storage.userConfig(), 'settings.json')
+const test = process.env['NODE_ENV'] === 'test'
+
+const initialSettings = {
+  localDatabase: 'STP',
+  remoteDatabase: null,
+  videoFilePath: null,
+  instructors: ["Please Edit","Your Instructor List", "In Settings"]
+}
+
+if ( test ) { initialState.configuration = initialSettings }
+else {
+  try {
+    initialState.configuration = JSON.parse(
+      fs.readFileSync(
+        path.join(storage.userConfig(), 'settings.json')
+      )
     )
-  )
-} catch (e) {
-  console.log("settings reducer could not load settings.json:", e, "Falling back to default initialState.")
-  initialState.configuration = {
-    localDatabase: 'STP',
-    remoteDatabase: null,
-    videoFilePath: null,
-    instructors: ["Please Edit","Your Instructor List", "In Settings"]
+  } catch (e) {
+    console.log("settings reducer could not load settings.json:", "Falling back to default initialState.")
+    initialState.configuration = initialSettings
   }
 }
+
 export default function settings (state=initialState, action) {
   switch (action.type) {
 

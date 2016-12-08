@@ -26,13 +26,20 @@ export function fetchStudents() {
   return dispatch => {
     const functionOrView = process.env['NODE_ENV'] === 'test' ? query : 'students/last_jump_date'
     dispatch(requestStudents())
-    database.query(functionOrView, { include_docs: true, descending: true }, (err, response) => {
-      if (err) {
+    // database.query(functionOrView, { include_docs: true, descending: true }, (err, response) => {
+    //   if (err) {
+    //     console.log(err)
+    //     designDocs.create(database)
+    //   }
+    //   return dispatch(receiveStudents(response))
+    // })
+    return database.query(functionOrView, { include_docs: true, descending: true})
+      .then((response) => {
+        return dispatch(receiveStudents(response))
+      })
+      .catch((err) => {
         console.log(err)
-        designDocs.create(database)
-      }
-      return dispatch(receiveStudents(response))
-    })
+      })
   }
 }
 

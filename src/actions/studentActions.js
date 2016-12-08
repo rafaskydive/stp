@@ -33,10 +33,12 @@ export function fetchStudent(_id) {
   if(_id === 'new') { return }
   return dispatch => {
     dispatch(requestStudent())
-    database.get(_id, function (err, doc) {
-      if (err) { console.log(err) }
-      dispatch(receiveStudent(doc))
-    })
+    return database.get(_id)
+      .then((doc) => { dispatch(receiveStudent(doc))})
+      .catch((err) => {
+        student.errors = err
+        dispatch(reportErrors(student))
+      })
   }
 }
 
@@ -54,19 +56,30 @@ export function saveStudent(student) {
       student.original_name = student.name // this is so we can always reference the video directory even if somone changes the name of the student
     }
     student.jumps = _.sortBy(student.jumps, ['jump_date', 'dive_flow'])
-    try {
-      student.next_visit_date = Object.assign({},student.notes).sort((a, b) => {
-        return a.next_visit_date > b.next_visit_date
-      }).pop().next_visit_date
-    } catch (e) {}
+    // try {
+    //   student.next_visit_date = Object.assign({},student.notes).sort((a, b) => {
+    //     return a.next_visit_date > b.next_visit_date
+    //   }).pop().next_visit_date
+    // } catch (e) { console.log(e) }
     if ( student.email === "_delete@me" ) { student._deleted = true }
     delete(student.modified)
     delete(student.new)
     delete(student.errors)
-    database.put(student, function (err, response) {
-      if (err) { console.log(err) }
-      return dispatch(fetchStudent(response.id))
-    })
+    student.last_jump_date = Object.keys(student.jumps).map(key => {
+      return student.jumps[key].jump_date
+    }).sort((a, b) => {
+      return a > b
+    }).pop() || ""
+    // database.put(student, function (err, response) {
+    //   if (err) { console.log(err) }
+    //   return dispatch(fetchStudent(response.id))
+    // })
+    return database.put(student)
+      .then(response => dispatch(fetchStudent(response.id)))
+      .catch((err) => {
+        student.errors = err
+        dispatch(reportErrors(student))
+      })
   }
 }
 
@@ -105,7 +118,7 @@ export function removeNote(student, note) {
       return n.date === note.date
     })
     student.notes.splice(student.notes.indexOf(_note), 1)
-    dispatch(saveStudent(student))
+    return dispatch(saveStudent(student))
   }
 }
 
@@ -117,8 +130,8 @@ export function enableStudentEditForm() {
 
 export function disableStudentEditForm(student) {
   return dispatch => {
-    dispatch(fetchStudent(student._id))
     dispatch( { type: types.STUDENT_DISABLE_FORM } )
+    return dispatch(fetchStudent(student._id))
   }
 }
 
@@ -170,24 +183,26 @@ export function setInstructorOnFirstJump(student, instructor) {
   }
 }
 
-export function createNextJump(student) {
+export function createNextJump(_student) {
   return dispatch => {
-    database.get(student._id, function (err, student) {
-      if (err) { return console.log(err) }
-      let newJump = jumpsTemplate(moment().format())
-      let lastJump = student.jumps[student.jumps.length-1]
-      if ( ! lastJump ) { lastJump = newJump }
-      else {
-        newJump.dive_flow = lastJump.dive_flow + 1
-        newJump.jump_number = lastJump.jump_number + 1
-        newJump.instructor = lastJump.instructor
-      }
-      student.jumps.push(newJump)
-      dispatch({
-        type: types.STUDENT_CREATE_NEXT_JUMP
+    return database.get(_student._id)
+      .then((student) => {
+        let newJump = jumpsTemplate(moment().format())
+        let lastJump = student.jumps[student.jumps.length-1]
+        if ( ! lastJump ) { lastJump = newJump }
+        else {
+          newJump.dive_flow = lastJump.dive_flow + 1
+          newJump.jump_number = lastJump.jump_number + 1
+          newJump.instructor = lastJump.instructor
+        }
+        student.jumps.push(newJump)
+        dispatch({type: types.STUDENT_CREATE_NEXT_JUMP})
+        return dispatch(saveStudent(student))
       })
-      dispatch(saveStudent(student))
-    })
+      .catch((err) => {
+        student.errors = err
+        dispatch(reportErrors(student))        
+      })
   }
 }
 
