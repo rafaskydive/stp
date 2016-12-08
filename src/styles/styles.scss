@@ -10,6 +10,15 @@ th {
   background-color: darken($chrome-color, 10%);
 }
 
+a[href^=mailto] {
+  text-decoration: none;
+  color: $gray-color;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
 .settings-table {
   font-family: monospace;
 }

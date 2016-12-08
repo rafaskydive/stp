@@ -96,7 +96,7 @@ export const ListTableHeadRow = ({toggleSort, studentList}) => (
     <Th name="Phone"/>
     <Th name="Last Jump Date" onClick={e => toggleSort('last_jump_date')} sortField="last_jump_date" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>
     <Th name="Last Dive Flow"/>
-    <Th name="Next Visit Date" onClick={e => toggleSort('next_visit_date')} sortField="next_visit_date" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>
+    {/*<Th name="Next Visit Date" onClick={e => toggleSort('next_visit_date')} sortField="next_visit_date" sortBy={studentList.sortBy} sortDesc={studentList.sortDesc}/>*/}
   </tr>
 )
 
@@ -128,21 +128,23 @@ export const renderStudentRow = (student, showStudent, push) => {
   let {_id, name, email, phone, last_jump_date} = {...student}
   let daysSinceLastJump = moment(last_jump_date).twix().count('days') - 1
   return (
-    <tr key={_id} onClick={e => { push(`/student/${student._id}?tab=jumps`) }}>
-      <td>{name}</td>
-      <td>{email}</td>
+    <tr key={_id}>
+      <td onClick={e => { push(`/student/${student._id}?tab=jumps`) }}>{name}</td>
+      <td><a href={"mailto:" + email}>{email}</a></td>
       <td>{phone}</td>
       <td>
         {moment(last_jump_date).format("ddd MMM Do")}
         <span className="currency-color"  style={{backgroundColor: `${currencyColor(daysSinceLastJump)}`}}></span>
         <span className="currency">{daysSinceLastJump} days</span>
       </td>
-      <td>
+      <td onClick={e => { push(`/student/${student._id}/jump/${lastJump(student).id}`)}}>
         {lastJumpInfo(student, student.last_jump_date)}
       </td>
+      {/*
       <td>
         {nextVisitDate(student.next_visit_date)}
       </td>
+      */}
     </tr>
   )
 }
@@ -169,17 +171,14 @@ const currencyColor = daysSinceLastJump => {
                                 return `rgb(${Math.floor(255/14*daysSinceLastJump)}, 255, 0)`
 }
 
-// export const currencyClass = daysSinceLastJump => {
-//   if(daysSinceLastJump > 30) { return "uncurrent" }
-//   if(daysSinceLastJump > 21) { return "red" }
-//   if(daysSinceLastJump > 14) { return "orange" }
-//   if(daysSinceLastJump > 7 ) { return "yellow" }
-//   return ""
-// }
+const lastJump = (student) => {
+  if (student.jumps.length === 0) { return "" }
+  return Object.assign([], student.jumps).pop()
+}
 
 export const lastJumpInfo = (student, last_jump_date) => {
   if (student.jumps.length === 0) { return "" }
-  let jump = Object.assign([], student.jumps).pop()
+  let jump = lastJump(student)
   return `DF${jump.dive_flow} ${jump.instructor.match(/\b\w/g).join('')}`
 }
 
