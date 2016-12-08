@@ -223,7 +223,7 @@ describe('student actions', () => {
     })
 
     describe('saveNote', () => {
-      xit('should save note', (done) => {
+      it('should save note', () => {
         let new_note = { text: 'test note', date: '1-2-3'}
         const student = {
           type: 'student',
@@ -232,27 +232,31 @@ describe('student actions', () => {
           notes: [],
           new_note: new_note
         }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual(types.STUDENT_RECIEVE)
-            expect(a.payload.notes[0].text).toEqual('test note')
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.saveNote(student, {date: 'x', text: 'success'}))
+        const store = mockStore(student)
+        return store.dispatch(actions.saveNote(student))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(2)
+            expect(expectedActions[0].type).toEqual(types.STUDENT_REQUEST)
+            expect(expectedActions[1].type).toEqual(types.STUDENT_RECIEVE)
+            expect(expectedActions[1].payload.notes[0].text).toEqual("test note")
+          })
       })
 
-      xit('with errors, should not save note', (done) => {
-        let new_note = { text: '', date: 'y-m-d' }
-        const expectedActions = [
-          {
-            type: types.STUDENT_SAVE_ERROR,
-            payload: { errors: [ 'Note text may not be blank' ], notes: [], new_note: new_note }
-          }
-        ]
-        const store = mockStore({student:{notes:[]}}, expectedActions, done)
-        store.dispatch(actions.saveNote( { notes:[], new_note: new_note } ))
+      it('with errors, should not save note', () => {
+        let new_note = { text: '', date: null}
+        const student = {
+          type: 'student',
+          name: 'Save Note Student',
+          jumps: [jumpsTemplate('w-h-a-t e-v-e-r')],
+          notes: [],
+          new_note: new_note
+        }
+        const store = mockStore({})
+        store.dispatch(actions.saveNote(student))
+        const expectedActions = store.getActions()
+        expect(expectedActions.length).toBe(1)
+        expect(expectedActions[0].payload.errors[0]).toEqual('Note text may not be blank')
       })
       markAsTested('saveNote')
     })
