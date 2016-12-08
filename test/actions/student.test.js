@@ -12,16 +12,6 @@ import * as types from '../../src/constants'
 import fs from 'fs'
 import mkdirp from 'mkdirp'
 
-const ACTIONS = Object.keys(actions)
-
-function markAsTested(action) {
-  ACTIONS.splice(ACTIONS.indexOf(action), 1)
-}
-
-// afterAll(() => {
-//   console.log('UNTESTED ACTIONS (student)', ACTIONS)
-// })
-
 describe('student actions', () => {
   describe('sync actions', () => {
 
@@ -34,7 +24,6 @@ describe('student actions', () => {
         }
         expect(actions.newStudent('newStudentTestUUID')).toEqual(expectedAction)
       })
-      markAsTested('newStudent')
     })
 
     describe('editStudentField', () => {
@@ -45,14 +34,12 @@ describe('student actions', () => {
         }
         expect(actions.editStudentField({email:""},"email","f")).toEqual(expected)
       })
-      markAsTested('editStudentField')
     })
 
     describe('enableStudentEditForm', () => {
       it('should return type STUDENT_ENABLE_FORM', () => {
         expect(actions.enableStudentEditForm().type).toEqual(types.STUDENT_ENABLE_FORM)
       })
-      markAsTested('enableStudentEditForm')
     })
 
     describe('editJumpField', () => {
@@ -97,7 +84,6 @@ describe('student actions', () => {
         }
         expect(actions.editJumpField(student, jump, field, value)).toEqual(expectedAction)
       })
-      markAsTested('editJumpField')
     })
 
     describe('setInstructorOnFirstJump', () =>  {
@@ -119,9 +105,27 @@ describe('student actions', () => {
         expect(expectedActions.type).toEqual(types.STUDENT_SET_INSTRUCTOR_ON_FIRST_JUMP)
         expect(expectedActions.payload.jumps[0].instructor).toEqual(newStudent.instructor)
       })
-      markAsTested('setInstructorOnFirstJump')
     })
 
+    describe('createNote', () => {
+      it('should work', () => {
+        const store = mockStore({})
+        expect(store.dispatch(actions.createNote({}))).toEqual({type: types.STUDENT_CREATE_NOTE})
+      })
+    })
+    describe('cancelNote', () => {
+      it('should work', () => {
+        const store = mockStore({})
+        expect(store.dispatch(actions.cancelNote({})).type).toEqual(types.STUDENT_CANCEL_NOTE)
+      })
+    })
+    describe('changeNoteField', () => {
+      it('should work', () => {
+        const store = mockStore({})
+        const expectedActions = store.dispatch(actions.changeNoteField({new_note:{}}, 'foo', 'bar'))
+        expect(expectedActions.payload.new_note.foo).toEqual('bar')
+      })
+    })
   })
 
   /******************************************************************************/
@@ -192,7 +196,6 @@ describe('student actions', () => {
           })
       })
 
-      markAsTested('saveStudent')
     })
 
     describe('disableStudentEditForm', () => {
@@ -219,7 +222,6 @@ describe('student actions', () => {
             expect(expectedActions[2].payload.original_name).toEqual("Test Student Two")
           })
       })
-      markAsTested('disableStudentEditForm')
     })
 
     describe('saveNote', () => {
@@ -258,7 +260,6 @@ describe('student actions', () => {
         expect(expectedActions.length).toBe(1)
         expect(expectedActions[0].payload.errors[0]).toEqual('Note text may not be blank')
       })
-      markAsTested('saveNote')
     })
 
     describe('removeNote', () => {
@@ -282,7 +283,6 @@ describe('student actions', () => {
           })
 
       })
-      markAsTested('removeNote')
     })
 
     describe('fetchStudent', () => {
@@ -294,7 +294,15 @@ describe('student actions', () => {
             expect(expectedActions[1].payload.original_name).toEqual("Test Student Two")
           })
       })
-      markAsTested('fetchStudent')
+
+      it('fails gracefully', () => {
+        const store = mockStore({})
+        return store.dispatch(actions.fetchStudent("404"))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[1].type).toEqual(types.STUDENT_SAVE_ERROR)
+          })
+      })
     })
 
     describe('createNextJump', function () {
@@ -317,7 +325,6 @@ describe('student actions', () => {
             expect(expectedActions[2].payload.jumps.length).toBe(2)
           })
       })
-      markAsTested('createNextJump')
     })
 
     describe('removeJump', () => {
@@ -347,7 +354,6 @@ describe('student actions', () => {
         const store = mockStore(student, expectedActions, done)
         store.dispatch(actions.removeJump(student, jump))
       })
-      markAsTested('removeJump')
     })
 
     describe('removeVideo', () => {
@@ -372,7 +378,6 @@ describe('student actions', () => {
         const store = mockStore(state, expectedActions, done)
         store.dispatch(actions.removeVideo(student, jump, settings, fs))
       })
-      markAsTested('removeVideo')
     })
 
   })
