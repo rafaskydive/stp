@@ -118,7 +118,7 @@ export function removeNote(student, note) {
       return n.date === note.date
     })
     student.notes.splice(student.notes.indexOf(_note), 1)
-    dispatch(saveStudent(student))
+    return dispatch(saveStudent(student))
   }
 }
 

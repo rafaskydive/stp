@@ -263,23 +263,24 @@ describe('student actions', () => {
 
     describe('removeNote', () => {
 
-      xit('should remove specified note', (done) => {
+      it('should remove specified note', () => {
         const student = {
           type: 'student',
           name: 'Remove Note Student',
           jumps: [jumpsTemplate('w-h-a-t e-v-e-r')],
           notes: [{date:'x',text:'keep'},{date:'y',text:'remove'}]
         }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual(types.STUDENT_RECIEVE)
-            expect(a.payload.notes.length).toEqual(1)
-            expect(a.payload.notes[0].text).toEqual('keep')
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.removeNote(student, {date:'y',text:'remove'}))
+        const store = mockStore({})
+        return store.dispatch(actions.removeNote(student, {date:'y'}))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(2)
+            expect(expectedActions[0].type).toEqual(types.STUDENT_REQUEST)
+            expect(expectedActions[1].type).toEqual(types.STUDENT_RECIEVE)
+            expect(expectedActions[1].payload.notes.length).toBe(1)
+            expect(expectedActions[1].payload.notes[0].text).toEqual('keep')
+          })
+
       })
       markAsTested('removeNote')
     })
