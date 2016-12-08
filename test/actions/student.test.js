@@ -286,19 +286,13 @@ describe('student actions', () => {
     })
 
     describe('fetchStudent', () => {
-      xit('fetchStudent creates STUDENT_RECIEVE after fetching students', (done) => {
-
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(a.payload._id).toEqual('test-student-two')
-            expect(a.payload._rev).toNotEqual(undefined)
-          }
-        ]
-
-        const store = mockStore({ student: {} }, expectedActions, done)
-        store.dispatch(actions.fetchStudent("test-student-two"))
+      it('works', () => {
+        const store = mockStore({})
+        return store.dispatch(actions.fetchStudent("test-student-two"))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[1].payload.original_name).toEqual("Test Student Two")
+          })
       })
       markAsTested('fetchStudent')
     })
