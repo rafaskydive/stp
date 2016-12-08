@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import nock from 'nock'
-import expect from 'expect'
+// import expect from 'expect'
 import moment from 'moment'
 
 import database from '../../src/database'
@@ -9,17 +9,17 @@ import { jumpsTemplate } from '../../src/utils'
 import * as actions from '../../src/actions/settingsActions'
 import * as types from '../../src/constants/settingsConstants'
 
-const mkdirp = require('mkdirp')
+const mkdirpPromise = require('mkdirp-promise')
 
 const ACTIONS = Object.keys(actions)
 
 function markAsTested(action) {
   ACTIONS.splice(ACTIONS.indexOf(action), 1)
 }
-
-after(() => {
-  console.log('UNTESTED ACTIONS (settings)', ACTIONS)
-})
+//
+// after(() => {
+//   console.log('UNTESTED ACTIONS (settings)', ACTIONS)
+// })
 
 describe('settings actions', () => {
   describe('sync actions', () => {
@@ -50,30 +50,33 @@ describe('settings actions', () => {
   /* ASYNC ACTIONS                                                              */
   /******************************************************************************/
 
-  // const middlewares = [ thunk ]
-  // const mockStore = configureMockStore(middlewares)
-  //
-  // describe('async actions', () => {
-  //
-  //   describe('saveSettings', () => {
-  //
-  //     it('should return SETTINGS_REQUEST_SAVE and SETTINGS_SAVED', (done) => {
-  //       const mkdirp = require('mkdirp')
-  //       const fs = require('fs')
-  //       const storage = { userConfig: function(){return './test'}}
-  //       const settings = {
-  //         name: 'value'
-  //       }
-  //       const expectedActions = [
-  //         { type: types.SETTINGS_REQUEST_SAVE, payload: {configuration: '{"name":"value"}'} },
-  //         { type: types.SETTINGS_SAVED, payload: {name:"value"} }
-  //       ]
-  //       const store = mockStore({settings: settings}, expectedActions, done)
-  //       store.dispatch(actions.saveSettings(JSON.stringify(settings), mkdirp, fs, storage))
-  //     })
-  //     markAsTested('saveSettings')
-  //   })
-  //
-  // })
+  const middlewares = [ thunk ]
+  const mockStore = configureMockStore(middlewares)
+
+  describe('async actions', () => {
+
+    describe('saveSettings', () => {
+
+      it('should return SETTINGS_REQUEST_SAVE and SETTINGS_SAVED', () => {
+        const mkdirp = require('mkdirp')
+        const fs = require('fs')
+        const storage = { userConfig: function(){return './test'}}
+        const settings = {
+          name: 'value'
+        }
+        const store = mockStore({})
+        return store.dispatch(actions.saveSettings(JSON.stringify(settings), mkdirpPromise, fs, storage))
+          .then(() => {
+            const expectedActions = store.getActions()
+            console.log(expectedActions)
+            expect(expectedActions.length).toBe(2)
+            expect(expectedActions[0].type).toEqual(types.SETTINGS_REQUEST_SAVE)
+            expect(expectedActions[1].payload.name).toEqual("value")
+          })
+      })
+      markAsTested('saveSettings')
+    })
+
+  })
 
 })
