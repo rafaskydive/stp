@@ -130,8 +130,8 @@ export function enableStudentEditForm() {
 
 export function disableStudentEditForm(student) {
   return dispatch => {
-    dispatch(fetchStudent(student._id))
     dispatch( { type: types.STUDENT_DISABLE_FORM } )
+    return dispatch(fetchStudent(student._id))
   }
 }
 

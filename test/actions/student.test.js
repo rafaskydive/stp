@@ -100,6 +100,28 @@ describe('student actions', () => {
       markAsTested('editJumpField')
     })
 
+    describe('setInstructorOnFirstJump', () =>  {
+      it('copies student.instructor to student.jumps[0].instructor', () => {
+        const jump_date = '2016-01-29 12:00:00'
+        const jumps = [jumpsTemplate(jump_date)]
+        const newStudent = {
+          type: 'student',
+          subtype: 'test-student',
+          name: 'Test Student Five',
+          email: 'test@example.com',
+          phone: '123-456-7890',
+          instructor: 'Test Instructor',
+          jumps: jumps,
+          notes: []
+        }
+        const store = mockStore({ student: newStudent })//, expectedActions)
+        const expectedActions = store.dispatch(actions.setInstructorOnFirstJump(newStudent, newStudent.instructor))
+        expect(expectedActions.type).toEqual(types.STUDENT_SET_INSTRUCTOR_ON_FIRST_JUMP)
+        expect(expectedActions.payload.jumps[0].instructor).toEqual(newStudent.instructor)
+      })
+      markAsTested('setInstructorOnFirstJump')
+    })
+
   })
 
   /******************************************************************************/
@@ -170,62 +192,11 @@ describe('student actions', () => {
           })
       })
 
-    // NO LONGER DOING THIS SINCE WE CLEANED UP LAST JUMP RELATED CODE
-    //   xit('copies latest jump_date from jump in jumps{} to last_jump_date', (done) => {
-    //     const jump_date = '2016-01-29 12:00:00'
-    //     const jumps = [jumpsTemplate(jump_date)]
-    //     const newStudent = {
-    //       type: 'student',
-    //       subtype: 'test-student',
-    //       name: 'Test Student Three',
-    //       email: 'test@example.com',
-    //       phone: '123-456-7890',
-    //       jumps: jumps,
-    //       notes: []
-    //     }
-    //     const expectedActions = [
-    //       { type: types.STUDENT_REQUEST },
-    //       (a) => {
-    //         expect(a.type).toEqual('STUDENT_RECIEVE')
-    //         expect(a.payload._id).toEqual('test-student-three')
-    //         expect(a.payload._rev).toNotEqual(undefined)
-    //         expect(a.payload.last_jump_date).toEqual(jump_date)
-    //       }
-    //     ]
-    //     const store = mockStore({ student: newStudent }, expectedActions, done)
-    //     store.dispatch(actions.saveStudent(newStudent))
-    //   })
       markAsTested('saveStudent')
     })
 
-    describe('setInstructorOnFirstJump', () =>  {
-      xit('copies student.instructor to student.jumps[0].instructor', (done) => {
-        const jump_date = '2016-01-29 12:00:00'
-        const jumps = [jumpsTemplate(jump_date)]
-        const newStudent = {
-          type: 'student',
-          subtype: 'test-student',
-          name: 'Test Student Five',
-          email: 'test@example.com',
-          phone: '123-456-7890',
-          instructor: 'Test Instructor',
-          jumps: jumps,
-          notes: []
-        }
-        const expectedActions = [
-          (a) => {
-            expect(a.type).toEqual(types.STUDENT_SET_INSTRUCTOR_ON_FIRST_JUMP)
-            expect(a.payload.jumps[0].instructor).toEqual(newStudent.instructor)
-          }
-        ]
-        const store = mockStore({ student: newStudent }, expectedActions, done)
-        store.dispatch(actions.setInstructorOnFirstJump(newStudent, newStudent.instructor))
-      })
-      markAsTested('setInstructorOnFirstJump')
-    })
-
     describe('disableStudentEditForm', () => {
-      xit('should return type STUDENT_DISABLE_FORM', (done) => {
+      it('should return type STUDENT_DISABLE_FORM', () => {
         const student = {
           _id: 'test-student-two'
         }
@@ -237,8 +208,16 @@ describe('student actions', () => {
             expect(a.payload._id).toEqual('test-student-two')
           }
         ]
-        const store = mockStore({student:{}}, expectedActions, done)
-        store.dispatch(actions.disableStudentEditForm(student))
+        const store = mockStore({student:{}})//, expectedActions, done)
+        return store.dispatch(actions.disableStudentEditForm(student))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(3)
+            expect(expectedActions[0].type).toEqual(types.STUDENT_DISABLE_FORM)
+            expect(expectedActions[1].type).toEqual(types.STUDENT_REQUEST)
+            expect(expectedActions[2].type).toEqual(types.STUDENT_RECIEVE)
+            expect(expectedActions[2].payload.original_name).toEqual("Test Student Two")
+          })
       })
       markAsTested('disableStudentEditForm')
     })
