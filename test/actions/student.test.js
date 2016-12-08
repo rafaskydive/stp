@@ -321,17 +321,14 @@ describe('student actions', () => {
     })
 
     describe('removeJump', () => {
-      xit('should start with two jumps', function (done) {
+      it('should start with two jumps', function () {
         const student = { _id: 'test-student' }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (incomingAction) => {
-            expect(incomingAction.type).toEqual(types.STUDENT_RECIEVE)
-            expect(Object.keys(incomingAction.payload.jumps).length).toEqual(2)
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.fetchStudent(student._id))
+        const store = mockStore({})
+        return store.dispatch(actions.fetchStudent(student._id))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[1].payload.jumps.length).toBe(2)
+          })
       })
 
       xit('should remove specified jump and video, then save student', (done) => {
