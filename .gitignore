@@ -6,3 +6,4 @@ npm-debug.log
 STP*
 settings.json
 test/output-data
+/coverage
