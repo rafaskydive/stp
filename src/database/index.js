@@ -37,4 +37,8 @@ if(!test && settings.remoteDatabase) {
   })
 }
 
+database.compact()
+  .then(res => console.log("Compacting database", res))
+  .catch(err => console.log(err))
+
 module.exports = database
