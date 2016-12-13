@@ -99,7 +99,7 @@ const jump = (student, params) => {
 }
 
 function mapStateToProps(state) {
-  return { student: state.student, settings: state.settings, video: state.video }
+  return { student: state.student, settings: state.settings, video: state.video, logEntryOptions: state.logEntryOptions }
 }
 
 const mapDispatchToProps = Object.assign({}, {
@@ -111,6 +111,7 @@ const mapDispatchToProps = Object.assign({}, {
   copyVideoFile: actionCreators.copyVideoFile,
   removeVideo: actionCreators.removeVideo,
   saveStudent: actionCreators.saveStudent,
+  requestLogEntryOptions: actionCreators.requestLogEntryOptions,
   push: push
 })
 

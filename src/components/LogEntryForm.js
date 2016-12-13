@@ -4,6 +4,14 @@ import moment from 'moment'
 import { Creatable } from 'react-select'
 
 export default class LogEntryForm extends Component {
+  componentDidMount () {
+    // "exit" is just one of the logEntryOptions
+    // if it's not present, we haven't loaded the options
+    // from the database
+    if (!this.props.logEntryOptions.exit) {
+      this.props.requestLogEntryOptions()
+    }
+  }
   render () {
     return (
       <div className="padded">
@@ -13,7 +21,7 @@ export default class LogEntryForm extends Component {
   }
 }
 
-const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStudentEditForm, saveStudent}) => (
+const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStudentEditForm, saveStudent, logEntryOptions}) => (
   <form onSubmit={e => {
     e.preventDefault()
     return student.modified ? saveStudent(student) : {}
@@ -48,19 +56,13 @@ const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStude
     </div>
 
     <div className="form-group">
-      <label>TEST</label>
-      <Creatable name="select_test"
-        value={jump.select_test}
+      <label>Exit</label>
+      <Creatable name="exit"
+        value={jump.exit}
         multi={true}
         disabled={!student.modified}
-        options={[{value: "one", label: "One"}, {value: "two", label: "Two"}]}
-        onChange={val => editJumpField(student, jump, "select_test", val)}/>
-
-      <label>Exit</label>
-      <input name="exit" className="form-control"
-        value={jump.exit}
-        disabled={!student.modified}
-        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}/>
+        options={logEntryOptions.exit}
+        onChange={val => editJumpField(student, jump, "exit", val)}/>
     </div>
     <div className="form-group">
       <label>Maneuvers</label>

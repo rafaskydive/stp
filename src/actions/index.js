@@ -9,3 +9,5 @@ export * from './settingsActions'
 export * from './reportActions'
 
 export * from './authActions'
+
+export * from './logEntryActions'
