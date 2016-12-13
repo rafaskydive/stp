@@ -11,7 +11,7 @@ export default class JumpList extends Component {
           <thead>
             <tr>
               <th>Jump</th>
-              <th>Dive Flow</th>
+              <th>DF</th>
               <th>Date</th>
               <th>Instructor</th>
               <th>Exit Alt</th>
@@ -52,7 +52,7 @@ export const renderJumpListItem = (student, jump, push, removeJump) => (
   <tr key={jump.id}>
     <td onClick={() => displayJump(student, jump, push)}>{jump.jump_number}</td>
     <td onClick={() => displayJump(student, jump, push)}>{jump.dive_flow}</td>
-    <td onClick={() => displayJump(student, jump, push)}>{moment(jump.jump_date).format('dddd, MMMM Do YYYY')}</td>
+    <td onClick={() => displayJump(student, jump, push)}>{moment(jump.jump_date).format('dddd, MMM Do YY')}</td>
     <td onClick={() => displayJump(student, jump, push)}>{jump.instructor}</td>
     <td onClick={() => displayJump(student, jump, push)}>{jump.exit_altitude}</td>
     <td onClick={() => displayJump(student, jump, push)}>{jump.deployment_altitude}</td>
