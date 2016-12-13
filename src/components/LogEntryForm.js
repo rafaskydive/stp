@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { EnableFormButton, SaveAndCancelButtons } from './form-buttons'
 import moment from 'moment'
+import { Creatable } from 'react-select'
 
 export default class LogEntryForm extends Component {
   render () {
@@ -47,6 +48,14 @@ const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStude
     </div>
 
     <div className="form-group">
+      <label>TEST</label>
+      <Creatable name="select_test"
+        value={jump.select_test}
+        multi={true}
+        disabled={!student.modified}
+        options={[{value: "one", label: "One"}, {value: "two", label: "Two"}]}
+        onChange={val => editJumpField(student, jump, "select_test", val)}/>
+
       <label>Exit</label>
       <input name="exit" className="form-control"
         value={jump.exit}
