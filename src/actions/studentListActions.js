@@ -24,15 +24,9 @@ export function fetchStudents() {
     }
   }
   return dispatch => {
+    changesFeed.initialize(dispatch)
     const functionOrView = process.env['NODE_ENV'] === 'test' ? query : 'students/last_jump_date'
     dispatch(requestStudents())
-    // database.query(functionOrView, { include_docs: true, descending: true }, (err, response) => {
-    //   if (err) {
-    //     console.log(err)
-    //     designDocs.create(database)
-    //   }
-    //   return dispatch(receiveStudents(response))
-    // })
     return database.query(functionOrView, { include_docs: true, descending: true})
       .then((response) => {
         return dispatch(receiveStudents(response))
@@ -54,5 +48,18 @@ export function filterByName(str) {
   return {
     type: types.LIST_FILTER_BY_NAME,
     payload: str
+  }
+}
+
+// refresh studentList when any database change occurs.
+const changesFeed = {
+  initialize: (dispatch) => {
+    if (! window.changesInitialized) {
+      database.changes({live: true, since: 'now'})
+        .on('change', (change) => {
+          return dispatch(fetchStudents())
+        })
+      window.changesInitialized = true
+    }
   }
 }
