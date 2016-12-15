@@ -54,25 +54,21 @@ export function saveStudent(student) {
       student._id = student.name.replace(/ /g, '-').toLowerCase()
       student.original_name = student.name // this is so we can always reference the video directory even if somone changes the name of the student
     }
+
     student.jumps = _.sortBy(student.jumps, ['jump_date', 'dive_flow'])
-    // try {
-    //   student.next_visit_date = Object.assign({},student.notes).sort((a, b) => {
-    //     return a.next_visit_date > b.next_visit_date
-    //   }).pop().next_visit_date
-    // } catch (e) { console.log(e) }
+
     if ( student.email === "_delete@me" ) { student._deleted = true }
+
     delete(student.modified)
     delete(student.new)
     delete(student.errors)
+
     student.last_jump_date = Object.keys(student.jumps).map(key => {
       return student.jumps[key].jump_date
     }).sort((a, b) => {
       return a > b
     }).pop() || ""
-    // database.put(student, function (err, response) {
-    //   if (err) { console.log(err) }
-    //   return dispatch(fetchStudent(response.id))
-    // })
+
     return database.put(student)
       .then(response => dispatch(fetchStudent(response.id)))
       .catch((err) => {
