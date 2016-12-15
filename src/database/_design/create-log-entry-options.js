@@ -1,6 +1,6 @@
 const docData = require('./log-entry-options')
 
-export default function (database) {
+export default function (database, runningInTestMode) {
   const newdoc = {}
 
   const keys = Object.keys(docData)
@@ -18,6 +18,6 @@ export default function (database) {
       newdoc._rev = doc._rev
       return database.put(newdoc)
     })
-    .then(function(result) { console.log(result) })
+    .then(function(result) { runningInTestMode ? f=>f : console.log(result) })
     .catch(function(err) { database.put(newdoc) })
 }

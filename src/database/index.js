@@ -1,7 +1,9 @@
-var PouchDB = require('pouchdb')
-var path = require('path')
+const PouchDB = require('pouchdb')
+const path = require('path')
+import studentDesignDoc from './_design/students'
+import createLogEntryOptions from './_design/create-log-entry-options'
 
-const test = process.env['NODE_ENV'] === 'test'
+const runningInTestMode = process.env['NODE_ENV'] === 'test'
 
 const initialSettings = {
   localDatabase: 'STP',
@@ -26,7 +28,7 @@ else {
   }
 }
 
-var database = test ?
+var database = runningInTestMode ?
   new PouchDB('test', {db: require('memdown')}) :
   new PouchDB(settings.localDatabase, {adapter: 'idb'})
 
@@ -45,15 +47,13 @@ database.get('_design/students')
     // to update it, delete the app cache directory.
   })
   .catch((err) => {
-    const studentDesignDoc = require('./_design/students').default
-    console.log(studentDesignDoc)
     database.put(studentDesignDoc)
-      .then((res) => console.log(res))
-      .then(require('./_design/create-log-entry-options').default(database))
+      .then((res) => runningInTestMode ? f=>f : console.log(res))
+      .then(createLogEntryOptions(database, runningInTestMode))
   })
 
 database.compact()
-  .then(res => console.log("Compacting database", res))
+  .then(res => runningInTestMode ? f=>f : console.log("Compacting database", res))
   .catch(err => { console.log(err) })
 
 module.exports = database

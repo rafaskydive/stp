@@ -18,10 +18,10 @@ export function saveSettings(configuration, mkdirpPromise, fs, storage) {
     let properConfiguration = fixJSON(configuration)
     return mkdirpPromise(storage.userConfig())
       .then(() => {
-        fs.writeFileSync(path.join(storage.userConfig(), 'settings.json'), JSON.stringify(properConfiguration, null, 2))
         dispatch({ type: types.SETTINGS_SAVED, payload: properConfiguration })
+        return fs.writeFileSync(path.join(storage.userConfig(), 'settings.json'), JSON.stringify(properConfiguration, null, 2))
       })
-      .catch((err) => {throw err} )
+      .catch((err) => { console.log(err) } )
   }
 }
 
