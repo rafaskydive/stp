@@ -2,6 +2,8 @@ import * as types from '../constants/studentListConstants.js'
 import database from '../database'
 import designDocs from '../utils/designDocs'
 
+const runningInTestMode = process.env['NODE_ENV'] === 'test'
+
 function requestStudents() {
   return {
     type: types.LIST_REQUEST_STUDENTS,
@@ -25,7 +27,7 @@ export function fetchStudents() {
   }
   return dispatch => {
     changesFeed.initialize(dispatch)
-    const functionOrView = process.env['NODE_ENV'] === 'test' ? query : 'students/last_jump_date'
+    const functionOrView = runningInTestMode ? query : 'students/last_jump_date'
     dispatch(requestStudents())
     return database.query(functionOrView, { include_docs: true, descending: true})
       .then((response) => {
@@ -54,7 +56,7 @@ export function filterByName(str) {
 // refresh studentList when any database change occurs.
 const changesFeed = {
   initialize: (dispatch) => {
-    if (! window.changesInitialized) {
+    if (! window.changesInitialized && ! runningInTestMode) {
       database.changes({live: true, since: 'now'})
         .on('change', (change) => {
           return dispatch(fetchStudents())
