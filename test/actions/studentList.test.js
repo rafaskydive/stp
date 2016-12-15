@@ -9,16 +9,6 @@ import { jumpsTemplate } from '../../src/utils'
 import * as actions from '../../src/actions/studentListActions'
 import * as types from '../../src/constants'
 
-const ACTIONS = Object.keys(actions)
-
-function markAsTested(action) {
-  ACTIONS.splice(ACTIONS.indexOf(action), 1)
-}
-
-after(() => {
-  console.log('UNTESTED ACTIONS (studentList)', ACTIONS)
-})
-
 describe('studentList actions', () => {
 
   describe('sync actions', () => {
@@ -31,14 +21,12 @@ describe('studentList actions', () => {
         }
         expect(actions.toggleSort('name')).toEqual(expectedAction)
       })
-      markAsTested('toggleSort')
     })
 
     describe('filterByName', () => {
       it('should dispatch LIST_FILTER_BY_NAME with payload of str', () => {
         expect(actions.filterByName('dav')).toEqual({type: types.LIST_FILTER_BY_NAME, payload: 'dav'})
       })
-      markAsTested('filterByName')
     })
   })
 
@@ -50,32 +38,18 @@ describe('studentList actions', () => {
   const mockStore = configureMockStore(middlewares)
 
   describe('async actions', () => {
-    after(function() {
-      console.log("DELETING TEST STUDENTS")
-      return (
-        database.allDocs({keys:["test-student","test-student-two", "save-note-student", "remove-note-student"]}).then(response => {
-          return response.rows.map(row => database.remove(row.key, row.value.rev))
-        })
-      )
-    })
 
     describe('fetchStudents', () => {
-      it('should return LIST_RECEIVE_STUDENTS and an array of docs', (done) => {
-
-        const expectedActions = [
-          {
-            type: types.LIST_REQUEST_STUDENTS
-          },
-          (a) => {
-            expect(a.payload).toBeAn(Array)
-          }
-        ]
-        const store = mockStore({ studentList: [] }, expectedActions, done)
-        store.dispatch(actions.fetchStudents())
+      it('should return LIST_RECEIVE_STUDENTS and an array of docs', () => {
+        const store = mockStore({})
+        return store.dispatch(actions.fetchStudents())
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(2)
+            expect(expectedActions[1].payload).toBeAn(Array)
+          })
       })
-      markAsTested('fetchStudents')
     })
-
 
   })
 })

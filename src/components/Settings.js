@@ -1,3 +1,5 @@
+const path = require('path')
+
 import React, { Component } from 'react'
 import { HeaderButtons } from './HeaderButtons'
 import Dropzone from 'react-dropzone'
@@ -107,8 +109,22 @@ const renderSubmitButton = (cancelSaveSettings) => (
   </div>
 )
 
+const OpenSettingsButton = props => (
+  <button className="btn btn-default"
+    onClick={e => {
+      e.preventDefault();
+      shell.openItem(path.join(storage.userConfig(), 'settings.json'))
+    }}
+    >
+    Open settings.json
+  </button>
+)
+
 const Footer = props => (
   <footer className="toolbar toolbar-footer">
+    <div className="toolbar-actions">
+      <OpenSettingsButton/>
+    </div>
   </footer>
 )
 

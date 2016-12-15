@@ -2,6 +2,7 @@
 'use strict';
 const electron = require('electron');
 const app = electron.app; // require('app');
+
 const BrowserWindow = electron.BrowserWindow; // require('browser-window');
 
 // report crashes to the Electron project

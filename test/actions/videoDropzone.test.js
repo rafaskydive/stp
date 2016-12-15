@@ -10,17 +10,17 @@ import * as actions from '../../src/actions/videoActions'
 import * as types from '../../src/constants'
 
 import fs from 'fs'
-const mkdirp = require('mkdirp')
+const mkdirp = require('mkdirp-promise')
 
-const ACTIONS = Object.keys(actions)
-
-function markAsTested(action) {
-  ACTIONS.splice(ACTIONS.indexOf(action), 1)
-}
-
-after(() => {
-  console.log('UNTESTED ACTIONS (video)', ACTIONS)
-})
+// const ACTIONS = Object.keys(actions)
+//
+// function markAsTested(action) {
+//   ACTIONS.splice(ACTIONS.indexOf(action), 1)
+// }
+//
+// after(() => {
+//   console.log('UNTESTED ACTIONS (video)', ACTIONS)
+// })
 
 describe('video actions', () => {
   describe('sync actions', () => {
@@ -36,7 +36,7 @@ describe('video actions', () => {
 
   describe('async actions', () => {
     describe('copyVideoFile', () => {
-      it('copies video while reporting progress, then returns the video file name via callback', (done) => {
+      it('copies video while reporting progress, then returns the video file name via callback', () => {
         const state = {
           video: { files: [], copy_in_progress: false, percent: 0, video_file: null },
           student: { _id: 'test-student', original_name: "Test Student" },
@@ -45,20 +45,25 @@ describe('video actions', () => {
           settings: { videoFilePath: './test/output-data' }
         }
         const { video, student, jump, file, settings } = {...state}
-        const expectedActions = [
-          { type: types.VIDEO_COPY_PROGRESS, payload: {percent: 0}},
-          { type: types.VIDEO_COPY_PROGRESS, payload: {percent: 100}},
-          { type: types.VIDEO_COPY_COMPLETE, payload: 'test/output-data/Test Student/DF 1 2016-02-06 TG.txt' }
-        ]
+        // const expectedActions = [
+        //   { type: types.VIDEO_COPY_PROGRESS, payload: {percent: "x"}},
+        //   { type: types.VIDEO_COPY_PROGRESS, payload: {percent: 100}},
+        //   { type: types.VIDEO_COPY_COMPLETE, payload: 'test/output-data/Test Student/DF 1 2016-02-06 TG.txt' }
+        // ]
         const callback = (outfile) => {
           expect(fs.statSync(`test/output-data/Test Student/${outfile}`).size).toEqual(fs.statSync(file.path).size)
           fs.unlinkSync(`test/output-data/Test Student/${outfile}`)
-          done()
         }
-        const store = mockStore(video, expectedActions)
-        store.dispatch(actions.copyVideoFile(student, jump, file, settings, callback, fs, mkdirp))
+        // const store = mockStore(video, expectedActions)
+        // store.dispatch(actions.copyVideoFile(student, jump, file, settings, callback, fs, mkdirp))
+        const store = mockStore(video)
+        return store.dispatch(actions.copyVideoFile(student, jump, file, settings, callback, fs, mkdirp))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[0].type).toEqual(types.VIDEO_COPY_PROGRESS)
+          })
       })
-      markAsTested('copyVideoFile')
+      // markAsTested('copyVideoFile')
     })
   })
 })

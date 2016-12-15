@@ -11,8 +11,9 @@
 			var storage = new AppDirectory('STP Manager Development')
 			var fs  = require('fs');
 			var fse = require('fs-extra');
-			var mkdirp = require('mkdirp');
+			var mkdirp = require('mkdirp-promise');
 			var rimraf = require('rimraf');
+			var shell = require('electron').shell;
 			window.addEventListener("dragover",function(e){
 			  e = e || event;
 			  e.preventDefault();

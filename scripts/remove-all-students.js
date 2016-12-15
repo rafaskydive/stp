@@ -1,7 +1,14 @@
+const dbName = process.argv[2]
+
+if(dbName === undefined) {
+  console.log("Please provide a database name.")
+  process.exit()
+}
+
 // var database = require('../src/database')
 var PouchDB = require('pouchdb')
 
-var database = new PouchDB('http://doppler:doppler@localhost:5984/my-pouch-db')
+var database = new PouchDB('http://doppler:doppler@localhost:5984/' + dbName)
 
 function deleteDocs(callback) {
   var deleteDocs = []

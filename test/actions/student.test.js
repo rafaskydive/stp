@@ -18,9 +18,9 @@ function markAsTested(action) {
   ACTIONS.splice(ACTIONS.indexOf(action), 1)
 }
 
-after(() => {
-  console.log('UNTESTED ACTIONS (student)', ACTIONS)
-})
+// afterAll(() => {
+//   console.log('UNTESTED ACTIONS (student)', ACTIONS)
+// })
 
 describe('student actions', () => {
   describe('sync actions', () => {
@@ -100,106 +100,8 @@ describe('student actions', () => {
       markAsTested('editJumpField')
     })
 
-  })
-
-  /******************************************************************************/
-  /* ASYNC ACTIONS                                                              */
-  /******************************************************************************/
-
-  const middlewares = [ thunk ]
-  const mockStore = configureMockStore(middlewares)
-
-  describe('async actions', () => {
-    after(function() {
-      console.log("DELETING TEST STUDENTS")
-      return (
-        database.allDocs({keys:["test-student","test-student-two", "save-note-student", "remove-note-student"]}).then(response => {
-          return response.rows.map(row => database.remove(row.key, row.value.rev))
-        }).catch(err => console.log(err))
-      )
-    })
-
-    describe('saveStudent', () => {
-
-      it('creates saves student, then creates fetchStudent stuff', (done) => {
-        const jump_date = '2016-01-28 11:57:51'
-        const testUUID = 'testRemoveJumpUUID'
-        const jumps = [jumpsTemplate(jump_date, testUUID)]
-        const newStudent = {
-          type: 'student',
-          subtype: 'test-student',
-          name: `Test Student`,
-          email: 'test@example.com',
-          phone: '123-456-7890',
-          jumps: jumps,
-          notes: []
-        }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(a.payload._id).toEqual('test-student')
-            expect(a.payload._rev).toNotEqual(undefined)
-          }
-        ]
-        const store = mockStore({ student: newStudent }, expectedActions, done)
-        store.dispatch(actions.saveStudent(newStudent))
-      })
-
-      it('saves test-student-two', (done) => {
-        const jump_date = '2016-01-28 11:57:51'
-        const jumps = jumpsTemplate(jump_date)
-        const newStudent = {
-          type: 'student',
-          subtype: 'test-student',
-          name: `Test Student Two`,
-          email: 'test2@example.com',
-          phone: '123-456-7890',
-          jumps: jumps,
-          notes: []
-        }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(a.payload._id).toEqual('test-student-two')
-            expect(a.payload._rev).toNotEqual(undefined)
-          }
-        ]
-        const store = mockStore({ student: newStudent }, expectedActions, done)
-        store.dispatch(actions.saveStudent(newStudent))
-      })
-
-    // NO LONGER DOING THIS SINCE WE CLEANED UP LAST JUMP RELATED CODE
-    //   it('copies latest jump_date from jump in jumps{} to last_jump_date', (done) => {
-    //     const jump_date = '2016-01-29 12:00:00'
-    //     const jumps = [jumpsTemplate(jump_date)]
-    //     const newStudent = {
-    //       type: 'student',
-    //       subtype: 'test-student',
-    //       name: 'Test Student Three',
-    //       email: 'test@example.com',
-    //       phone: '123-456-7890',
-    //       jumps: jumps,
-    //       notes: []
-    //     }
-    //     const expectedActions = [
-    //       { type: types.STUDENT_REQUEST },
-    //       (a) => {
-    //         expect(a.type).toEqual('STUDENT_RECIEVE')
-    //         expect(a.payload._id).toEqual('test-student-three')
-    //         expect(a.payload._rev).toNotEqual(undefined)
-    //         expect(a.payload.last_jump_date).toEqual(jump_date)
-    //       }
-    //     ]
-    //     const store = mockStore({ student: newStudent }, expectedActions, done)
-    //     store.dispatch(actions.saveStudent(newStudent))
-    //   })
-      markAsTested('saveStudent')
-    })
-
     describe('setInstructorOnFirstJump', () =>  {
-      it('copies student.instructor to student.jumps[0].instructor', (done) => {
+      it('copies student.instructor to student.jumps[0].instructor', () => {
         const jump_date = '2016-01-29 12:00:00'
         const jumps = [jumpsTemplate(jump_date)]
         const newStudent = {
@@ -212,20 +114,89 @@ describe('student actions', () => {
           jumps: jumps,
           notes: []
         }
-        const expectedActions = [
-          (a) => {
-            expect(a.type).toEqual(types.STUDENT_SET_INSTRUCTOR_ON_FIRST_JUMP)
-            expect(a.payload.jumps[0].instructor).toEqual(newStudent.instructor)
-          }
-        ]
-        const store = mockStore({ student: newStudent }, expectedActions, done)
-        store.dispatch(actions.setInstructorOnFirstJump(newStudent, newStudent.instructor))
+        const store = mockStore({ student: newStudent })//, expectedActions)
+        const expectedActions = store.dispatch(actions.setInstructorOnFirstJump(newStudent, newStudent.instructor))
+        expect(expectedActions.type).toEqual(types.STUDENT_SET_INSTRUCTOR_ON_FIRST_JUMP)
+        expect(expectedActions.payload.jumps[0].instructor).toEqual(newStudent.instructor)
       })
       markAsTested('setInstructorOnFirstJump')
     })
 
+  })
+
+  /******************************************************************************/
+  /* ASYNC ACTIONS                                                              */
+  /******************************************************************************/
+
+  jest.unmock('../../src/actions/studentActions')
+  jest.unmock('redux-mock-store')
+  jest.unmock('redux-thunk')
+
+  const middlewares = [ thunk ]
+  const mockStore = configureMockStore(middlewares)
+
+  describe('async actions', () => {
+    // afterAll(function() {
+    //   console.log("DELETING TEST STUDENTS")
+    //   return (
+    //     database.allDocs({keys:["test-student","test-student-two", "save-note-student", "remove-note-student"]}).then(response => {
+    //       return response.rows.map(row => database.remove(row.key, row.value.rev))
+    //     }).catch(err => console.log(err))
+    //   )
+    // })
+
+    describe('saveStudent', () => {
+
+      it('creates saves student, then creates fetchStudent stuff', () => {
+        const jump_date = '2016-01-28 11:57:51'
+        const testUUID = 'testRemoveJumpUUID'
+        const jumps = [jumpsTemplate(jump_date, testUUID)]
+        const newStudent = {
+          type: 'student',
+          subtype: 'test-student',
+          name: `Test Student`,
+          email: 'test@example.com',
+          phone: '123-456-7890',
+          jumps: jumps,
+          notes: []
+        }
+        const store = mockStore({ student: newStudent })//, expectedActions)//, done)
+        return store.dispatch(actions.saveStudent(newStudent))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(2)
+            expect(expectedActions[0]).toEqual( { type: types.STUDENT_REQUEST})
+            expect(expectedActions[1].type).toEqual('STUDENT_RECIEVE')
+            expect(expectedActions[1].payload._id).toEqual('test-student')
+          })
+      })
+
+      it('saves test-student-two', () => {
+        const jump_date = '2016-01-28 11:57:51'
+        const jumps = jumpsTemplate(jump_date)
+        const newStudent = {
+          type: 'student',
+          subtype: 'test-student',
+          name: `Test Student Two`,
+          email: 'test2@example.com',
+          phone: '123-456-7890',
+          jumps: jumps,
+          notes: []
+        }
+        const store = mockStore({ student: newStudent })
+        return store.dispatch(actions.saveStudent(newStudent))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(2)
+            expect(expectedActions[1].payload._id).toEqual('test-student-two')
+          })
+      })
+
+      markAsTested('saveStudent')
+    })
+
     describe('disableStudentEditForm', () => {
-      it('should return type STUDENT_DISABLE_FORM', (done) => {
+      it('should return type STUDENT_DISABLE_FORM', () => {
         const student = {
           _id: 'test-student-two'
         }
@@ -237,14 +208,22 @@ describe('student actions', () => {
             expect(a.payload._id).toEqual('test-student-two')
           }
         ]
-        const store = mockStore({student:{}}, expectedActions, done)
-        store.dispatch(actions.disableStudentEditForm(student))
+        const store = mockStore({student:{}})//, expectedActions, done)
+        return store.dispatch(actions.disableStudentEditForm(student))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(3)
+            expect(expectedActions[0].type).toEqual(types.STUDENT_DISABLE_FORM)
+            expect(expectedActions[1].type).toEqual(types.STUDENT_REQUEST)
+            expect(expectedActions[2].type).toEqual(types.STUDENT_RECIEVE)
+            expect(expectedActions[2].payload.original_name).toEqual("Test Student Two")
+          })
       })
       markAsTested('disableStudentEditForm')
     })
 
     describe('saveNote', () => {
-      it('should save note', (done) => {
+      it('should save note', () => {
         let new_note = { text: 'test note', date: '1-2-3'}
         const student = {
           type: 'student',
@@ -253,119 +232,106 @@ describe('student actions', () => {
           notes: [],
           new_note: new_note
         }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual(types.STUDENT_RECIEVE)
-            expect(a.payload.notes[0].text).toEqual('test note')
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.saveNote(student, {date: 'x', text: 'success'}))
+        const store = mockStore(student)
+        return store.dispatch(actions.saveNote(student))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(2)
+            expect(expectedActions[0].type).toEqual(types.STUDENT_REQUEST)
+            expect(expectedActions[1].type).toEqual(types.STUDENT_RECIEVE)
+            expect(expectedActions[1].payload.notes[0].text).toEqual("test note")
+          })
       })
 
-      it('with errors, should not save note', (done) => {
-        let new_note = { text: '', date: 'y-m-d' }
-        const expectedActions = [
-          {
-            type: types.STUDENT_SAVE_ERROR,
-            payload: { errors: [ 'Note text may not be blank' ], notes: [], new_note: new_note }
-          }
-        ]
-        const store = mockStore({student:{notes:[]}}, expectedActions, done)
-        store.dispatch(actions.saveNote( { notes:[], new_note: new_note } ))
+      it('with errors, should not save note', () => {
+        let new_note = { text: '', date: null}
+        const student = {
+          type: 'student',
+          name: 'Save Note Student',
+          jumps: [jumpsTemplate('w-h-a-t e-v-e-r')],
+          notes: [],
+          new_note: new_note
+        }
+        const store = mockStore({})
+        store.dispatch(actions.saveNote(student))
+        const expectedActions = store.getActions()
+        expect(expectedActions.length).toBe(1)
+        expect(expectedActions[0].payload.errors[0]).toEqual('Note text may not be blank')
       })
       markAsTested('saveNote')
     })
 
     describe('removeNote', () => {
 
-      it('should remove specified note', (done) => {
+      it('should remove specified note', () => {
         const student = {
           type: 'student',
           name: 'Remove Note Student',
           jumps: [jumpsTemplate('w-h-a-t e-v-e-r')],
           notes: [{date:'x',text:'keep'},{date:'y',text:'remove'}]
         }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual(types.STUDENT_RECIEVE)
-            expect(a.payload.notes.length).toEqual(1)
-            expect(a.payload.notes[0].text).toEqual('keep')
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.removeNote(student, {date:'y',text:'remove'}))
+        const store = mockStore({})
+        return store.dispatch(actions.removeNote(student, {date:'y'}))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions.length).toBe(2)
+            expect(expectedActions[0].type).toEqual(types.STUDENT_REQUEST)
+            expect(expectedActions[1].type).toEqual(types.STUDENT_RECIEVE)
+            expect(expectedActions[1].payload.notes.length).toBe(1)
+            expect(expectedActions[1].payload.notes[0].text).toEqual('keep')
+          })
+
       })
       markAsTested('removeNote')
     })
 
     describe('fetchStudent', () => {
-      it('fetchStudent creates STUDENT_RECIEVE after fetching students', (done) => {
-
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(a.payload._id).toEqual('test-student-two')
-            expect(a.payload._rev).toNotEqual(undefined)
-          }
-        ]
-
-        const store = mockStore({ student: {} }, expectedActions, done)
-        store.dispatch(actions.fetchStudent("test-student-two"))
+      it('works', () => {
+        const store = mockStore({})
+        return store.dispatch(actions.fetchStudent("test-student-two"))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[1].payload.original_name).toEqual("Test Student Two")
+          })
       })
       markAsTested('fetchStudent')
     })
 
     describe('createNextJump', function () {
-      it('should start with 1 jump', function (done) {
+      it('should start with 1 jump', function () {
         const student = { _id: 'test-student' }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(Object.keys(a.payload.jumps).length).toEqual(1)
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.fetchStudent(student._id))
+        const store = mockStore({})
+        return store.dispatch(actions.fetchStudent(student._id))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[1].payload.jumps.length).toBe(1)
+          })
       })
 
-      it('after run, should have two jumps', function (done) {
+      it('after run, should have two jumps', function () {
         const student = { _id: 'test-student' }
-        const expectedActions = [
-          { type: types.STUDENT_CREATE_NEXT_JUMP },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_REQUEST')
-          },
-          (a) => {
-            expect(a.type).toEqual('STUDENT_RECIEVE')
-            expect(Object.keys(a.payload.jumps).length).toEqual(2)
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.createNextJump(student))
+        const store = mockStore({})
+        return store.dispatch(actions.createNextJump(student))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[2].payload.jumps.length).toBe(2)
+          })
       })
       markAsTested('createNextJump')
     })
 
     describe('removeJump', () => {
-      it('should start with two jumps', function (done) {
+      it('should start with two jumps', function () {
         const student = { _id: 'test-student' }
-        const expectedActions = [
-          { type: types.STUDENT_REQUEST },
-          (incomingAction) => {
-            expect(incomingAction.type).toEqual(types.STUDENT_RECIEVE)
-            expect(Object.keys(incomingAction.payload.jumps).length).toEqual(2)
-          }
-        ]
-        const store = mockStore(student, expectedActions, done)
-        store.dispatch(actions.fetchStudent(student._id))
+        const store = mockStore({})
+        return store.dispatch(actions.fetchStudent(student._id))
+          .then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[1].payload.jumps.length).toBe(2)
+          })
       })
 
-      it('should remove specified jump and video, then save student', (done) => {
+      xit('should remove specified jump and video, then save student', (done) => {
         const jump_date = '2016-01-28 11:57:51'
         const testUUID = 'testRemoveJumpUUID'
         const jump = jumpsTemplate(jump_date, testUUID)
@@ -393,7 +359,7 @@ describe('student actions', () => {
         student: { _id: 'remove-video-student', original_name: 'Remove Video Student', jumps: [jump]}
       }
       const { student, settings } = {...state}
-      it('should remove video from fs and its reference on jump object', (done) => {
+      xit('should remove video from fs and its reference on jump object', (done) => {
         const expectedActions = [
           { type: types.STUDENT_REQUEST },
           (a) => {
