@@ -14,7 +14,7 @@ const initialSettings = {
 
 let settings
 
-if ( test ) { settings = initialSettings }
+if ( runningInTestMode ) { settings = initialSettings }
 else {
   try {
     settings = JSON.parse(
@@ -32,7 +32,7 @@ var database = runningInTestMode ?
   new PouchDB('test', {db: require('memdown')}) :
   new PouchDB(settings.localDatabase, {adapter: 'idb'})
 
-if(!test && settings.remoteDatabase) {
+if(!runningInTestMode && settings.remoteDatabase) {
   const sync = PouchDB.sync(settings.localDatabase, settings.remoteDatabase, {
     live: true,
     retry: true
