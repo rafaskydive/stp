@@ -37,4 +37,23 @@ if(!test && settings.remoteDatabase) {
   })
 }
 
+// test whether _design docs exist, and create them if not
+
+database.get('_design/students')
+  .then((doc) => {
+    // do nothing, because we don't need to if it already exists.
+    // to update it, delete the app cache directory.
+  })
+  .catch((err) => {
+    const studentDesignDoc = require('./_design/students').default
+    console.log(studentDesignDoc)
+    database.put(studentDesignDoc)
+      .then((res) => console.log(res))
+      .then(require('./_design/create-log-entry-options').default(database))
+  })
+
+database.compact()
+  .then(res => console.log("Compacting database", res))
+  .catch(err => { console.log(err) })
+
 module.exports = database

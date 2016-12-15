@@ -1,8 +1,17 @@
 import React, { Component } from 'react'
 import { EnableFormButton, SaveAndCancelButtons } from './form-buttons'
 import moment from 'moment'
+import { Creatable } from 'react-select'
 
 export default class LogEntryForm extends Component {
+  componentDidMount () {
+    // "exit" is just one of the logEntryOptions
+    // if it's not present, we haven't loaded the options
+    // from the database
+    if (!this.props.logEntryOptions.exit) {
+      this.props.requestLogEntryOptions()
+    }
+  }
   render () {
     return (
       <div className="padded">
@@ -12,7 +21,7 @@ export default class LogEntryForm extends Component {
   }
 }
 
-const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStudentEditForm, saveStudent}) => (
+const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStudentEditForm, saveStudent, logEntryOptions}) => (
   <form onSubmit={e => {
     e.preventDefault()
     return student.modified ? saveStudent(student) : {}
@@ -48,38 +57,48 @@ const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStude
 
     <div className="form-group">
       <label>Exit</label>
-      <input name="exit" className="form-control"
+      <Creatable name="exit"
         value={jump.exit}
+        multi={true}
         disabled={!student.modified}
-        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}/>
+        options={logEntryOptions.exit}
+        onChange={val => editJumpField(student, jump, "exit", val)}/>
     </div>
     <div className="form-group">
       <label>Maneuvers</label>
-      <input name="maneuvers" className="form-control"
+      <Creatable name="maneuvers"
         value={jump.maneuvers}
+        multi={true}
         disabled={!student.modified}
-        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}/>
+        options={logEntryOptions.maneuvers}
+        onChange={val => editJumpField(student, jump, "maneuvers", val)}/>
     </div>
     <div className="form-group">
       <label>Canopy Control</label>
-      <input name="canopy_control" className="form-control"
+      <Creatable name="canopy_control"
         value={jump.canopy_control}
+        multi={true}
         disabled={!student.modified}
-        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}/>
+        options={logEntryOptions.canopy}
+        onChange={val => editJumpField(student, jump, "canopy_control", val)}/>
     </div>
     <div className="form-group">
       <label>Landing</label>
-      <input name="landing" className="form-control"
+      <Creatable name="landing"
         value={jump.landing}
+        multi={true}
         disabled={!student.modified}
-        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}/>
+        options={logEntryOptions.landing}
+        onChange={val => editJumpField(student, jump, "landing", val)}/>
     </div>
     <div className="form-group">
       <label>Improvement Points</label>
-      <input name="improvement_points" className="form-control"
+      <Creatable name="improvement_points"
         value={jump.improvement_points}
+        multi={true}
         disabled={!student.modified}
-        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}/>
+        options={logEntryOptions.improvement_points}
+        onChange={val => editJumpField(student, jump, "improvement_points", val)}/>
     </div>
     {/*(
       student.modified ?

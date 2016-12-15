@@ -1,4 +1,5 @@
 import './styles/styles.scss';
+require('style!css!sass!react-select/scss/default.scss');
 import { createDevTools } from 'redux-devtools';
 import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';

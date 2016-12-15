@@ -36,8 +36,7 @@ export function fetchStudent(_id) {
     return database.get(_id)
       .then((doc) => { dispatch(receiveStudent(doc))})
       .catch((err) => {
-        student.errors = err
-        dispatch(reportErrors(student))
+        dispatch(reportErrors({errors:err}))
       })
   }
 }
@@ -201,7 +200,7 @@ export function createNextJump(_student) {
       })
       .catch((err) => {
         student.errors = err
-        dispatch(reportErrors(student))        
+        dispatch(reportErrors(student))
       })
   }
 }
