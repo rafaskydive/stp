@@ -1,4 +1,4 @@
-const docData = require('./log-entry-options')
+import docData from './log-entry-options'
 
 export default function (database, runningInTestMode) {
   const newdoc = {}
