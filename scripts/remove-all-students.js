@@ -1,14 +1,15 @@
-const dbName = process.argv[2]
+require('dotenv').config()
 
 if(dbName === undefined) {
   console.log("Please provide a database name.")
   process.exit()
 }
 
-// var database = require('../src/database')
+var dbStr = "http://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@" + process.env.DB_HOST + ":5984/" + process.env.DB_NAME
+
 var PouchDB = require('pouchdb')
 
-var database = new PouchDB('http://doppler:doppler@localhost:5984/' + dbName)
+var database = new PouchDB(dbStr)
 
 function deleteDocs(callback) {
   var deleteDocs = []

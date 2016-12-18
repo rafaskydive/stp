@@ -1,5 +1,8 @@
 /* eslint strict: 0 */
 'use strict';
+
+require('dotenv').config();
+
 const electron = require('electron');
 const app = electron.app; // require('app');
 
