@@ -17,7 +17,12 @@ export default function (database, runningInTestMode) {
     .then(function(doc) {
       newdoc._rev = doc._rev
       return database.put(newdoc)
+        .then(res => runningInTestMode ? f => f : console.log(res))
+        .catch(err => console.log(err))
     })
-    .then(function(result) { runningInTestMode ? f=>f : console.log(result) })
-    .catch(function(err) { database.put(newdoc) })
+    .catch(function(err) {
+      database.put(newdoc)
+        .then(res => runningInTestMode ? f => f : console.log(res))
+        .catch(err => console.log(err))
+    })
 }

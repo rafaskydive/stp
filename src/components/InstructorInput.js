@@ -4,6 +4,12 @@ import * as actionCreators from '../actions'
 
 class InstructorInput extends Component {
 
+  componentDidMount() {
+    if(!this.props.instructors.length > 0) {
+      this.props.requestInstructorOptions()
+    }
+  }
+
   setInstructor(e) {
     this.props.onChange(e)
     if (this.props.student.jumps.length === 1) {
@@ -31,7 +37,7 @@ class InstructorInput extends Component {
           className="form-control"
         >
           <option value="" key=""></option>
-        {this.props.settings.configuration.instructors.map((instructor, i) => {
+        {this.props.instructors.map((instructor, i) => {
           return (
             <option value={instructor} key={i}>{instructor}</option>
           )
@@ -43,10 +49,11 @@ class InstructorInput extends Component {
 }
 
 function mapStateToProps(state) {
-  return Object.assign({}, { student: state.student, settings: state.settings })
+  return Object.assign({}, { student: state.student, settings: state.settings, instructors: state.instructors })
 }
 
 const mapDispatchToProps = Object.assign({}, {
+  requestInstructorOptions: actionCreators.requestInstructorOptions,
   setInstructorOnFirstJump: actionCreators.setInstructorOnFirstJump,
   saveStudent: actionCreators.saveStudent
 })
