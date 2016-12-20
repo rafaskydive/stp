@@ -12,8 +12,7 @@ const test = process.env['NODE_ENV'] === 'test'
 const initialSettings = {
   localDatabase: 'STP',
   remoteDatabase: null,
-  videoFilePath: null,
-  instructors: ["Please Edit","Your Instructor List", "In Settings"]
+  videoFilePath: null
 }
 
 if ( test ) { initialState.configuration = initialSettings }

@@ -1,7 +1,8 @@
 const PouchDB = require('pouchdb')
 const path = require('path')
-import studentDesignDoc from './_design/students'
-import createLogEntryOptions from './_design/create-log-entry-options'
+// import studentDesignDoc from './_design/students'
+import createDesignDocs from './_design'
+// import createLogEntryOptions from './_design/create-log-entry-options'
 
 const runningInTestMode = process.env['NODE_ENV'] === 'test'
 
@@ -47,9 +48,10 @@ database.get('_design/students')
     // to update it, delete the app cache directory.
   })
   .catch((err) => {
-    database.put(studentDesignDoc)
-      .then((res) => runningInTestMode ? f=>f : console.log(res))
-      .then(createLogEntryOptions(database, runningInTestMode))
+    // database.put(studentDesignDoc)
+    //   .then((res) => runningInTestMode ? f=>f : console.log(res))
+    //   .then(createLogEntryOptions(database, runningInTestMode))
+    createDesignDocs(database, runningInTestMode)
   })
 
 database.compact()

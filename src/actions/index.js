@@ -11,3 +11,5 @@ export * from './reportActions'
 export * from './authActions'
 
 export * from './logEntryActions'
+
+export * from './instructorActions'

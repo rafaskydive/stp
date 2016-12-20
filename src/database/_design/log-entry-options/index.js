@@ -5,7 +5,6 @@ import landing from './landing'
 import improvement_points from './improvement_points'
 
 import aircraft from './aircraft'
-import instructors from './instructors'
 
 export default {
   exit,
@@ -15,5 +14,4 @@ export default {
   improvement_points,
 
   aircraft,
-  instructors
 }

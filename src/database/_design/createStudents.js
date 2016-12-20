@@ -1,4 +1,4 @@
-export default {
+const studentsDesignDoc = {
   _id: "_design/students",
   views: {
     name: {
@@ -26,4 +26,10 @@ export default {
       reduce: '_count'
     }
   }
+}
+
+export default function (database, runningInTestMode) {
+  database.put(studentsDesignDoc)
+    .then(res => runningInTestMode ? f => f : console.log(res))
+    .catch(err => console.log(err))
 }

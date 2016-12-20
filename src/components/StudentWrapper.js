@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ErrorStatus from './ErrorStatus'
-import InstructorInput from './InstructorInput'
 import { connect } from 'react-redux'
 import { routeActions, push } from 'react-router-redux'
 import * as actionCreators from '../actions'
