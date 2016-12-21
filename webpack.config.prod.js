@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const ElectronPackager = require("webpack-electron-packager");
 
 module.exports = {
   entry: './src/main.js',
@@ -20,5 +21,26 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    // new ElectronPackager({
+    //   dir: "./",
+    //   arch: "x64",
+    //   platform: "darwin",
+    //   out: "dist",
+    //   overwrite: true,
+    //   prune: true,
+    //   asar: true
+    // }),
+    new ElectronPackager({
+      dir: "./",
+      arch: "ia32",
+      platform: "win32",
+      out: "dist",
+      overwrite: true,
+      prune: true,
+      asar: true
+    })
+
+  ],
   devtool: 'source-map',
 };
