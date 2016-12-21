@@ -35,6 +35,14 @@ const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStude
       >{EquipmentOptions()}</select>
     </div>
     <div className="form-group form-group-small">
+      <label>Aircraft</label>
+      <select name="aircraft" className="form-control"
+        value={jump.aircraft}
+        disabled={!student.modified}
+        onChange={e => editJumpField(student, jump, e.target.name, e.target.value)}
+      >{AircraftOptions(logEntryOptions.aircraft)}</select>
+    </div>
+    <div className="form-group form-group-small">
       <label>Exit Altitude</label>
       <select name="exit_altitude" className="form-control"
         value={jump.exit_altitude}
@@ -107,6 +115,15 @@ const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStude
     )*/}
   </form>
 )
+
+const AircraftOptions = (aircraft) => {
+  if(!aircraft) {
+    return
+  }
+  return aircraft.map((aircraft, i) => {
+    return <option value={aircraft} key={i}>{aircraft}</option>
+  })
+}
 
 const EquipmentOptions = () => (
   ['',150,170,190,210,230,260,280,300].map((canopy, i) => EquipmentOption(canopy, i))

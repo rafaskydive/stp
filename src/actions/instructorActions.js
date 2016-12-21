@@ -2,7 +2,6 @@ import * as types from '../constants/instructorConstants'
 import database from '../database'
 
 export function requestInstructorOptions() {
-  console.log("requestInstructors()")
   return dispatch => {
     dispatch({type: types.REQUEST_INSTRUCTOR_OPTIONS})
     return database.get('_design/dzOptions')
