@@ -1,8 +1,6 @@
 /* eslint strict: 0 */
 'use strict';
 
-require('dotenv').config();
-
 const electron = require('electron');
 const app = electron.app; // require('app');
 
@@ -20,6 +18,10 @@ function onClosed() {
   mainWindow = null;
 }
 
+function isDevelopment() {
+  return process.env.ELECTRON_ENV === 'development'
+}
+
 function createMainWindow() {
   const win = new BrowserWindow({
     width: 960,
@@ -28,8 +30,8 @@ function createMainWindow() {
   });
 
   // Remove 'public' part when deploying
-  // win.loadURL(`file://${__dirname}/index.html`);
-  win.loadURL(`file://${__dirname}/public/index.html`);
+  const URL = isDevelopment() ? `file://${__dirname}/public/index.html` : `file://${__dirname}/index.html`
+  win.loadURL(URL)
   win.openDevTools();
   win.on('closed', onClosed);
 
