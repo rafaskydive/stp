@@ -1,6 +1,6 @@
 const path = require('path')
 import _ from 'lodash'
-import * as types from '../constants'
+import * as types from '../constants/studentConstants'
 import database from '../database'
 import { routeActions } from 'react-router-redux'
 import { jumpsTemplate } from '../utils'

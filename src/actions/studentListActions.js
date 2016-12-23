@@ -1,6 +1,5 @@
 import * as types from '../constants/studentListConstants.js'
 import database from '../database'
-import designDocs from '../utils/designDocs'
 
 const runningInTestMode = process.env['NODE_ENV'] === 'test'
 

@@ -1,4 +1,5 @@
 const path = require('path')
+const url = require('url')
 
 import React, { Component } from 'react'
 import { HeaderButtons } from './HeaderButtons'
@@ -109,6 +110,15 @@ const renderSubmitButton = (cancelSaveSettings) => (
   </div>
 )
 
+const Footer = props => (
+  <footer className="toolbar toolbar-footer">
+    <div className="toolbar-actions">
+      <OpenSettingsButton/>
+      <OpenCouchDbButton settings={props.settings}/>
+    </div>
+  </footer>
+)
+
 const OpenSettingsButton = props => (
   <button className="btn btn-default"
     onClick={e => {
@@ -120,13 +130,21 @@ const OpenSettingsButton = props => (
   </button>
 )
 
-const Footer = props => (
-  <footer className="toolbar toolbar-footer">
-    <div className="toolbar-actions">
-      <OpenSettingsButton/>
-    </div>
-  </footer>
-)
+const OpenCouchDbButton = ({settings}) => {
+  if(! settings.configuration.remoteDatabase || settings.modified) { return <span></span> }
+  let u = url.parse(settings.configuration.remoteDatabase)
+  let dbURL = `${u.protocol}//${u.host}/_utils/database.html?${u.path.replace(/^\//,'')}`
+  return (
+    <button className="btn btn-default"
+      onClick={e => {
+        e.preventDefault();
+        shell.openExternal(dbURL)
+      }}
+      >
+      Open {dbURL}
+    </button>
+  )
+}
 
 function mapStateToProps(state) {
   return { settings: state.settings, auth: state.auth }
