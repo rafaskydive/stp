@@ -24,7 +24,7 @@
     "test": "NODE_ENV=test jest",
     "test:watch": "npm test -- --watch",
     "start": "ELECTRON_ENV=development electron .",
-    "build": "NODE_ENV=production webpack -p --config webpack.config.prod.js",
+    "build": "webpack -p --config webpack.config.prod.js --define process.env.NODE_ENV='\"production\"' --progress --colors",
     "deploy": "electron-packager . $npm_package_productName --out=dist --overwrite --ignore='^/dist$' --ignore='node_modules/\\.bin' --prune --asar --platform=win32 --arch=ia32 --version=$npm_package_electronVersion",
     "dev": "node_modules/.bin/webpack-dev-server"
   },
@@ -90,6 +90,7 @@
     "stylus-loader": "2.4.0",
     "url-loader": "0.5.7",
     "webpack": "^1.14.0",
-    "webpack-dev-server": "1.16.2"
+    "webpack-dev-server": "1.16.2",
+    "webpack-electron-packager": "^1.0.0"
   }
 }

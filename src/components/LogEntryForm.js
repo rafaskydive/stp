@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { EnableFormButton, SaveAndCancelButtons } from './form-buttons'
 import moment from 'moment'
 import { Creatable } from 'react-select'
+import delay from '../utils/freefallDelay'
 
 export default class LogEntryForm extends Component {
   componentDidMount () {
@@ -60,7 +61,7 @@ const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStude
     </div>
     <div className="form-group form-group-small">
       <label>Delay</label>
-      <input disabled={true} value={delay(jump)}/>
+      <input disabled={true} value={delay(jump.exit_altitude, jump.deployment_altitude)}/>
     </div>
 
     <div className="form-group">
@@ -108,11 +109,6 @@ const Form = ({student, jump, editJumpField, disableStudentEditForm, enableStude
         options={logEntryOptions.improvement_points}
         onChange={val => editJumpField(student, jump, "improvement_points", val)}/>
     </div>
-    {/*(
-      student.modified ?
-      <SaveAndCancelButtons student={student} disableStudentEditForm={disableStudentEditForm}/> :
-      <EnableFormButton enableStudentEditForm={enableStudentEditForm}/>
-    )*/}
   </form>
 )
 
@@ -156,10 +152,3 @@ const DeploymentAltitudeOptions = () => {
 const DeploymentAltitudeOption = (altitude, i) => (
   <option key={i} value={altitude}>{Number(altitude).toLocaleString()}</option>
 )
-
-const delay = (jump) => {
-  if(jump.exit_altitude && jump.deployment_altitude) {
-    return Math.ceil((((jump.exit_altitude - jump.deployment_altitude) / 1000) * 5.5) + 5) + " seconds"
-  }
-  return ""
-}

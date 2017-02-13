@@ -7,7 +7,10 @@ const dzOptionsDesignDoc = {
     "King Air"
   ],
   instructors: [
-    "NONE"
+    "David Rose",
+    "Kayla Miller",
+    "Kevin Purdy",
+    "Rafael Oliveira"
   ]
 }
 

@@ -58,4 +58,6 @@ database.compact()
   .then(res => runningInTestMode ? f=>f : console.log("Compacting database", res))
   .catch(err => { console.log(err) })
 
+window.database = database
+
 module.exports = database
