@@ -5,6 +5,6 @@ var dbStr = "http://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@" + 
 
 var database = new PouchDB(dbStr)
 
-var createLogEntryOptions = require('../src/database/_design/create-log-entry-options').default
+var createLogEntryOptions = require('../src/database/_design/createLogEntryOptions').default
 
 createLogEntryOptions(database)

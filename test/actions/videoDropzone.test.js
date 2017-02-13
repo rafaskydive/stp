@@ -7,7 +7,7 @@ import moment from 'moment'
 import database from '../../src/database'
 import { jumpsTemplate } from '../../src/utils'
 import * as actions from '../../src/actions/videoActions'
-import * as types from '../../src/constants'
+import * as types from '../../src/constants/videoConstants.js'
 
 import fs from 'fs'
 const mkdirp = require('mkdirp-promise')
